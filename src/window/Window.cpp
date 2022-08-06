@@ -34,7 +34,8 @@ namespace arcana {
         background_color = config.win_config.background_color;
 
         // DEBUG ONLY
-        shader = Shader(0, 0);
+        Shader nShader(0,0);
+        shader = nShader;
     }
 
     bool Window::shouldClose() {

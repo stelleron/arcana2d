@@ -32,10 +32,10 @@
                 void deInit() { is_init = false;}
 
                 // Copy assignment operator
-                Shader& operator=(const Shader& shader) {
+                Shader& operator=(Shader& shader) {
                     if (is_init) {glDeleteProgram(id);} 
-                    id = ((Shader)shader).getID();
-                    ((Shader)shader).deInit();
+                    id = shader.getID();
+                    shader.deInit();
                     is_init = true;
                     return *this;
                 }
