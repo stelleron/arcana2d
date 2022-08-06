@@ -31,7 +31,7 @@ namespace arcana {
         };
     }
 
-        inline unsigned int compileShader(const char* source, GLenum sType) {
+    inline unsigned int compileShader(const char* source, GLenum sType) {
         unsigned int shaderid = glCreateShader(sType);
         glShaderSource(shaderid, 1, &source, NULL);
         glCompileShader(shaderid);
@@ -44,11 +44,7 @@ namespace arcana {
         glAttachShader(shaderid, vShader);
         glAttachShader(shaderid, fShader);
         glLinkProgram(shaderid);
-
         printErrors(shaderid, GL_LINK_STATUS);
-
-        glDeleteShader(vShader);
-        glDeleteShader(fShader);
         return shaderid;
     }
 
@@ -58,18 +54,10 @@ namespace arcana {
     }
 
     Shader::Shader(int exclude1, int exclude2) {
-        unsigned int vertexShader = glCreateShader(GL_VERTEX_SHADER);
-        glShaderSource(vertexShader, 1, &vShaderSrc, NULL);
-        glCompileShader(vertexShader);
-        unsigned int fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-        glShaderSource(fragmentShader, 1, &fShaderSrc, NULL);
-        glCompileShader(fragmentShader);
-        id = glCreateProgram();
-        glAttachShader(id, vertexShader);
-        glAttachShader(id, fragmentShader);
-        glLinkProgram(id);
-        glDeleteShader(vertexShader);
-        glDeleteShader(fragmentShader);
+        id = compileProgram(
+            compileShader(vShaderSrc, GL_VERTEX_SHADER), 
+            compileShader(fShaderSrc, GL_FRAGMENT_SHADER)
+        );
         is_init = true;
     }
 

@@ -6,8 +6,8 @@
         // Used to create a shader class 
         class Shader {
             private:
-                unsigned int id;
                 bool is_init;
+                unsigned int id;
             public:
                 // Different shader constructors 
                 Shader();
@@ -15,12 +15,6 @@
                 Shader(const char* vSource, int exclude);
                 Shader(int exclude, const char* fSource);
                 Shader(const char* vSource, const char* fSource);
-                Shader& operator=(const Shader& shader) {
-                    if (is_init) {glDeleteProgram(id);} 
-                    id = getID();
-                    is_init = true;
-                    return *this;
-                }
 
                 // Uniform setting functions
                 void setBool(const char* name, bool value);  
@@ -29,10 +23,22 @@
 
                 // Use the shader
                 void use();
-                
+
                 // Getters
-                inline unsigned int getID() {return id;}
-                inline bool getInit() {return is_init;}
+                inline const unsigned int getID() {return id;}
+                inline const bool getInit() {return is_init;}
+
+                // Setters
+                void deInit() { is_init = false;}
+
+                // Copy assignment operator
+                Shader& operator=(const Shader& shader) {
+                    if (is_init) {glDeleteProgram(id);} 
+                    id = ((Shader)shader).getID();
+                    ((Shader)shader).deInit();
+                    is_init = true;
+                    return *this;
+                }
 
                 // Destructor
                 ~Shader();
