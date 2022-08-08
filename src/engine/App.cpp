@@ -1,4 +1,3 @@
-#include <GLFW/glfw3.h>
 #include "engine/App.hpp"
 #include "utils/DebugOnly.hpp"
 
@@ -25,6 +24,8 @@ namespace arcana {
         app_config.init_fn(eng_config, app_config.user_data);
         // And use it to initialise the window
         window.init(eng_config);
+        // Also intialise the render context
+        render_ctx.init();
         
         // 2. LOOP STAGE
         // Then loop over the update and render functions
@@ -35,7 +36,8 @@ namespace arcana {
 
             // Render func
             window.fill();
-            app_config.render_fn(app_config.user_data);
+            render_ctx.useDefault();
+            app_config.render_fn(render_ctx, app_config.user_data);
             window.swapBuffer();
         }
 

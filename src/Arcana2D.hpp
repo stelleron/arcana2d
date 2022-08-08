@@ -13,9 +13,10 @@
     //=== PROJECT HEADERS
     #include "utils/Color.hpp"
 
-    #include "gfx/Shader.hpp"
-
     #include "window/Window.hpp"
+
+    #include "gfx/Shader.hpp"
+    #include "gfx/RenderContext.hpp"
 
     #include "engine/App.hpp"
     #include "engine/EngineConfig.hpp"

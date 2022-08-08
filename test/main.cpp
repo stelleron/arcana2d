@@ -14,7 +14,7 @@ void update(arcana::UserData user_data) {
     GameData* data = GET_USER_DATA(user_data, GameData);
 }
 
-void render(arcana::UserData user_data) {
+void render(arcana::RenderContext& ctx, arcana::UserData user_data) {
 
 }
 

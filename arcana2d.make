@@ -83,6 +83,7 @@ endif
 OBJECTS := \
 	$(OBJDIR)/App.o \
 	$(OBJDIR)/EngineConfig.o \
+	$(OBJDIR)/RenderContext.o \
 	$(OBJDIR)/Shader.o \
 	$(OBJDIR)/Color.o \
 	$(OBJDIR)/Window.o \
@@ -148,6 +149,9 @@ $(OBJDIR)/App.o: src/engine/App.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 $(OBJDIR)/EngineConfig.o: src/engine/EngineConfig.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
+$(OBJDIR)/RenderContext.o: src/gfx/RenderContext.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 $(OBJDIR)/Shader.o: src/gfx/Shader.cpp

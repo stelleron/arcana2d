@@ -2,6 +2,8 @@
     #define ARCANA2D_SHADER
 
     #include <glad/glad.h>
+    #include "utils/DebugOnly.hpp"
+
     namespace arcana {
         // Used to create a shader class 
         class Shader {

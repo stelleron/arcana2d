@@ -2,6 +2,12 @@
 #include "utils/DebugOnly.hpp"
 #include "window/Window.hpp"
 
+float vertices[] = {
+    -0.5f, -0.5f, 0.0f, // left  
+     0.5f, -0.5f, 0.0f, // right 
+     0.0f,  0.5f, 0.0f  // top   
+}; 
+
 namespace arcana {
     // WINDOW IMPL.
     Window::Window() {
@@ -34,6 +40,7 @@ namespace arcana {
     }
 
     void Window::swapBuffer() {
+        // And swap buffers
         glfwSwapBuffers(window);
     }
 

@@ -2,7 +2,11 @@
     #define ARCANA2D_APP
     // Includes
     #include "engine/EngineConfig.hpp"
+
+    #include "gfx/RenderContext.hpp"
+
     #include "window/Window.hpp"
+
     #include <functional>
 
     namespace arcana {
@@ -20,7 +24,7 @@
         // Redefining types for the application
         using InitFn = std::function<void(EngineConfig&, UserData)>;
         using UpdateFn = std::function<void(UserData)>;
-        using RenderFn = std::function<void(UserData)>;
+        using RenderFn = std::function<void(RenderContext&, UserData)>;
         using FinishFn = std::function<void(UserData)>;
 
         // Configures the application
@@ -37,7 +41,9 @@
             private:
                 AppConfig app_config; // Stores the app config functions
                 EngineConfig eng_config; // Stores the engine config data
+
                 Window window; // Stores the main window
+                RenderContext render_ctx; // Creates a render context
             public:
                 App(); // Constructor
 
