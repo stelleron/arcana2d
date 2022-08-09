@@ -1,0 +1,3 @@
+#ifndef ARCANA2D_GEOMETRY
+    #define ARCANA2D_GEOMETRY
+#endif
