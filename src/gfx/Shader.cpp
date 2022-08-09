@@ -3,18 +3,23 @@
 #include "utils/DebugOnly.hpp"
 
 namespace arcana {
-    const char *vShaderSrc = "#version 330 core\n"
-        "layout (location = 0) in vec3 aPos;\n"
+    // Default shaders
+    const char* vShaderSrc ="#version 330\n"
+        "layout (location = 0) in vec2 aPos;\n"
+        "layout (location = 1) in vec4 aColor;\n"
+        "out vec4 fColor;\n"
         "void main()\n"
         "{\n"
-        "   gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);\n"
+        "   gl_Position = vec4(aPos, 0.0, 1.0);\n"
+        "   fColor = aColor;\n"
         "}\0";
 
-    const char *fShaderSrc = "#version 330 core\n"
-        "out vec4 FragColor;\n"
+    const char* fShaderSrc = "#version 330\n"
+        "in vec4 fColor;\n"
+        "out vec4 color;\n"
         "void main()\n"
         "{\n"
-        "   FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);\n"
+        "   color = fColor;\n"
         "}\n\0";
 
     // Shader compile functions

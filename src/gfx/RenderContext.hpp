@@ -2,6 +2,7 @@
     #define ARCANA2D_RENDER_CONTEXT
     // Includes
     #include "gfx/Shader.hpp"
+    #include "geom/VertexBuffer.hpp"
 
     namespace arcana {
         // Used to create a render context to draw objects
@@ -20,6 +21,9 @@
 
                 // Use the default shader
                 void useDefault();
+
+                // Draw functions
+                void draw(VertexBuffer& buffer);
         };
     }
 #endif

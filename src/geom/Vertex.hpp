@@ -4,6 +4,9 @@
     #include <glm/glm.hpp>
     #include "utils/Color.hpp"
 
+    // Macro defines
+    #define VERTEX_FSIZE sizeof(float) * 6
+
     namespace arcana {
         // Namespace defines
         using Vector2 = glm::vec2;

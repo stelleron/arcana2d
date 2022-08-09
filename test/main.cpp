@@ -2,12 +2,16 @@
 #include "Arcana2D.hpp"
 
 struct GameData {
-    int x = 5;
+    arcana::VertexBuffer vBuffer = arcana::VertexBuffer(arcana::RenderMode::Triangles, 4);
 };
 
 void init(arcana::EngineConfig& config, arcana::UserData user_data) {
     // Setting the title 
     config.win_config.title = "Hello World!";
+
+    // Storing some data
+    GameData* gdata = GET_USER_DATA(user_data, GameData);
+    gdata->vBuffer << arcana::Triangle{{-0.5, -0.5}, {0.5, -0.5}, {0, 0.5}};
 }
 
 void update(arcana::UserData user_data) {
@@ -15,8 +19,8 @@ void update(arcana::UserData user_data) {
 }
 
 void render(arcana::RenderContext& ctx, arcana::UserData user_data) {
-    arcana::VertexBuffer vBuffer(arcana::RenderMode::Triangles, 4);
-    vBuffer << arcana::Triangle{{0.5, 0.5}, {0.5, -0.5}, {0, 0}};
+    GameData* gdata = GET_USER_DATA(user_data, GameData);
+    ctx.draw(gdata->vBuffer);
 }
 
 void finish(arcana::UserData user_data) {
