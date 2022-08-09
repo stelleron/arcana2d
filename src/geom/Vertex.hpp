@@ -14,6 +14,7 @@
             Color color;
 
             // Constructor
+            Vertex() {}
             Vertex(Vector2  pos, Color color);
         };
     }

@@ -15,7 +15,8 @@ void update(arcana::UserData user_data) {
 }
 
 void render(arcana::RenderContext& ctx, arcana::UserData user_data) {
-
+    arcana::VertexBuffer vBuffer(arcana::RenderMode::Triangles, 4);
+    vBuffer << arcana::Triangle{{0.5, 0.5}, {0.5, -0.5}, {0, 0}};
 }
 
 void finish(arcana::UserData user_data) {

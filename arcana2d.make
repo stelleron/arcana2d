@@ -83,6 +83,8 @@ endif
 OBJECTS := \
 	$(OBJDIR)/App.o \
 	$(OBJDIR)/EngineConfig.o \
+	$(OBJDIR)/Vertex.o \
+	$(OBJDIR)/VertexBuffer.o \
 	$(OBJDIR)/RenderContext.o \
 	$(OBJDIR)/Shader.o \
 	$(OBJDIR)/Color.o \
@@ -149,6 +151,12 @@ $(OBJDIR)/App.o: src/engine/App.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 $(OBJDIR)/EngineConfig.o: src/engine/EngineConfig.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
+$(OBJDIR)/Vertex.o: src/geom/Vertex.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
+$(OBJDIR)/VertexBuffer.o: src/geom/VertexBuffer.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 $(OBJDIR)/RenderContext.o: src/gfx/RenderContext.cpp

@@ -13,6 +13,10 @@
     //=== PROJECT HEADERS
     #include "utils/Color.hpp"
 
+    #include "geom/Vertex.hpp"
+    #include "geom/Geometry.hpp"
+    #include "geom/VertexBuffer.hpp"
+
     #include "window/Window.hpp"
 
     #include "gfx/Shader.hpp"
