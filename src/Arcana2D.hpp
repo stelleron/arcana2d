@@ -15,6 +15,7 @@
 
     #include "geom/Vertex.hpp"
     #include "geom/Geometry.hpp"
+    #include "geom/DrawGeom.hpp"
     #include "geom/VertexBuffer.hpp"
 
     #include "window/Window.hpp"
