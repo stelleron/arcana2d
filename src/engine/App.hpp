@@ -5,6 +5,8 @@
 
     #include "gfx/RenderContext.hpp"
 
+    #include "utils/Camera.hpp"
+
     #include "window/Window.hpp"
 
     #include <functional>
@@ -43,6 +45,7 @@
                 EngineConfig eng_config; // Stores the engine config data
 
                 Window window; // Stores the main window
+                Camera camera; // Creates a default camera
                 RenderContext render_ctx; // Creates a render context
             public:
                 App(); // Constructor

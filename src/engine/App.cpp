@@ -26,6 +26,9 @@ namespace arcana {
         window.init(eng_config);
         // Also intialise the render context
         render_ctx.init();
+        // And the camera
+        camera.defaultSettings(eng_config.win_config.width, eng_config.win_config.height);
+        render_ctx.setCurrentCamera(&camera);
         
         // 2. LOOP STAGE
         // Then loop over the update and render functions

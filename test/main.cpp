@@ -11,7 +11,7 @@ void init(arcana::EngineConfig& config, arcana::UserData user_data) {
 
     // Storing some data
     GameData* gdata = GET_USER_DATA(user_data, GameData);
-    arcana::Triangle triangle{{-0.5, -0.5}, {0.5, -0.5}, {0, 0.5}};
+    arcana::Triangle triangle{{100.0, 100.0}, {100.0, 200.0}, {200.0, 200.0}};
     gdata->vBuffer << makeDrawable(triangle, arcana::Color(80, 70, 185, 255));
 }
 

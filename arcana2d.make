@@ -88,6 +88,7 @@ OBJECTS := \
 	$(OBJDIR)/VertexBuffer.o \
 	$(OBJDIR)/RenderContext.o \
 	$(OBJDIR)/Shader.o \
+	$(OBJDIR)/Camera.o \
 	$(OBJDIR)/Color.o \
 	$(OBJDIR)/Window.o \
 
@@ -167,6 +168,9 @@ $(OBJDIR)/RenderContext.o: src/gfx/RenderContext.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 $(OBJDIR)/Shader.o: src/gfx/Shader.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
+$(OBJDIR)/Camera.o: src/utils/Camera.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 $(OBJDIR)/Color.o: src/utils/Color.cpp

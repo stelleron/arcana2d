@@ -20,6 +20,7 @@ namespace arcana {
     }
 
     void RenderContext::useDefault() {
+        default_shader.setMat4("projection", curr_camera->getProjectionMatrix());
         default_shader.use();
     }
 
@@ -63,5 +64,9 @@ namespace arcana {
         glDeleteVertexArrays(1, &VAO);
         glDeleteBuffers(1, &VBO);
         delete[] fArray;
+    }
+
+    void RenderContext::setCurrentCamera(Camera* camera) {
+        this->curr_camera = camera;
     }
 }
