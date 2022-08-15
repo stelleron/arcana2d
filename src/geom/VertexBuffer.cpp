@@ -50,7 +50,6 @@ namespace arcana {
 
         // Now copy all vertex data into the float array
         for (int x = 0; x < vPointer; x++) {
-            LOG("Vertex number " << x + 1);
             fArray[TIMES_SIX(x)] = vArray[x].pos.x;
             fArray[TIMES_SIX(x) + 1] = vArray[x].pos.y;
             fArray[TIMES_SIX(x) + 2] = FLOAT_REP(vArray[x].color.r);
