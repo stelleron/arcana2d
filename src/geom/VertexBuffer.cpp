@@ -3,6 +3,7 @@
 
 #define RENDER_TYPE_ASSERT(arg) if (rMode != arg) {LOG("Incorrect type!");  return *this;}
 #define BATCH_SPACE_ASSERT(arg) if (!checkSpace(arg)) {LOG("Not enough space!"); return *this;}
+#define TIMES_SIX(arg) (x * 6)
 
 namespace arcana {
     // VERTEX BUFFER IMPL.
@@ -49,12 +50,13 @@ namespace arcana {
 
         // Now copy all vertex data into the float array
         for (int x = 0; x < vPointer; x++) {
-            fArray[x * 6] = vArray[x].pos.x;
-            fArray[x * 6 + 1] = vArray[x].pos.y;
-            fArray[x * 6 + 2] = (float)vArray[x].color.r/255;
-            fArray[x * 6 + 3] = (float)vArray[x].color.g/255;
-            fArray[x * 6 + 4] = (float)vArray[x].color.b/255;
-            fArray[x * 6 + 5] = (float)vArray[x].color.a/255;
+            LOG("Vertex number " << x + 1);
+            fArray[TIMES_SIX(x)] = vArray[x].pos.x;
+            fArray[TIMES_SIX(x) + 1] = vArray[x].pos.y;
+            fArray[TIMES_SIX(x) + 2] = FLOAT_REP(vArray[x].color.r);
+            fArray[TIMES_SIX(x) + 3] = FLOAT_REP(vArray[x].color.g);
+            fArray[TIMES_SIX(x) + 4] = FLOAT_REP(vArray[x].color.b);
+            fArray[TIMES_SIX(x) + 5] = FLOAT_REP(vArray[x].color.a);
         }
 
         // And return the array
@@ -72,6 +74,23 @@ namespace arcana {
         vArray[vPointer] = Vertex(triangle.point1, RED);
         vArray[vPointer + 1] = Vertex(triangle.point2, BLUE);
         vArray[vPointer + 2] = Vertex(triangle.point3, GREEN);
+        vPointer += 3;
+
+        // Return the 'this' pointer
+        return *this;
+    }
+
+    VertexBuffer& VertexBuffer::operator<<(const DrawTriangle& triangle) {
+        // First make sure that object has a compatiable type
+        RENDER_TYPE_ASSERT(RenderMode::Triangles);
+
+        // Then ensure that there is enough space for the primitive
+        BATCH_SPACE_ASSERT(3);
+
+        // Now time to add all of the vertices to the vertex array
+        vArray[vPointer] = Vertex(triangle.point1, triangle.color);
+        vArray[vPointer + 1] = Vertex(triangle.point2, triangle.color);
+        vArray[vPointer + 2] = Vertex(triangle.point3, triangle.color);
         vPointer += 3;
 
         // Return the 'this' pointer

@@ -83,6 +83,7 @@ endif
 OBJECTS := \
 	$(OBJDIR)/App.o \
 	$(OBJDIR)/EngineConfig.o \
+	$(OBJDIR)/DrawGeom.o \
 	$(OBJDIR)/Vertex.o \
 	$(OBJDIR)/VertexBuffer.o \
 	$(OBJDIR)/RenderContext.o \
@@ -151,6 +152,9 @@ $(OBJDIR)/App.o: src/engine/App.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 $(OBJDIR)/EngineConfig.o: src/engine/EngineConfig.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
+$(OBJDIR)/DrawGeom.o: src/geom/DrawGeom.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 $(OBJDIR)/Vertex.o: src/geom/Vertex.cpp

@@ -3,6 +3,7 @@
     // Includes
     #include "geom/Vertex.hpp"
     #include "geom/Geometry.hpp"
+    #include "geom/DrawGeom.hpp"
 
     namespace arcana {
         // Enum for draw modes
@@ -42,6 +43,7 @@
 
             // Used to add objects to the vertex buffer 
             VertexBuffer& operator<<(const Triangle& triangle);
+            VertexBuffer& operator<<(const DrawTriangle& triangle);
         };
     }
 #endif
