@@ -29,6 +29,9 @@ namespace arcana {
         // And the camera
         camera.defaultSettings(eng_config.win_config.width, eng_config.win_config.height);
         render_ctx.setCurrentCamera(&camera);
+        // And the shader
+        Shader def_shader(0, 0);
+        shader = def_shader;
         
         // 2. LOOP STAGE
         // Then loop over the update and render functions

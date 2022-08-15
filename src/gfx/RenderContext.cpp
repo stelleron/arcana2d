@@ -14,9 +14,7 @@ namespace arcana {
     }
 
     void RenderContext::init() {
-        // Initialise the shader
-        Shader shader(0, 0);
-        default_shader = shader;
+
     }
 
     void RenderContext::useDefault() {

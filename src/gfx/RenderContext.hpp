@@ -9,7 +9,7 @@
         // Used to create a render context to draw objects
         class RenderContext {
             private:
-                Shader default_shader; // Stores the default shader
+                Shader* default_shader; // Stores the default shader
                 Camera* curr_camera; // Stores the current camera
             public:
                 // Constructor
@@ -29,6 +29,9 @@
 
                 // Set the current camera
                 void setCurrentCamera(Camera* camera);
+
+                // Set the current shader
+                void setCurrentShader(Shader* shader);
         };
     }
 #endif
