@@ -3,6 +3,7 @@
 
 struct GameData {
     arcana::VertexBuffer vBuffer = arcana::VertexBuffer(arcana::RenderMode::Triangles, 4);
+    arcana::VertexBuffer rectBuffer = arcana::VertexBuffer(arcana::RenderMode::Quads, 1);
 };
 
 void init(arcana::EngineConfig& config, arcana::UserData user_data) {
@@ -11,8 +12,14 @@ void init(arcana::EngineConfig& config, arcana::UserData user_data) {
 
     // Storing some data
     GameData* gdata = GET_USER_DATA(user_data, GameData);
+
+    // Adding a triangle
     arcana::Triangle triangle{{100.0, 100.0}, {100.0, 200.0}, {200.0, 200.0}};
     gdata->vBuffer << makeDrawable(triangle, arcana::Color(80, 70, 185, 255));
+
+    // Adding a square
+    arcana::Rectangle rect{{300.0, 300.0}, 50, 70};
+    gdata->rectBuffer << rect;
 }
 
 void update(arcana::UserData user_data) {
@@ -22,6 +29,7 @@ void update(arcana::UserData user_data) {
 void render(arcana::RenderContext& ctx, arcana::UserData user_data) {
     GameData* gdata = GET_USER_DATA(user_data, GameData);
     ctx.draw(gdata->vBuffer);
+    ctx.draw(gdata->rectBuffer);
 }
 
 void finish(arcana::UserData user_data) {

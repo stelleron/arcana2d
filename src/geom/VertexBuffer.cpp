@@ -6,15 +6,75 @@
 #define TIMES_SIX(arg) (x * 6)
 
 namespace arcana {
+    // ELEMENT BUFFER IMPL.
+    ElementBuffer::ElementBuffer(RenderMode rMode, int size) {
+        this->rMode = rMode;
+        iPointer = 0;
+        iValue = 0;
+
+        switch (rMode)
+        {
+            case RenderMode::Quads:
+                numIndices = 6; // 6 indices per quad
+                break;
+            default: break;
+        }
+
+        iSize = numIndices * size; 
+        iArray = new unsigned int[iSize];
+    }
+
+    ElementBuffer::~ElementBuffer() {
+        delete[] iArray;
+    }
+
+    bool ElementBuffer::checkSpace() {
+        if (iPointer + numIndices <= iSize) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+    void ElementBuffer::add() {
+        if (!checkSpace()) {
+            LOG("Not enough space!");
+            return;
+        }
+
+        switch (rMode)
+        {
+            case RenderMode::Quads:
+                iArray[iPointer] = iValue;
+                iArray[iPointer + 1] = iValue + 1;
+                iArray[iPointer + 2] = iValue + 2;
+                iArray[iPointer + 3] = iValue + 1;
+                iArray[iPointer + 4] = iValue + 2;
+                iArray[iPointer + 5] = iValue + 3;
+                iPointer += 6;
+                iValue += 4;
+                break;
+            default:
+                break;
+        }
+    }
+
+    size_t ElementBuffer::getIndicesSize() {
+        return sizeof(unsigned int) * iPointer;
+    }
+
+ 
     // VERTEX BUFFER IMPL.
     // NOTE: Size is the number of primitives
     VertexBuffer::VertexBuffer(RenderMode rMode, int size) {
         // First get the size of the primitive in vertices
+        eBuffer = nullptr;
         switch (rMode)
         {
-            case Lines: primSize = 2;
-            case Triangles: primSize = 3;
-            case Quads: primSize = 4;
+            case Lines: primSize = 2; break;
+            case Triangles: primSize = 3; break;
+            case Quads: primSize = 4; eBuffer = new ElementBuffer(rMode, size); break;
             default: break;
         }
 
@@ -28,6 +88,9 @@ namespace arcana {
     }
 
     VertexBuffer::~VertexBuffer() {
+        if (eBuffer != nullptr) {
+            delete eBuffer;
+        }
         delete[] vArray;
     }
 
@@ -94,5 +157,30 @@ namespace arcana {
 
         // Return the 'this' pointer
         return *this;
+    }
+
+    VertexBuffer& VertexBuffer::operator<<(const Rectangle& rectangle) {
+        // First make sure that object has a compatiable type
+        RENDER_TYPE_ASSERT(RenderMode::Quads);
+
+        // Then ensure that there is enough space for the primitive
+        BATCH_SPACE_ASSERT(4);
+
+        // And for the element buffer
+        if (!eBuffer->checkSpace()) {
+            return *this;
+        }
+
+        // Now time to add all of the vertices to the vertex array
+        vArray[vPointer] = Vertex(Vector2(rectangle.point.x, rectangle.point.y), RED);
+        vArray[vPointer + 1] = Vertex(Vector2(rectangle.point.x + rectangle.width, rectangle.point.y), BLUE);
+        vArray[vPointer + 2] = Vertex(Vector2(rectangle.point.x, rectangle.point.y + rectangle.height), BLUE);
+        vArray[vPointer + 3] = Vertex(Vector2(rectangle.point.x + rectangle.width, rectangle.point.y + rectangle.height), GREEN);
+
+        eBuffer->add();
+        vPointer += 4;
+
+        // Return the 'this' pointer
+        return *this;        
     }
 }
