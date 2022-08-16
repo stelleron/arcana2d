@@ -3,7 +3,10 @@
     // Includes
     #include "engine/EngineConfig.hpp"
 
+    #include "gfx/Shader.hpp"
     #include "gfx/RenderContext.hpp"
+
+    #include "utils/Camera.hpp"
 
     #include "window/Window.hpp"
 
@@ -43,6 +46,8 @@
                 EngineConfig eng_config; // Stores the engine config data
 
                 Window window; // Stores the main window
+                Camera default_camera; // Creates a default camera
+                Shader default_shader; // Creates a default shader
                 RenderContext render_ctx; // Creates a render context
             public:
                 App(); // Constructor

@@ -1,5 +1,0 @@
-            LOG("[" 
-            << fArray[TIMES_SIX(x)] << ", " << fArray[TIMES_SIX(x) + 1] << ", "
-            << fArray[TIMES_SIX(x) + 2] << ", " << fArray[TIMES_SIX(x) + 3] << ", " 
-            << fArray[TIMES_SIX(x) + 4] << ", " << fArray[TIMES_SIX(x) +5] << "]");
-        }

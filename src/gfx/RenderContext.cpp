@@ -14,13 +14,12 @@ namespace arcana {
     }
 
     void RenderContext::init() {
-        // Initialise the shader
-        Shader shader(0, 0);
-        default_shader = shader;
+
     }
 
-    void RenderContext::useDefault() {
-        default_shader.use();
+    void RenderContext::useShader() {
+        curr_shader->setMat4("projection", curr_camera->getProjectionMatrix());
+        curr_shader->use();
     }
 
     void RenderContext::draw(VertexBuffer& buffer) {
@@ -56,6 +55,7 @@ namespace arcana {
         }
 
         // Draw the buffer
+        useShader();
         glDrawArrays(glDrawType, 0, buffer.getArraySize()/VERTEX_FSIZE);
 
         // Finally free all data
@@ -63,5 +63,14 @@ namespace arcana {
         glDeleteVertexArrays(1, &VAO);
         glDeleteBuffers(1, &VBO);
         delete[] fArray;
+    }
+
+    void RenderContext::setCurrentCamera(Camera* camera) {
+        this->curr_camera = camera;
+
+    }
+
+    void RenderContext::setCurrentShader(Shader* shader) {
+        this->curr_shader = shader;
     }
 }

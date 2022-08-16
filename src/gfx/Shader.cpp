@@ -1,5 +1,6 @@
 #include "gfx/Shader.hpp"
 #include <string>
+#include <glm/gtc/type_ptr.hpp>
 #include "utils/DebugOnly.hpp"
 
 namespace arcana {
@@ -7,10 +8,11 @@ namespace arcana {
     const char* vShaderSrc ="#version 330\n"
         "layout (location = 0) in vec2 aPos;\n"
         "layout (location = 1) in vec4 aColor;\n"
+        "uniform mat4 projection;\n"
         "out vec4 fColor;\n"
         "void main()\n"
         "{\n"
-        "   gl_Position = vec4(aPos, 0.0, 1.0);\n"
+        "   gl_Position = projection * vec4(aPos, 0.0, 1.0);\n"
         "   fColor = aColor;\n"
         "}\0";
 
@@ -105,6 +107,12 @@ namespace arcana {
     void Shader::setFloat(const char* name , float value) {
         if (is_init) {
             glUniform1f(glGetUniformLocation(id, name), value); 
+        }
+    }
+
+    void Shader::setMat4(const char* name, glm::mat4 matrix) {
+        if (is_init) {
+            glUniformMatrix4fv(glGetUniformLocation(id, name), 1, false, glm::value_ptr(matrix));
         }
     }
 

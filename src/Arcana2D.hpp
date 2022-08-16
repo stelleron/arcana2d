@@ -18,6 +18,7 @@
     #include "geom/DrawGeom.hpp"
     #include "geom/VertexBuffer.hpp"
 
+    #include "utils/Camera.hpp"
     #include "window/Window.hpp"
 
     #include "gfx/Shader.hpp"

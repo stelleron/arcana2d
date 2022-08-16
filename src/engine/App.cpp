@@ -26,6 +26,12 @@ namespace arcana {
         window.init(eng_config);
         // Also intialise the render context
         render_ctx.init();
+        // And the camera
+        default_camera.defaultSettings(eng_config.win_config.width, eng_config.win_config.height);
+        render_ctx.setCurrentCamera(&default_camera);
+        // And the shader
+        Shader def_shader(0, 0);
+        default_shader = def_shader;
         
         // 2. LOOP STAGE
         // Then loop over the update and render functions
@@ -36,7 +42,8 @@ namespace arcana {
 
             // Render func
             window.fill();
-            render_ctx.useDefault();
+            render_ctx.setCurrentCamera(&default_camera);
+            render_ctx.setCurrentShader(&default_shader);
             app_config.render_fn(render_ctx, app_config.user_data);
             window.swapBuffer();
         }
