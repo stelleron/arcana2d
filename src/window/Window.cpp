@@ -24,10 +24,13 @@ namespace arcana {
         gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
 
         // And finally set the OpenGL viewport
-        glViewport(0, 0, config.win_config.width, config.win_config.height);
+        int left, top, right, bottom;
+        glfwGetWindowFrameSize(window, &left, &top, &right, &bottom);   
+        glViewport(0, 0, right - left, bottom - top);
 
         // And set the background color
         background_color = config.win_config.background_color;
+
     }
 
     bool Window::shouldClose() {

@@ -18,12 +18,8 @@ void init(arcana::EngineConfig& config, arcana::UserData user_data) {
     gdata->vBuffer << makeDrawable(triangle, arcana::Color(80, 70, 185, 255));
 
     // Adding a square
-    arcana::Rectangle rect{{300.0, 300.0}, 50, 50};
+    arcana::Rectangle rect{{0.0, 0.0}, 800, 600};
     gdata->rectBuffer << rect;
-    arcana::Rectangle rect2{{350.0, 350.0}, 50, 50};
-    gdata->rectBuffer << rect2;
-    arcana::Rectangle rect3{{400.0, 400.0}, 50, 50};
-    gdata->rectBuffer << rect3;
 }
 
 void update(arcana::UserData user_data) {
