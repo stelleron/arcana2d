@@ -14,7 +14,16 @@ namespace arcana {
     }
 
     void RenderContext::init() {
-
+        // Create the default texture here
+        unsigned char defaultTexture[4] = { 255, 255, 255, 255 }; 
+        glGenTextures(1, &defaultTextureID);
+        glBindTexture(GL_TEXTURE_2D, defaultTextureID);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);  
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);    
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);  
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 1, 1, 0, GL_RGBA, GL_UNSIGNED_BYTE, defaultTexture);
+        glGenerateMipmap(GL_TEXTURE_2D);
     }
 
     void RenderContext::useShader() {
@@ -42,13 +51,16 @@ namespace arcana {
             glBufferData(GL_ELEMENT_ARRAY_BUFFER, buffer.eBuffer->getIndicesSize(), buffer.eBuffer->iArray, GL_STATIC_DRAW); 
 
             // Now set vertex attribute pointers    
-            glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
+            glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
             glEnableVertexAttribArray(0);    
 
-            glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)8);
+            glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)8);
             glEnableVertexAttribArray(1);
 
-            glBindBuffer(GL_ARRAY_BUFFER, 0);
+            glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)24);
+            glEnableVertexAttribArray(1);
+
+            glBindBuffer(GL_ARRAY_BUFFER, defaultTextureID);
 
             // Then get the draw type
             RenderMode drawType = buffer.getRenderType();
@@ -60,6 +72,7 @@ namespace arcana {
             }
 
             // Draw the buffer
+            glBindTexture(GL_TEXTURE_2D, 0);
             useShader();
             glDrawElements(glDrawType, buffer.getArraySize()/VERTEX_FSIZE, GL_UNSIGNED_INT, 0);
 
@@ -87,11 +100,14 @@ namespace arcana {
             glBufferData(GL_ARRAY_BUFFER, buffer.getArraySize(), fArray, GL_STATIC_DRAW);
 
             // Now set vertex attribute pointers    
-            glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
+            glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
             glEnableVertexAttribArray(0);    
 
-            glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)8);
+            glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)8);
             glEnableVertexAttribArray(1);
+
+            glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)24);
+            glEnableVertexAttribArray(2);
 
             glBindBuffer(GL_ARRAY_BUFFER, 0);
 
@@ -105,6 +121,7 @@ namespace arcana {
             }
 
             // Draw the buffer
+            glBindTexture(GL_TEXTURE_2D, defaultTextureID);
             useShader();
             glDrawArrays(glDrawType, 0, buffer.getArraySize()/VERTEX_FSIZE);
 
@@ -117,7 +134,7 @@ namespace arcana {
     }
 
     void RenderContext::draw(Sprite& sprite) {
-        
+        glDeleteTextures(1, &defaultTextureID);
     }
 
     void RenderContext::setCurrentCamera(Camera* camera) {

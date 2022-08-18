@@ -12,6 +12,7 @@
             private:
                 Shader* curr_shader; // Stores the current shader
                 Camera* curr_camera; // Stores the current camera
+                unsigned int defaultTextureID; // Stores a default texture
             public:
                 // Constructor
                 RenderContext();

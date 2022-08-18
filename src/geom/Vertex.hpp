@@ -5,7 +5,7 @@
     #include "utils/Color.hpp"
 
     // Macro defines
-    #define VERTEX_FSIZE sizeof(float) * 6
+    #define VERTEX_FSIZE sizeof(float) * 8
 
     namespace arcana {
         // Namespace defines
@@ -15,10 +15,12 @@
         struct Vertex {
             Vector2 pos;
             Color color;
+            Vector2 texCoords;
 
             // Constructor
             Vertex() {}
-            Vertex(Vector2  pos, Color color);
+            Vertex(Vector2 pos, Color color);
+            Vertex(Vector2 pos, Color color, Vector2 texCoords);
         };
     }
 #endif

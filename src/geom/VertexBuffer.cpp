@@ -3,7 +3,7 @@
 
 #define RENDER_TYPE_ASSERT(arg) if (rMode != arg) {LOG("Incorrect type!");  return *this;}
 #define BATCH_SPACE_ASSERT(arg) if (!checkSpace(arg)) {LOG("Not enough space!"); return *this;}
-#define TIMES_SIX(arg) (x * 6)
+#define TIMES_EIGHT(arg) (x * 8)
 
 namespace arcana {
     // ELEMENT BUFFER IMPL.
@@ -113,12 +113,14 @@ namespace arcana {
 
         // Now copy all vertex data into the float array
         for (int x = 0; x < vPointer; x++) {
-            fArray[TIMES_SIX(x)] = vArray[x].pos.x;
-            fArray[TIMES_SIX(x) + 1] = vArray[x].pos.y;
-            fArray[TIMES_SIX(x) + 2] = FLOAT_REP(vArray[x].color.r);
-            fArray[TIMES_SIX(x) + 3] = FLOAT_REP(vArray[x].color.g);
-            fArray[TIMES_SIX(x) + 4] = FLOAT_REP(vArray[x].color.b);
-            fArray[TIMES_SIX(x) + 5] = FLOAT_REP(vArray[x].color.a);
+            fArray[TIMES_EIGHT(x)] = vArray[x].pos.x;
+            fArray[TIMES_EIGHT(x) + 1] = vArray[x].pos.y;
+            fArray[TIMES_EIGHT(x) + 2] = FLOAT_REP(vArray[x].color.r);
+            fArray[TIMES_EIGHT(x) + 3] = FLOAT_REP(vArray[x].color.g);
+            fArray[TIMES_EIGHT(x) + 4] = FLOAT_REP(vArray[x].color.b);
+            fArray[TIMES_EIGHT(x) + 5] = FLOAT_REP(vArray[x].color.a);
+            fArray[TIMES_EIGHT(x) + 6] = vArray[x].texCoords.x;
+            fArray[TIMES_EIGHT(x) + 7] = vArray[x].texCoords.y;
         }
 
         // And return the array
