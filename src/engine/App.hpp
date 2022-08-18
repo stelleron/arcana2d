@@ -25,7 +25,8 @@
         #define GET_USER_DATA(u_data, type) (type*)u_data.data;
 
         // Redefining types for the application
-        using InitFn = std::function<void(EngineConfig&, UserData)>;
+        using ConfigFn = std::function<void(EngineConfig&, UserData)>;
+        using InitFn = std::function<void(UserData)>;
         using UpdateFn = std::function<void(UserData)>;
         using RenderFn = std::function<void(RenderContext&, UserData)>;
         using FinishFn = std::function<void(UserData)>;
@@ -33,6 +34,7 @@
         // Configures the application
         struct AppConfig {
             UserData user_data;
+            ConfigFn config_fn;
             InitFn init_fn;
             UpdateFn update_fn;
             RenderFn render_fn;

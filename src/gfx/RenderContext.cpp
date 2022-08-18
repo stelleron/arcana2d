@@ -116,6 +116,10 @@ namespace arcana {
         }
     }
 
+    void RenderContext::draw(Sprite& sprite) {
+        
+    }
+
     void RenderContext::setCurrentCamera(Camera* camera) {
         this->curr_camera = camera;
 

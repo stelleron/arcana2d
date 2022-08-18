@@ -2,24 +2,26 @@
 #include "Arcana2D.hpp"
 
 struct GameData {
-    arcana::VertexBuffer vBuffer = arcana::VertexBuffer(arcana::RenderMode::Triangles, 4);
-    arcana::VertexBuffer rectBuffer = arcana::VertexBuffer(arcana::RenderMode::Quads, 4);
+    arcana::Sprite sprite;
+    arcana::VertexBuffer vBuffer;
+
+    // Constructor 
+    GameData() : vBuffer(arcana::RenderMode::Triangles, 4)
+    {
+        
+    }
 };
 
-void init(arcana::EngineConfig& config, arcana::UserData user_data) {
+void config(arcana::EngineConfig& config, arcana::UserData user_data) {
     // Setting the title 
     config.win_config.title = "Hello World!";
+}
 
+void init(arcana::UserData user_data) {
     // Storing some data
     GameData* gdata = GET_USER_DATA(user_data, GameData);
-
-    // Adding a triangle
-    arcana::Triangle triangle{{100.0, 100.0}, {100.0, 200.0}, {200.0, 200.0}};
-    gdata->vBuffer << makeDrawable(triangle, arcana::Color(80, 70, 185, 255));
-
-    // Adding a square
-    arcana::Rectangle rect{{0.0, 0.0}, 800, 600};
-    gdata->rectBuffer << rect;
+    gdata->sprite.load("build/pepe-sad.png");
+    gdata->vBuffer << arcana::Triangle{{0.0, 0.0},  {400.0, 0.0}, {0.0, 100.0}};
 }
 
 void update(arcana::UserData user_data) {
@@ -28,8 +30,9 @@ void update(arcana::UserData user_data) {
 
 void render(arcana::RenderContext& ctx, arcana::UserData user_data) {
     GameData* gdata = GET_USER_DATA(user_data, GameData);
+    // Render the sprite
+    ctx.draw(gdata->sprite);
     ctx.draw(gdata->vBuffer);
-    ctx.draw(gdata->rectBuffer);
 }
 
 void finish(arcana::UserData user_data) {
@@ -38,12 +41,13 @@ void finish(arcana::UserData user_data) {
 
 int main() {
     GameData data;
-    arcana::AppConfig config = {
+    arcana::AppConfig app_config = {
         .user_data = &data,
+        .config_fn = config,
         .init_fn = init,
         .update_fn = update,
         .render_fn = render,
         .finish_fn = finish,
     };
-    arcana::App().build(config).run();
+    arcana::App().build(app_config).run();
 }

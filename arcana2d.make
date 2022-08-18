@@ -88,6 +88,9 @@ OBJECTS := \
 	$(OBJDIR)/VertexBuffer.o \
 	$(OBJDIR)/RenderContext.o \
 	$(OBJDIR)/Shader.o \
+	$(OBJDIR)/Sprite.o \
+	$(OBJDIR)/Filesystem.o \
+	$(OBJDIR)/Image.o \
 	$(OBJDIR)/Camera.o \
 	$(OBJDIR)/Color.o \
 	$(OBJDIR)/Window.o \
@@ -168,6 +171,15 @@ $(OBJDIR)/RenderContext.o: src/gfx/RenderContext.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 $(OBJDIR)/Shader.o: src/gfx/Shader.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
+$(OBJDIR)/Sprite.o: src/gfx/Sprite.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
+$(OBJDIR)/Filesystem.o: src/res/Filesystem.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
+$(OBJDIR)/Image.o: src/res/Image.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 $(OBJDIR)/Camera.o: src/utils/Camera.cpp

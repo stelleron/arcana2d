@@ -20,8 +20,8 @@ namespace arcana {
 
     void App::run() {
         // 1. INIT STAGE
-        // First call the init function
-        app_config.init_fn(eng_config, app_config.user_data);
+        // First call the config function to set initialisation function
+        app_config.config_fn(eng_config, app_config.user_data);
         // And use it to initialise the window
         window.init(eng_config);
         // Also intialise the render context
@@ -33,6 +33,9 @@ namespace arcana {
         Shader def_shader(0, 0);
         default_shader = def_shader;
         
+        // Finally call the init function for initialising the game state
+        app_config.init_fn(app_config.user_data);
+
         // 2. LOOP STAGE
         // Then loop over the update and render functions
         while( !window.shouldClose() ) { // If the game should be closed, simply set the window to close

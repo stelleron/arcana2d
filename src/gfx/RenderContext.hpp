@@ -3,6 +3,7 @@
     // Includes
     #include "gfx/Shader.hpp"
     #include "geom/VertexBuffer.hpp"
+    #include "gfx/Sprite.hpp"
     #include "utils/Camera.hpp"
 
     namespace arcana {
@@ -26,6 +27,9 @@
 
                 // Draw functions
                 void draw(VertexBuffer& buffer);
+
+                // Sprite drawing functions
+                void draw(Sprite& sprite); // Default draw
 
                 // Set the current camera
                 void setCurrentCamera(Camera* camera);

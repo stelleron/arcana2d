@@ -21,8 +21,11 @@
     #include "utils/Camera.hpp"
     #include "window/Window.hpp"
 
+    #include "res/Image.hpp"
+
     #include "gfx/Shader.hpp"
     #include "gfx/RenderContext.hpp"
+    #include "gfx/Sprite.hpp"
 
     #include "engine/App.hpp"
     #include "engine/EngineConfig.hpp"
