@@ -97,12 +97,13 @@ namespace arcana {
         for (int x = 0; x < vPointer; x++) {
             fArray[V_MULTIPLY(x)] = vArray[x].pos.x;
             fArray[V_MULTIPLY(x) + 1] = vArray[x].pos.y;
-            fArray[V_MULTIPLY(x) + 2] = FLOAT_REP(vArray[x].color.r);
-            fArray[V_MULTIPLY(x) + 3] = FLOAT_REP(vArray[x].color.g);
-            fArray[V_MULTIPLY(x) + 4] = FLOAT_REP(vArray[x].color.b);
-            fArray[V_MULTIPLY(x) + 5] = FLOAT_REP(vArray[x].color.a);
-            fArray[V_MULTIPLY(x) + 6] = vArray[x].texCoords.x;
-            fArray[V_MULTIPLY(x) + 7] = vArray[x].texCoords.y;
+            fArray[V_MULTIPLY(x) + 2] = vArray[x].pos.z;
+            fArray[V_MULTIPLY(x) + 3] = FLOAT_REP(vArray[x].color.r);
+            fArray[V_MULTIPLY(x) + 4] = FLOAT_REP(vArray[x].color.g);
+            fArray[V_MULTIPLY(x) + 5] = FLOAT_REP(vArray[x].color.b);
+            fArray[V_MULTIPLY(x) + 6] = FLOAT_REP(vArray[x].color.a);
+            fArray[V_MULTIPLY(x) + 7] = vArray[x].texCoords.x;
+            fArray[V_MULTIPLY(x) + 8] = vArray[x].texCoords.y;
         }
 
         // And return the array

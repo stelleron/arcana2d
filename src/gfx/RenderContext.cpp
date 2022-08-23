@@ -3,10 +3,10 @@
 
 namespace arcana {
     float vertices[] = {
-        0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f,
-        0.0f, 512.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f,
-        512.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f,
-        512.0f, 512.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f,    
+        0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f,
+        0.0f, 512.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f,
+        512.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f,
+        512.0f, 512.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f,    
     };
     unsigned int indices[] = {  
         0, 1, 2, // first triangle
@@ -178,13 +178,13 @@ namespace arcana {
     }
 
     void RenderContext::setVertexAttributes() {
-        glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
+        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(float), (void*)0);
         glEnableVertexAttribArray(0);    
 
-        glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)8);
+        glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 9 * sizeof(float), (void*)12);
         glEnableVertexAttribArray(1);
 
-        glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)24);
+        glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 9 * sizeof(float), (void*)28);
         glEnableVertexAttribArray(2);        
     }
 }
