@@ -91,7 +91,6 @@ namespace arcana {
     float* VertexBuffer::getFloatArray() {
         // First create a float array
         float* fArray = new float[getArraySize()/sizeof(float)];
-
         // Now copy all vertex data into the float array
         for (int x = 0; x < vPointer; x++) {
             fArray[V_MULTIPLY(x)] = vArray[x].pos.x;

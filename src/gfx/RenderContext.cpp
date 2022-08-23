@@ -47,7 +47,7 @@ namespace arcana {
 
     void RenderContext::draw(VertexBuffer& buffer) {
         // For drawing objects with an EBO
-        if (buffer.rMode == RenderMode::Quads) {
+        if (buffer.getRenderType() == RenderMode::Quads) {
             // First initialise the vertex array and buffer and EBO
             unsigned int VBO, VAO, EBO;
             glGenVertexArrays(1, &VAO);

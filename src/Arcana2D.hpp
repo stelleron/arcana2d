@@ -185,13 +185,12 @@
         struct VertexBuffer {
             private:
                 ElementBuffer* eBuffer; // Pointer to element buffer
-            public:
                 Vertex* vArray; // List of vertices
                 int vSize; // Number of vertices
                 int vPointer; // The number of added vertices to the vertex array
                 int primSize; // The size of the primitive
                 RenderMode rMode; // Render mode
-
+            public:
                 // Constructor
                 VertexBuffer(RenderMode rMode, int primNum);
                 // Destructor

@@ -11,8 +11,6 @@ class UntitledGame : public arcana::Application {
     void init() {
         arcana::Rectangle square(arcana::Vector2(50.0, 50.0), 100);
         vBuffer.add(square);
-        square = arcana::Rectangle(arcana::Vector2(150.0, 150.0), 100);
-        vBuffer.add(square);
     }
 
     void update() {
