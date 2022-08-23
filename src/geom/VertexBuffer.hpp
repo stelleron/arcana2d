@@ -31,29 +31,7 @@
             void addPointer();
             size_t getSize();
         };
-        /*
-        struct ElementBuffer {
-            unsigned int* iArray; // List of indices
-            int iSize; // Capacity of indices in the buffer
-            int iPointer; // Points to the current indices
-            int iValue; // Stores the current index value
-            int numIndices; // Number of indices per object
-            RenderMode rMode; // The render mode of the element buffer
-
-            // Constructor
-            ElementBuffer(RenderMode rMode, int size);
-            // Destructor
-            ~ElementBuffer();
-
-            // Check space, returns True if space is available
-            bool checkSpace();
-            // Add an object to the indices array
-            void add();
-            // Get the size of indices array
-            size_t getIndicesSize();
-        };
-        */
-
+        
         // Used to create a vertex array buffer with a fixed size
         struct VertexBuffer {
             private:

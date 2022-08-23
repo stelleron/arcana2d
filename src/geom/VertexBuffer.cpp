@@ -46,65 +46,6 @@ namespace arcana {
     size_t ElementBuffer::getSize() {
         return totalSize;
     }
-
-
-    /*
-    ElementBuffer::ElementBuffer(RenderMode rMode, int size) {
-        this->rMode = rMode;
-        iPointer = 0;
-        iValue = 0;
-
-        switch (rMode)
-        {
-            case RenderMode::Quads:
-                numIndices = 6; // 6 indices per quad
-                break;
-            default: break;
-        }
-
-        iSize = numIndices * size; 
-        iArray = new unsigned int[iSize];
-    }
-
-    ElementBuffer::~ElementBuffer() {
-        delete[] iArray;
-    }
-
-    bool ElementBuffer::checkSpace() {
-        if (iPointer + numIndices <= iSize) {
-            return true;
-        }
-        else {
-            return false;
-        }
-    }
-
-    void ElementBuffer::add() {
-        if (!checkSpace()) {
-            return;
-        }
-
-        switch (rMode)
-        {
-            case RenderMode::Quads:
-                iArray[iPointer] = iValue;
-                iArray[iPointer + 1] = iValue + 1;
-                iArray[iPointer + 2] = iValue + 2;
-                iArray[iPointer + 3] = iValue + 1;
-                iArray[iPointer + 4] = iValue + 2;
-                iArray[iPointer + 5] = iValue + 3;
-                iPointer += 6;
-                iValue += 4;
-                break;
-            default:
-                break;
-        }
-    }
-
-    size_t ElementBuffer::getIndicesSize() {
-        return sizeof(unsigned int) * iPointer;
-    } */
-
  
     // VERTEX BUFFER IMPL.
     // NOTE: Size is the number of primitives

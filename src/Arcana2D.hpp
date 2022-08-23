@@ -156,7 +156,7 @@
         DrawTriangle makeDrawable(const Triangle triangle, const Color color);
 
         // ====== VERTEXBUFFER.HPP ======
-        // Enum for draw modes
+         // Enum for draw modes
         enum RenderMode {
             Points,
             Lines,
@@ -167,55 +167,56 @@
 
         // Used to create a buffer to track elements 
         struct ElementBuffer {
-            unsigned int* iArray; // List of indices
-            int iSize; // Capacity of indices in the buffer
-            int iPointer; // Points to the current indices
-            int iValue; // Stores the current index value
-            int numIndices; // Number of indices per object
-            RenderMode rMode; // The render mode of the element buffer
+            unsigned int* iArray;
+            int capacity; // The total number of objects the buffer has been designed for
+            int pointer; // The number of objects actually being stored by the vertex buffer
+            size_t totalSize;
 
             // Constructor
             ElementBuffer(RenderMode rMode, int size);
-            // Destructor
+            // Destructor 
             ~ElementBuffer();
 
-            // Check space, returns True if space is available
-            bool checkSpace();
-            // Add an object to the indices array
-            void add();
-            // Get the size of indices array
-            size_t getIndicesSize();
+            // Setters/getters
+            void addPointer();
+            size_t getSize();
         };
-
-        // Used to create a vertex buffer with a fixed size
+        
+        // Used to create a vertex array buffer with a fixed size
         struct VertexBuffer {
-            Vertex* vArray; // List of vertices
-            ElementBuffer* eBuffer; // Pointer to element buffer
-            int vSize; // Number of vertices
-            int vPointer; // The number of added vertices to the vertex array
-            int primSize; // The size of the primitive
-            RenderMode rMode; // Render mode
+            private:
+                ElementBuffer* eBuffer; // Pointer to element buffer
+            public:
+                Vertex* vArray; // List of vertices
+                int vSize; // Number of vertices
+                int vPointer; // The number of added vertices to the vertex array
+                int primSize; // The size of the primitive
+                RenderMode rMode; // Render mode
 
-            // Constructor
-            VertexBuffer(RenderMode rMode, int primNum);
-            // Destructor
-            ~VertexBuffer();
+                // Constructor
+                VertexBuffer(RenderMode rMode, int primNum);
+                // Destructor
+                ~VertexBuffer();
 
-            // Check if there is space to add an object, returns True if available
-            bool checkSpace(int numVertices);
+                // Check if there is space to add an object, returns True if available
+                bool checkSpace(int numVertices);
 
-            // Convert the vertex array into a float array (heap allocated)
-            float* getFloatArray();
-            // Get the size of the array
-            size_t getArraySize();
-            // Get the render type of the buffer 
-            inline RenderMode getRenderType() {return rMode;} 
+                // Convert the vertex array into a float array (heap allocated)
+                float* getFloatArray();
+                // Get the size of the array
+                size_t getArraySize();
+                // Get the render type of the buffer 
+                inline RenderMode getRenderType() {return rMode;}
+                // Get the index array
+                unsigned int* getIndexArray();
+                // Get the size of the index array
+                size_t getIndexArraySize();
 
-            // Used to add objects to the vertex buffer 
-            void add(const Triangle& triangle);
-            void add(const DrawTriangle& triangle);
+                // Used to add objects to the vertex buffer 
+                void add(const Triangle& triangle);
+                void add(const DrawTriangle& triangle);
 
-            void add(const Rectangle& rectangle);
+                void add(const Rectangle& rectangle);
         };
 
         // ====== IMAGE.HPP ======
