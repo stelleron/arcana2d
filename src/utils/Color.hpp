@@ -17,17 +17,16 @@
             Color();
             Color(unsigned char r, unsigned char g, unsigned char b);
             Color(unsigned char r, unsigned char g, unsigned char b, unsigned char a);
-            // Normalised values
-            Color(float r_normal, float g_normal, float b_normal);
-            Color(float r_normal, float g_normal, float b_normal, float a_normal);
-            // Hexadecimal value
-            Color(int hexValue);
 
             // Static constructors
             static Color RGB(unsigned char r, unsigned char g, unsigned char b);
             static Color RGBA(unsigned char r, unsigned char g, unsigned char b, unsigned char a);
             static Color HSV(float h, float s, float v);
             static Color HSVA(float h, float s, float v, unsigned char a);
+            static Color NormalRGB(float r_normal, float g_normal, float b_normal);
+            static Color NormalRGBA(float r_normal, float g_normal, float b_normal, float a_normal);
+            static Color HexRGB(int hexValue);
+            static Color HexRGBA(int hexValue);
         };
     }
 #endif

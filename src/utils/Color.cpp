@@ -24,25 +24,40 @@ namespace arcana {
         this->a = a;
     }
 
-    Color::Color(float r_normal, float g_normal, float b_normal) {
-        this->r = (unsigned char)(r_normal * 255.0f);
-        this->g = (unsigned char)(g_normal * 255.0f);
-        this->b = (unsigned char)(b_normal * 255.0f);
-        this->a = 255;
+    Color Color::NormalRGB(float r_normal, float g_normal, float b_normal) {
+        Color color;
+        color.r = (unsigned char)(r_normal * 255.0f);
+        color.g = (unsigned char)(g_normal * 255.0f);
+        color.b = (unsigned char)(b_normal * 255.0f);
+        color.a = 255;
+        return color;
     }
 
-    Color::Color(float r_normal, float g_normal, float b_normal, float a_normal) {
-        this->r = (unsigned char)(r_normal * 255.0f);
-        this->g = (unsigned char)(g_normal * 255.0f);
-        this->b = (unsigned char)(b_normal * 255.0f);
-        this->a = (unsigned char)(a_normal * 255.0f);
+    Color Color::NormalRGBA(float r_normal, float g_normal, float b_normal, float a_normal) {
+        Color color;
+        color.r = (unsigned char)(r_normal * 255.0f);
+        color.g = (unsigned char)(g_normal * 255.0f);
+        color.b = (unsigned char)(b_normal * 255.0f);
+        color.a = (unsigned char)(a_normal * 255.0f);
+        return color;
     }
 
-    Color::Color(int hexValue) {
-        r = (unsigned char)(hexValue >> 24) & 0xFF;
-        g = (unsigned char)(hexValue >> 16) & 0xFF;
-        b = (unsigned char)(hexValue >> 8) & 0xFF;
-        a = (unsigned char)hexValue & 0xFF;
+    Color Color::HexRGB(int hexValue) {
+        Color color;
+        color.r = (unsigned char)(hexValue >> 16) & 0xFF;
+        color.g = (unsigned char)(hexValue >> 8) & 0xFF;
+        color.b = (unsigned char)hexValue & 0xFF;
+        color.a = 255;
+        return color;
+    }
+
+    Color Color::HexRGBA(int hexValue) {
+        Color color;
+        color.r = (unsigned char)(hexValue >> 24) & 0xFF;
+        color.g = (unsigned char)(hexValue >> 16) & 0xFF;
+        color.b = (unsigned char)(hexValue >> 8) & 0xFF;
+        color.a = (unsigned char)hexValue & 0xFF;
+        return color;
     }
 
     Color Color::HSV(float h, float s, float v) {

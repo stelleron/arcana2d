@@ -4,7 +4,6 @@
 #define RENDER_TYPE_ASSERT(arg) if (rMode != arg) {return;}
 #define BATCH_SPACE_ASSERT(arg) if (!checkSpace(arg)) {return;}
 #define V_MULTIPLY(arg) (x * VERTEX_SIZE)
-#define DEFAULT_COLOR Color::RGB(255, 255, 255)
 
 namespace arcana {
     // ELEMENT BUFFER IMPL.
@@ -118,9 +117,9 @@ namespace arcana {
         BATCH_SPACE_ASSERT(3);
 
         // Now time to add all of the vertices to the vertex array
-        vArray[vPointer] = Vertex(triangle.point1, DEFAULT_COLOR);
-        vArray[vPointer + 1] = Vertex(triangle.point2, DEFAULT_COLOR);
-        vArray[vPointer + 2] = Vertex(triangle.point3, DEFAULT_COLOR);
+        vArray[vPointer] = Vertex(triangle.point1);
+        vArray[vPointer + 1] = Vertex(triangle.point2);
+        vArray[vPointer + 2] = Vertex(triangle.point3);
         vPointer += 3;
     }
 
@@ -146,10 +145,10 @@ namespace arcana {
         BATCH_SPACE_ASSERT(4);
 
         // Now time to add all of the vertices to the vertex array
-        vArray[vPointer] = Vertex(Vector2(rectangle.point.x, rectangle.point.y), DEFAULT_COLOR);
-        vArray[vPointer + 1] = Vertex(Vector2(rectangle.point.x + rectangle.width, rectangle.point.y), DEFAULT_COLOR);
-        vArray[vPointer + 2] = Vertex(Vector2(rectangle.point.x, rectangle.point.y + rectangle.height), DEFAULT_COLOR);
-        vArray[vPointer + 3] = Vertex(Vector2(rectangle.point.x + rectangle.width, rectangle.point.y + rectangle.height), DEFAULT_COLOR);
+        vArray[vPointer] = Vertex(Vector2(rectangle.point.x, rectangle.point.y));
+        vArray[vPointer + 1] = Vertex(Vector2(rectangle.point.x + rectangle.width, rectangle.point.y));
+        vArray[vPointer + 2] = Vertex(Vector2(rectangle.point.x, rectangle.point.y + rectangle.height));
+        vArray[vPointer + 3] = Vertex(Vector2(rectangle.point.x + rectangle.width, rectangle.point.y + rectangle.height));
         vPointer += 4;
         eBuffer->addPointer();
     }

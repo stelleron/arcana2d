@@ -17,6 +17,8 @@
 
             // Constructor
             Vertex();
+            Vertex(Vector2 pos);
+            Vertex(Vector3 pos);
             Vertex(Vector2 pos, Color color);
             Vertex(Vector2 pos, Color color, Vector2 texCoords);
             Vertex(Vector3 pos, Color color);

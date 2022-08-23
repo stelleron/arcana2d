@@ -4,7 +4,19 @@
 namespace arcana {
     Vertex::Vertex() {
         this->pos = Vector3(0.0, 0.0, 0.0);
-        this->color = Color(0xFFFFFFFF);
+        this->color = Color::HexRGB(0xFFFFFF);
+        this->texCoords = Vector2(0.0, 0.0);        
+    }
+
+    Vertex::Vertex(Vector2 pos) {
+        this->pos = Vector3(pos.x, pos.y, 0.0);
+        this->color = Color::HexRGB(0xFFFFFF);
+        this->texCoords = Vector2(0.0, 0.0);        
+    }
+
+    Vertex::Vertex(Vector3 pos) {
+        this->pos = pos;
+        this->color = Color::HexRGB(0xFFFFFF);
         this->texCoords = Vector2(0.0, 0.0);        
     }
 
