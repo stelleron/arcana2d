@@ -2,19 +2,17 @@
 #include "Arcana2D.hpp"
 
 class UntitledGame : public arcana::Application {
-    arcana::VertexBuffer vBuffer = arcana::VertexBuffer(arcana::RenderMode::Triangles, 1);
+    arcana::VertexBuffer vBuffer = arcana::VertexBuffer(arcana::RenderMode::Quads, 2);
 
     void config(arcana::AppConfig& config) {
 
     }
 
     void init() {
-        arcana::Triangle tri(
-            arcana::Vector2(50.0, 50.0), 
-            arcana::Vector2(150.0, 50.0), 
-            arcana::Vector2(50.0, 150.0)
-        );
-        vBuffer.add(tri);
+        arcana::Rectangle square(arcana::Vector2(50.0, 50.0), 100);
+        vBuffer.add(square);
+        square = arcana::Rectangle(arcana::Vector2(150.0, 150.0), 100);
+        vBuffer.add(square);
     }
 
     void update() {
@@ -22,7 +20,7 @@ class UntitledGame : public arcana::Application {
     }
 
     void render(arcana::RenderContext& ctx) {
-        ctx.draw();
+        ctx.draw(vBuffer);
     }
 
     void finish() {

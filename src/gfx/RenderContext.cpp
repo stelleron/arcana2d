@@ -62,7 +62,7 @@ namespace arcana {
             // And buffer the data
             float* fArray = buffer.getFloatArray();
             glBufferData(GL_ARRAY_BUFFER, buffer.getArraySize(), fArray, GL_STATIC_DRAW);
-            glBufferData(GL_ELEMENT_ARRAY_BUFFER, buffer.eBuffer->getIndicesSize(), buffer.eBuffer->iArray, GL_STATIC_DRAW); 
+            glBufferData(GL_ELEMENT_ARRAY_BUFFER, buffer.getIndexArraySize(), buffer.getIndexArray(), GL_STATIC_DRAW); 
 
             // Now set vertex attribute pointers    
             setVertexAttributes();
@@ -79,7 +79,7 @@ namespace arcana {
             }
 
             // Draw the buffer
-            glBindTexture(GL_TEXTURE_2D, 0);
+            glBindTexture(GL_TEXTURE_2D, defaultTextureID);
             useShader();
             glDrawElements(glDrawType, buffer.getArraySize()/VERTEX_FSIZE, GL_UNSIGNED_INT, 0);
 

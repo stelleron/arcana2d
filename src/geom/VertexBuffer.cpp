@@ -1,4 +1,5 @@
 #include "geom/VertexBuffer.hpp"
+#include <iostream>
 
 #define RENDER_TYPE_ASSERT(arg) if (rMode != arg) {return;}
 #define BATCH_SPACE_ASSERT(arg) if (!checkSpace(arg)) {return;}
@@ -7,6 +8,47 @@
 
 namespace arcana {
     // ELEMENT BUFFER IMPL.
+    ElementBuffer::ElementBuffer(RenderMode rMode, int size) {
+        totalSize = 0;
+        int iVal = 0;
+        switch (rMode)
+        {
+            case Quads: 
+                // If the mode is Quads, store six times the given size of indices, and auto generate
+                iArray = new unsigned int[size * 6];
+                totalSize = sizeof(unsigned int) * size * 6;
+                for (int x = 0; x < size; x++) {
+                    iArray[x * 6] = iVal;
+                    iArray[x * 6 + 1] = iVal + 1;
+                    iArray[x * 6 + 2] = iVal + 2;
+                    iArray[x * 6 + 3] = iVal + 1;
+                    iArray[x * 6 + 4] = iVal + 2;
+                    iArray[x * 6 + 5] = iVal + 3;
+                    iVal = iVal + 4;
+                }
+                break;
+            default: break;
+        }
+        capacity = size;
+        pointer = 0;
+    }
+
+    ElementBuffer::~ElementBuffer() {
+        delete[] iArray;
+    }
+
+    void ElementBuffer::addPointer() {
+        if (capacity > pointer) {
+            pointer++;
+        }
+    }
+
+    size_t ElementBuffer::getSize() {
+        return totalSize;
+    }
+
+
+    /*
     ElementBuffer::ElementBuffer(RenderMode rMode, int size) {
         this->rMode = rMode;
         iPointer = 0;
@@ -61,7 +103,7 @@ namespace arcana {
 
     size_t ElementBuffer::getIndicesSize() {
         return sizeof(unsigned int) * iPointer;
-    }
+    } */
 
  
     // VERTEX BUFFER IMPL.
@@ -161,20 +203,20 @@ namespace arcana {
         // Then ensure that there is enough space for the primitive
         BATCH_SPACE_ASSERT(4);
 
-        // And for the element buffer
-        if (!eBuffer->checkSpace()) {
-
-        }
-
         // Now time to add all of the vertices to the vertex array
         vArray[vPointer] = Vertex(Vector2(rectangle.point.x, rectangle.point.y), DEFAULT_COLOR);
         vArray[vPointer + 1] = Vertex(Vector2(rectangle.point.x + rectangle.width, rectangle.point.y), DEFAULT_COLOR);
         vArray[vPointer + 2] = Vertex(Vector2(rectangle.point.x, rectangle.point.y + rectangle.height), DEFAULT_COLOR);
         vArray[vPointer + 3] = Vertex(Vector2(rectangle.point.x + rectangle.width, rectangle.point.y + rectangle.height), DEFAULT_COLOR);
-
-        eBuffer->add();
         vPointer += 4;
+        eBuffer->addPointer();
     }
 
-    
+    unsigned int* VertexBuffer::getIndexArray() {
+        return eBuffer->iArray;
+    }
+
+    size_t VertexBuffer::getIndexArraySize() {
+        return eBuffer->getSize();
+    }
 }
