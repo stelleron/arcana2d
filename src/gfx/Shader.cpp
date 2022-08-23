@@ -1,7 +1,6 @@
 #include "gfx/Shader.hpp"
-#include <string>
+#include <iostream>
 #include <glm/gtc/type_ptr.hpp>
-#include "utils/DebugOnly.hpp"
 
 namespace arcana {
     // Default shaders
@@ -26,7 +25,7 @@ namespace arcana {
         "uniform sampler2D tex;\n"
         "void main()\n"
         "{\n"
-        "   color = fColor;\n"
+        "   color = fColor * texture(tex, fTexCoords);\n"
         "}\n\0";
 
     // Shader compile functions
@@ -37,8 +36,7 @@ namespace arcana {
         if(!success)
         {
             glGetShaderInfoLog(id, 512, NULL, infoLog);
-            std::string logstr = infoLog;
-            LOG(logstr.c_str());
+            std::cout << infoLog << std::endl;
         };
     }
 
@@ -115,7 +113,7 @@ namespace arcana {
         }
     }
 
-    void Shader::setMat4(const char* name, glm::mat4 matrix) {
+    void Shader::setMat4(const char* name, Mat4 matrix) {
         if (is_init) {
             glUniformMatrix4fv(glGetUniformLocation(id, name), 1, false, glm::value_ptr(matrix));
         }

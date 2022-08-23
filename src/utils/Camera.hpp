@@ -1,8 +1,7 @@
 #ifndef ARCANA2D_CAMERA
     #define ARCANA2D_CAMERA
     // Includes
-    #include <glm/glm.hpp>
-    #include <geom/Vertex.hpp>
+    #include "utils/Vector.hpp"
 
     namespace arcana {
         // Used to create a 2D camera
@@ -19,7 +18,7 @@
                 void defaultSettings(int width, int height);
 
                 // Get the projection matrix
-                glm::mat4 getProjectionMatrix();
+                Mat4 getProjectionMatrix();
         };
     }
 #endif
