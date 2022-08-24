@@ -67,6 +67,13 @@ namespace arcana {
         delete[] vArray;
     }
 
+    void VertexBuffer::clear() {
+        // First erase vertex data
+        delete[] vArray;
+        // Then reallocate them
+        vArray = new Vertex[vSize];
+    }
+
     bool VertexBuffer::checkSpace(int startIndex, int numVertices) {
         if (numVertices + startIndex <= vSize) {
             return true;

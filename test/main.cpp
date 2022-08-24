@@ -15,10 +15,6 @@ class UntitledGame : public arcana::Application {
         vBuffer[1].color = RED;
         vBuffer[2].color = GREEN;
         vBuffer[3].color = YELLOW;
-        square = arcana::Rectangle(arcana::Vector2(150.0, 50.0), 100);
-        vBuffer.add(square, 4);
-        square = arcana::Rectangle(arcana::Vector2(150.0, 150.0), 100);
-        vBuffer.add(square, 8);
     }
 
     void update() {

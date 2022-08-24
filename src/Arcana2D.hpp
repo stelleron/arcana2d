@@ -200,6 +200,9 @@
                 // Check if there is space to add an object, returns True if available
                 bool checkSpace(int startIndex, int numVertices);
 
+                // Clear the vertex buffer
+                void clear();
+
                 // Convert the vertex array into a float array (heap allocated)
                 float* getFloatArray();
                 // Get the size of the array
