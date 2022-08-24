@@ -1,4 +1,4 @@
-
+#include <iostream>
 #include "Arcana2D.hpp"
 
 class UntitledGame : public arcana::Application {
@@ -11,6 +11,7 @@ class UntitledGame : public arcana::Application {
     void init() {
         arcana::Rectangle square(arcana::Vector2(50.0, 50.0), 100);
         vBuffer.add(square);
+        vBuffer[1].color = RED;
     }
 
     void update() {

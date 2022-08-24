@@ -54,14 +54,18 @@
         // ====== VERTEX.HPP ======
         // Used to create a vertex object
         struct Vertex {
-            Vector2 pos;
+            Vector3 pos;
             Vector2 texCoords;
             Color color;
 
             // Constructor
             Vertex();
+            Vertex(Vector2 pos);
+            Vertex(Vector3 pos);
             Vertex(Vector2 pos, Color color);
             Vertex(Vector2 pos, Color color, Vector2 texCoords);
+            Vertex(Vector3 pos, Color color);
+            Vertex(Vector3 pos, Color color, Vector2 texCoords);
         };
 
         // ====== CAMERA.HPP ======
@@ -209,6 +213,10 @@
                 unsigned int* getIndexArray();
                 // Get the size of the index array
                 size_t getIndexArraySize();
+                // Set an induvidual vertex with the array operator
+                Vertex& operator[](int index);
+                // Get an induvidual vertex with the array operator
+                Vertex operator[](int index) const;
 
                 // Used to add objects to the vertex buffer 
                 void add(const Triangle& triangle);

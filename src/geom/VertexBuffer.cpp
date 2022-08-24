@@ -1,8 +1,9 @@
+#include "utils/Logger.hpp"
 #include "geom/VertexBuffer.hpp"
 
 
-#define RENDER_TYPE_ASSERT(arg) if (rMode != arg) {return;}
-#define BATCH_SPACE_ASSERT(arg) if (!checkSpace(arg)) {return;}
+#define RENDER_TYPE_ASSERT(arg) if (rMode != arg) {LOG("Error: Vertex buffer is not the correct type!"); return;}
+#define BATCH_SPACE_ASSERT(arg) if (!checkSpace(arg)) {LOG("Error: Vertex buffer does not have enough space!"); return;}
 #define V_MULTIPLY(arg) (x * VERTEX_SIZE)
 
 namespace arcana {
@@ -158,5 +159,21 @@ namespace arcana {
 
     size_t VertexBuffer::getIndexArraySize() {
         return eBuffer->getSize();
+    }
+
+    Vertex& VertexBuffer::operator[](int index) {
+        if (index >= vSize) {
+            LOG("Error: Index out of range!");
+            exit(0);
+        }
+        return vArray[index];
+    }
+
+    Vertex VertexBuffer::operator[](int index) const {
+        if (index >= vSize) {
+            LOG("Error: Index out of range!");
+            exit(0);
+        }
+        return vArray[index];
     }
 }
