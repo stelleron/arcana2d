@@ -1,5 +1,5 @@
 #include "geom/VertexBuffer.hpp"
-#include <iostream>
+
 
 #define RENDER_TYPE_ASSERT(arg) if (rMode != arg) {return;}
 #define BATCH_SPACE_ASSERT(arg) if (!checkSpace(arg)) {return;}

@@ -1,5 +1,5 @@
 #include "geom/Vertex.hpp"
-#include <iostream>
+
 
 namespace arcana {
     Vertex::Vertex() {

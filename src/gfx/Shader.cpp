@@ -1,5 +1,6 @@
 #include "gfx/Shader.hpp"
-#include <iostream>
+#include "utils/Logger.hpp"
+
 #include <glm/gtc/type_ptr.hpp>
 
 namespace arcana {
@@ -36,8 +37,8 @@ namespace arcana {
         if(!success)
         {
             glGetShaderInfoLog(id, 512, NULL, infoLog);
-            std::cout << infoLog << std::endl;
-        };
+            LOG(infoLog);
+        }
     }
 
     inline unsigned int compileShader(const char* source, GLenum sType) {

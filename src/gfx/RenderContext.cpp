@@ -1,5 +1,5 @@
 #include "gfx/RenderContext.hpp"
-#include <iostream>
+
 
 namespace arcana {
     float vertices[] = {

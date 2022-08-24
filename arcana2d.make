@@ -23,7 +23,7 @@ ifeq ($(config),debug)
   TARGETDIR = build
   TARGET = $(TARGETDIR)/libarcana2d.dylib
   OBJDIR = build/obj/Debug/arcana2d
-  DEFINES += -DDEBUG
+  DEFINES += -DDEBUG -DARCANA_DEBUG
   INCLUDES += -Iexternal/include -Isrc
   FORCE_INCLUDE +=
   ALL_CPPFLAGS += $(CPPFLAGS) -MMD -MP $(DEFINES) $(INCLUDES)

@@ -1,4 +1,4 @@
-#include <iostream>
+
 #include "Arcana2D.hpp"
 
 class UntitledGame : public arcana::Application {

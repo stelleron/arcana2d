@@ -1,6 +1,6 @@
 #ifndef ARCANA2D_SPRITE
     #define ARCANA2D_SPRITE
-    #include <iostream>
+    
 
     namespace arcana {
         // Used to create a sprite
