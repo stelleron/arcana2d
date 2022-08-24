@@ -1,5 +1,5 @@
-#ifndef ARCANA2D_RESOURCE
-    #define ARCANA2D_RESOURCE
+#ifndef ARCANA2D_IMAGE
+    #define ARCANA2D_IMAGE
     namespace arcana {
         // Namespace for loading images
         struct Image {
@@ -9,10 +9,12 @@
             int colorChannels;
 
             // Constructor
+            Image();
             Image(const char* path);
-
             // Destructor 
             ~Image();
+
+            void load(const char* path);
         };
     }
 #endif

@@ -1,85 +1,66 @@
 #include "geom/VertexBuffer.hpp"
-#include "utils/DebugOnly.hpp"
+#include <iostream>
 
-#define RENDER_TYPE_ASSERT(arg) if (rMode != arg) {LOG("Incorrect type!");  return *this;}
-#define BATCH_SPACE_ASSERT(arg) if (!checkSpace(arg)) {LOG("Not enough space!"); return *this;}
-#define TIMES_EIGHT(arg) (x * 8)
+#define RENDER_TYPE_ASSERT(arg) if (rMode != arg) {return;}
+#define BATCH_SPACE_ASSERT(arg) if (!checkSpace(arg)) {return;}
+#define V_MULTIPLY(arg) (x * VERTEX_SIZE)
 
 namespace arcana {
     // ELEMENT BUFFER IMPL.
     ElementBuffer::ElementBuffer(RenderMode rMode, int size) {
-        this->rMode = rMode;
-        iPointer = 0;
-        iValue = 0;
-
+        totalSize = 0;
+        int iVal = 0;
         switch (rMode)
         {
-            case RenderMode::Quads:
-                numIndices = 6; // 6 indices per quad
+            case Quads: 
+                // If the mode is Quads, store six times the given size of indices, and auto generate
+                iArray = new unsigned int[size * 6];
+                totalSize = sizeof(unsigned int) * size * 6;
+                for (int x = 0; x < size; x++) {
+                    iArray[x * 6] = iVal;
+                    iArray[x * 6 + 1] = iVal + 1;
+                    iArray[x * 6 + 2] = iVal + 2;
+                    iArray[x * 6 + 3] = iVal + 1;
+                    iArray[x * 6 + 4] = iVal + 2;
+                    iArray[x * 6 + 5] = iVal + 3;
+                    iVal = iVal + 4;
+                }
                 break;
             default: break;
         }
-
-        iSize = numIndices * size; 
-        iArray = new unsigned int[iSize];
+        capacity = size;
+        pointer = 0;
     }
 
     ElementBuffer::~ElementBuffer() {
         delete[] iArray;
     }
 
-    bool ElementBuffer::checkSpace() {
-        if (iPointer + numIndices <= iSize) {
-            return true;
-        }
-        else {
-            return false;
+    void ElementBuffer::addPointer() {
+        if (capacity > pointer) {
+            pointer++;
         }
     }
 
-    void ElementBuffer::add() {
-        if (!checkSpace()) {
-            LOG("Not enough space!");
-            return;
-        }
-
-        switch (rMode)
-        {
-            case RenderMode::Quads:
-                iArray[iPointer] = iValue;
-                iArray[iPointer + 1] = iValue + 1;
-                iArray[iPointer + 2] = iValue + 2;
-                iArray[iPointer + 3] = iValue + 1;
-                iArray[iPointer + 4] = iValue + 2;
-                iArray[iPointer + 5] = iValue + 3;
-                iPointer += 6;
-                iValue += 4;
-                break;
-            default:
-                break;
-        }
+    size_t ElementBuffer::getSize() {
+        return totalSize;
     }
-
-    size_t ElementBuffer::getIndicesSize() {
-        return sizeof(unsigned int) * iPointer;
-    }
-
  
     // VERTEX BUFFER IMPL.
     // NOTE: Size is the number of primitives
-    VertexBuffer::VertexBuffer(RenderMode rMode, int size) {
+    VertexBuffer::VertexBuffer(RenderMode rMode, int primNum) {
         // First get the size of the primitive in vertices
         eBuffer = nullptr;
         switch (rMode)
         {
             case Lines: primSize = 2; break;
             case Triangles: primSize = 3; break;
-            case Quads: primSize = 4; eBuffer = new ElementBuffer(rMode, size); break;
+            case Quads: primSize = 4; eBuffer = new ElementBuffer(rMode, primNum); break;
             default: break;
         }
 
         // Now allocate memory for the vertices
-        vSize = size * primSize;
+        vSize = primNum * primSize;
         vArray = new Vertex[vSize];
 
         // Save the render mode and set the vertex pointer to 0
@@ -110,24 +91,24 @@ namespace arcana {
     float* VertexBuffer::getFloatArray() {
         // First create a float array
         float* fArray = new float[getArraySize()/sizeof(float)];
-
         // Now copy all vertex data into the float array
         for (int x = 0; x < vPointer; x++) {
-            fArray[TIMES_EIGHT(x)] = vArray[x].pos.x;
-            fArray[TIMES_EIGHT(x) + 1] = vArray[x].pos.y;
-            fArray[TIMES_EIGHT(x) + 2] = FLOAT_REP(vArray[x].color.r);
-            fArray[TIMES_EIGHT(x) + 3] = FLOAT_REP(vArray[x].color.g);
-            fArray[TIMES_EIGHT(x) + 4] = FLOAT_REP(vArray[x].color.b);
-            fArray[TIMES_EIGHT(x) + 5] = FLOAT_REP(vArray[x].color.a);
-            fArray[TIMES_EIGHT(x) + 6] = vArray[x].texCoords.x;
-            fArray[TIMES_EIGHT(x) + 7] = vArray[x].texCoords.y;
+            fArray[V_MULTIPLY(x)] = vArray[x].pos.x;
+            fArray[V_MULTIPLY(x) + 1] = vArray[x].pos.y;
+            fArray[V_MULTIPLY(x) + 2] = vArray[x].pos.z;
+            fArray[V_MULTIPLY(x) + 3] = FLOAT_REP(vArray[x].color.r);
+            fArray[V_MULTIPLY(x) + 4] = FLOAT_REP(vArray[x].color.g);
+            fArray[V_MULTIPLY(x) + 5] = FLOAT_REP(vArray[x].color.b);
+            fArray[V_MULTIPLY(x) + 6] = FLOAT_REP(vArray[x].color.a);
+            fArray[V_MULTIPLY(x) + 7] = vArray[x].texCoords.x;
+            fArray[V_MULTIPLY(x) + 8] = vArray[x].texCoords.y;
         }
 
         // And return the array
         return fArray;
     }
 
-    VertexBuffer& VertexBuffer::operator<<(const Triangle& triangle) {
+    void VertexBuffer::add(const Triangle& triangle) {
         // First make sure that object has a compatiable type
         RENDER_TYPE_ASSERT(RenderMode::Triangles);
 
@@ -135,16 +116,13 @@ namespace arcana {
         BATCH_SPACE_ASSERT(3);
 
         // Now time to add all of the vertices to the vertex array
-        vArray[vPointer] = Vertex(triangle.point1, RED);
-        vArray[vPointer + 1] = Vertex(triangle.point2, BLUE);
-        vArray[vPointer + 2] = Vertex(triangle.point3, GREEN);
+        vArray[vPointer] = Vertex(triangle.point1);
+        vArray[vPointer + 1] = Vertex(triangle.point2);
+        vArray[vPointer + 2] = Vertex(triangle.point3);
         vPointer += 3;
-
-        // Return the 'this' pointer
-        return *this;
     }
 
-    VertexBuffer& VertexBuffer::operator<<(const DrawTriangle& triangle) {
+    void VertexBuffer::add(const DrawTriangle& triangle) {
         // First make sure that object has a compatiable type
         RENDER_TYPE_ASSERT(RenderMode::Triangles);
 
@@ -156,33 +134,29 @@ namespace arcana {
         vArray[vPointer + 1] = Vertex(triangle.point2, triangle.color);
         vArray[vPointer + 2] = Vertex(triangle.point3, triangle.color);
         vPointer += 3;
-
-        // Return the 'this' pointer
-        return *this;
     }
 
-    VertexBuffer& VertexBuffer::operator<<(const Rectangle& rectangle) {
+    void VertexBuffer::add(const Rectangle& rectangle) {
         // First make sure that object has a compatiable type
         RENDER_TYPE_ASSERT(RenderMode::Quads);
 
         // Then ensure that there is enough space for the primitive
         BATCH_SPACE_ASSERT(4);
 
-        // And for the element buffer
-        if (!eBuffer->checkSpace()) {
-            return *this;
-        }
-
         // Now time to add all of the vertices to the vertex array
-        vArray[vPointer] = Vertex(Vector2(rectangle.point.x, rectangle.point.y), RED);
-        vArray[vPointer + 1] = Vertex(Vector2(rectangle.point.x + rectangle.width, rectangle.point.y), BLUE);
-        vArray[vPointer + 2] = Vertex(Vector2(rectangle.point.x, rectangle.point.y + rectangle.height), BLUE);
-        vArray[vPointer + 3] = Vertex(Vector2(rectangle.point.x + rectangle.width, rectangle.point.y + rectangle.height), GREEN);
-
-        eBuffer->add();
+        vArray[vPointer] = Vertex(Vector2(rectangle.point.x, rectangle.point.y));
+        vArray[vPointer + 1] = Vertex(Vector2(rectangle.point.x + rectangle.width, rectangle.point.y));
+        vArray[vPointer + 2] = Vertex(Vector2(rectangle.point.x, rectangle.point.y + rectangle.height));
+        vArray[vPointer + 3] = Vertex(Vector2(rectangle.point.x + rectangle.width, rectangle.point.y + rectangle.height));
         vPointer += 4;
+        eBuffer->addPointer();
+    }
 
-        // Return the 'this' pointer
-        return *this;        
+    unsigned int* VertexBuffer::getIndexArray() {
+        return eBuffer->iArray;
+    }
+
+    size_t VertexBuffer::getIndexArraySize() {
+        return eBuffer->getSize();
     }
 }

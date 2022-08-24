@@ -82,7 +82,6 @@ endif
 
 OBJECTS := \
 	$(OBJDIR)/main.o \
-	$(OBJDIR)/sample.o \
 
 RESOURCES := \
 
@@ -142,9 +141,6 @@ $(OBJECTS): | $(OBJDIR)
 endif
 
 $(OBJDIR)/main.o: test/main.cpp
-	@echo $(notdir $<)
-	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
-$(OBJDIR)/sample.o: test/sample.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 

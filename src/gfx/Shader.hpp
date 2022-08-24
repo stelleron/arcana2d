@@ -2,7 +2,7 @@
     #define ARCANA2D_SHADER
 
     #include <glad/glad.h>
-    #include <glm/glm.hpp>
+    #include "utils/Vector.hpp"
 
     namespace arcana {
         // Used to create a shader class 
@@ -22,7 +22,7 @@
                 void setBool(const char* name, bool value);  
                 void setInt(const char* name, int value);   
                 void setFloat(const char* name, float value);
-                void setMat4(const char* name, glm::mat4 matrix);
+                void setMat4(const char* name, Mat4 matrix);
 
                 // Use the shader
                 void use();

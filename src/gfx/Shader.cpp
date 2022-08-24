@@ -1,12 +1,11 @@
 #include "gfx/Shader.hpp"
-#include <string>
+#include <iostream>
 #include <glm/gtc/type_ptr.hpp>
-#include "utils/DebugOnly.hpp"
 
 namespace arcana {
     // Default shaders
     const char* vShaderSrc ="#version 330\n"
-        "layout (location = 0) in vec2 aPos;\n"
+        "layout (location = 0) in vec3 aPos;\n"
         "layout (location = 1) in vec4 aColor;\n"
         "layout (location = 2) in vec2 aTexCoords;\n"
         "uniform mat4 projection;\n"
@@ -14,7 +13,7 @@ namespace arcana {
         "out vec2 fTexCoords;\n"
         "void main()\n"
         "{\n"
-        "   gl_Position = projection * vec4(aPos, 0.0, 1.0);\n"
+        "   gl_Position = projection * vec4(aPos, 1.0);\n"
         "   fColor = aColor;\n"
         "   fTexCoords = aTexCoords;\n"
         "}\0";
@@ -26,7 +25,7 @@ namespace arcana {
         "uniform sampler2D tex;\n"
         "void main()\n"
         "{\n"
-        "   color = fColor;\n"
+        "   color = fColor * texture(tex, fTexCoords);\n"
         "}\n\0";
 
     // Shader compile functions
@@ -37,8 +36,7 @@ namespace arcana {
         if(!success)
         {
             glGetShaderInfoLog(id, 512, NULL, infoLog);
-            std::string logstr = infoLog;
-            LOG(logstr.c_str());
+            std::cout << infoLog << std::endl;
         };
     }
 
@@ -115,7 +113,7 @@ namespace arcana {
         }
     }
 
-    void Shader::setMat4(const char* name, glm::mat4 matrix) {
+    void Shader::setMat4(const char* name, Mat4 matrix) {
         if (is_init) {
             glUniformMatrix4fv(glGetUniformLocation(id, name), 1, false, glm::value_ptr(matrix));
         }

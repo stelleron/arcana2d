@@ -81,18 +81,19 @@ all: prebuild prelink $(TARGET)
 endif
 
 OBJECTS := \
-	$(OBJDIR)/App.o \
-	$(OBJDIR)/EngineConfig.o \
-	$(OBJDIR)/DrawGeom.o \
+	$(OBJDIR)/AppConfig.o \
+	$(OBJDIR)/Application.o \
+	$(OBJDIR)/DrawGeometry.o \
+	$(OBJDIR)/Geometry.o \
 	$(OBJDIR)/Vertex.o \
 	$(OBJDIR)/VertexBuffer.o \
 	$(OBJDIR)/RenderContext.o \
 	$(OBJDIR)/Shader.o \
 	$(OBJDIR)/Sprite.o \
-	$(OBJDIR)/Filesystem.o \
 	$(OBJDIR)/Image.o \
 	$(OBJDIR)/Camera.o \
 	$(OBJDIR)/Color.o \
+	$(OBJDIR)/Callbacks.o \
 	$(OBJDIR)/Window.o \
 
 RESOURCES := \
@@ -152,13 +153,16 @@ else
 $(OBJECTS): | $(OBJDIR)
 endif
 
-$(OBJDIR)/App.o: src/engine/App.cpp
+$(OBJDIR)/AppConfig.o: src/app/AppConfig.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
-$(OBJDIR)/EngineConfig.o: src/engine/EngineConfig.cpp
+$(OBJDIR)/Application.o: src/app/Application.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
-$(OBJDIR)/DrawGeom.o: src/geom/DrawGeom.cpp
+$(OBJDIR)/DrawGeometry.o: src/geom/DrawGeometry.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
+$(OBJDIR)/Geometry.o: src/geom/Geometry.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 $(OBJDIR)/Vertex.o: src/geom/Vertex.cpp
@@ -176,9 +180,6 @@ $(OBJDIR)/Shader.o: src/gfx/Shader.cpp
 $(OBJDIR)/Sprite.o: src/gfx/Sprite.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
-$(OBJDIR)/Filesystem.o: src/res/Filesystem.cpp
-	@echo $(notdir $<)
-	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 $(OBJDIR)/Image.o: src/res/Image.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
@@ -186,6 +187,9 @@ $(OBJDIR)/Camera.o: src/utils/Camera.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 $(OBJDIR)/Color.o: src/utils/Color.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
+$(OBJDIR)/Callbacks.o: src/window/Callbacks.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 $(OBJDIR)/Window.o: src/window/Window.cpp

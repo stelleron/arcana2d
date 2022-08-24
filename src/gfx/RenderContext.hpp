@@ -2,8 +2,8 @@
     #define ARCANA2D_RENDER_CONTEXT
     // Includes
     #include "gfx/Shader.hpp"
-    #include "geom/VertexBuffer.hpp"
     #include "gfx/Sprite.hpp"
+    #include "geom/VertexBuffer.hpp"
     #include "utils/Camera.hpp"
 
     namespace arcana {
@@ -13,30 +13,26 @@
                 Shader* curr_shader; // Stores the current shader
                 Camera* curr_camera; // Stores the current camera
                 unsigned int defaultTextureID; // Stores a default texture
+
+                void setVertexAttributes();
             public:
                 // Constructor
                 RenderContext();
-
                 // Destructor
                 ~RenderContext();
-
+                
                 // Used to initialise the renderer
                 void init();
-
                 // Use the shader after setting some uniforms
                 void useShader();
+                // Set the current camera
+                void setCurrentCamera(Camera* camera);
+                 // Set the current shader
+                void setCurrentShader(Shader* shader);
 
                 // Draw functions
                 void draw(VertexBuffer& buffer);
-
-                // Sprite drawing functions
-                void draw(Sprite& sprite); // Default draw
-
-                // Set the current camera
-                void setCurrentCamera(Camera* camera);
-
-                // Set the current shader
-                void setCurrentShader(Shader* shader);
+                void draw();
         };
     }
 #endif

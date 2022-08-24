@@ -1,0 +1,6 @@
+#ifndef ARCANA2D_APPCONFIG
+    #define ARCANA2D_APPCONFIG
+    namespace arcana {
+        
+    }
+#endif
