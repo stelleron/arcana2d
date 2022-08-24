@@ -32,7 +32,7 @@
 
                 // Draw functions
                 void draw(VertexBuffer& buffer);
-                void draw();
+                void draw(Sprite& sprite);
         };
     }
 #endif

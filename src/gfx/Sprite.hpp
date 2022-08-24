@@ -1,18 +1,20 @@
 #ifndef ARCANA2D_SPRITE
     #define ARCANA2D_SPRITE
-    
+    #include "utils/Vector.hpp"
 
     namespace arcana {
         // Used to create a sprite
         class Sprite {
             private:
-                unsigned int id;  
-                int width;
-                int height;
-
+                unsigned int id; 
                 bool is_init;
 
             public:
+                // Properties
+                Vector2 pos; 
+                int width;
+                int height;
+
                 // Constructor
                 Sprite();
                 Sprite(const char* path);
