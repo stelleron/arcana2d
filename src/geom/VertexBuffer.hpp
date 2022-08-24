@@ -60,6 +60,10 @@
                 unsigned int* getIndexArray();
                 // Get the size of the index array
                 size_t getIndexArraySize();
+                // Set an induvidual vertex with the array operator
+                Vertex& operator[](int index);
+                // Get an induvidual vertex with the array operator
+                Vertex operator[](int index) const;
 
                 // Used to add objects to the vertex buffer 
                 void add(const Triangle& triangle);
