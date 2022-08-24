@@ -36,6 +36,7 @@
         #define WHITE arcana::Color::RGB(255, 255, 255)
         #define RED arcana::Color::RGB(255, 0, 0)
         #define GREEN arcana::Color::RGB(0, 255, 0)
+        #define YELLOW arcana::Color::RGB(255, 255, 0)
         #define BLUE arcana::Color::RGB(0, 0, 255)
     
 
@@ -53,6 +54,7 @@
 
         // ====== VERTEX.HPP ======
         // Used to create a vertex object
+        // Used to create a vertex object
         struct Vertex {
             Vector2 pos;
             Vector2 texCoords;
@@ -60,6 +62,7 @@
 
             // Constructor
             Vertex();
+            Vertex(Vector2 pos);
             Vertex(Vector2 pos, Color color);
             Vertex(Vector2 pos, Color color, Vector2 texCoords);
         };
@@ -140,20 +143,16 @@
         };
 
         // ====== DRAWGEOMETRY.HPP ======
+
         // Used to create a triangle with color
         struct DrawTriangle : public Triangle {
             Color color;
-            DrawTriangle(const Triangle& triangle, const Color& color) {
-                this->point1 = triangle.point1;
-                this->point2 = triangle.point2;
-                this->point3 = triangle.point3;
-                this->color = color;
-            }
+            DrawTriangle(const Triangle& triangle, const Color& color);
         };
 
         // Used to make drawable objects
         DrawTriangle makeDrawable(const Triangle triangle, const Color color);
-
+        
         // ====== VERTEXBUFFER.HPP ======
          // Enum for draw modes
         enum RenderMode {
@@ -167,8 +166,6 @@
         // Used to create a buffer to track elements 
         struct ElementBuffer {
             unsigned int* iArray;
-            int capacity; // The total number of objects the buffer has been designed for
-            int pointer; // The number of objects actually being stored by the vertex buffer
             size_t totalSize;
 
             // Constructor
@@ -177,7 +174,6 @@
             ~ElementBuffer();
 
             // Setters/getters
-            void addPointer();
             size_t getSize();
         };
         
@@ -187,7 +183,6 @@
                 ElementBuffer* eBuffer; // Pointer to element buffer
                 Vertex* vArray; // List of vertices
                 int vSize; // Number of vertices
-                int vPointer; // The number of added vertices to the vertex array
                 int primSize; // The size of the primitive
                 RenderMode rMode; // Render mode
             public:
@@ -197,7 +192,10 @@
                 ~VertexBuffer();
 
                 // Check if there is space to add an object, returns True if available
-                bool checkSpace(int numVertices);
+                bool checkSpace(int startIndex, int numVertices);
+
+                // Clear the vertex buffer
+                void clear();
 
                 // Convert the vertex array into a float array (heap allocated)
                 float* getFloatArray();
@@ -209,12 +207,16 @@
                 unsigned int* getIndexArray();
                 // Get the size of the index array
                 size_t getIndexArraySize();
+                // Set an induvidual vertex with the array operator
+                Vertex& operator[](int index);
+                // Get an induvidual vertex with the array operator
+                Vertex operator[](int index) const;
 
                 // Used to add objects to the vertex buffer 
-                void add(const Triangle& triangle);
-                void add(const DrawTriangle& triangle);
+                void add(const Triangle& triangle, int startIndex);
+                void add(const DrawTriangle& triangle, int startIndex);
 
-                void add(const Rectangle& rectangle);
+                void add(const Rectangle& rectangle, int startIndex);
         };
 
         // ====== IMAGE.HPP ======
