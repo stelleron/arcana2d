@@ -1,0 +1,3 @@
+#ifndef ARCANA2D_GAME_CONTEXT
+    #define ARCANA2D_GAME_CONTEXT
+#endif

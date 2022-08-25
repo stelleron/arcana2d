@@ -11,7 +11,7 @@ project "arcana2d"
     targetdir "build/"
     objdir "build/obj/"
 
-    files {"src/**.cpp"}
+    files {"src/**.cpp", "external/lib/miniaudio.c"}
     includedirs {"external/include/", "src/"}
     libdirs {"external/lib/"}
     links {"glfw3", "glad", "GLUT.framework", "CoreVideo.framework", 

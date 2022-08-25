@@ -81,8 +81,10 @@ all: prebuild prelink $(TARGET)
 endif
 
 OBJECTS := \
+	$(OBJDIR)/miniaudio.o \
 	$(OBJDIR)/AppConfig.o \
 	$(OBJDIR)/Application.o \
+	$(OBJDIR)/Audio.o \
 	$(OBJDIR)/DrawGeometry.o \
 	$(OBJDIR)/Geometry.o \
 	$(OBJDIR)/Vertex.o \
@@ -90,6 +92,7 @@ OBJECTS := \
 	$(OBJDIR)/RenderContext.o \
 	$(OBJDIR)/Shader.o \
 	$(OBJDIR)/Sprite.o \
+	$(OBJDIR)/GameContext.o \
 	$(OBJDIR)/Image.o \
 	$(OBJDIR)/Camera.o \
 	$(OBJDIR)/Color.o \
@@ -153,10 +156,16 @@ else
 $(OBJECTS): | $(OBJDIR)
 endif
 
+$(OBJDIR)/miniaudio.o: external/lib/miniaudio.c
+	@echo $(notdir $<)
+	$(SILENT) $(CC) $(ALL_CFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 $(OBJDIR)/AppConfig.o: src/app/AppConfig.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 $(OBJDIR)/Application.o: src/app/Application.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
+$(OBJDIR)/Audio.o: src/audio/Audio.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 $(OBJDIR)/DrawGeometry.o: src/geom/DrawGeometry.cpp
@@ -178,6 +187,9 @@ $(OBJDIR)/Shader.o: src/gfx/Shader.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 $(OBJDIR)/Sprite.o: src/gfx/Sprite.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
+$(OBJDIR)/GameContext.o: src/input/GameContext.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 $(OBJDIR)/Image.o: src/res/Image.cpp
