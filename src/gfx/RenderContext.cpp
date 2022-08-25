@@ -2,19 +2,6 @@
 
 
 namespace arcana {
-    float vertices[] = {
-        0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f,
-        0.0f, 512.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f,
-        512.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f,
-        512.0f, 512.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f,    
-    };
-    unsigned int indices[] = {  
-        0, 1, 2, // first triangle
-        1, 2, 3  // second triangle
-    };
-
-    Sprite sprite;
-
     // RENDER CONTEXT IMPL.
     RenderContext::RenderContext() {
 
@@ -35,9 +22,6 @@ namespace arcana {
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);  
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 1, 1, 0, GL_RGBA, GL_UNSIGNED_BYTE, defaultTexture);
         glGenerateMipmap(GL_TEXTURE_2D);
-
-        // Create the wall texture
-        sprite.load("/Users/donti/Desktop/stelleron/arcana2d/cache/wall.jpg");
     }
 
     void RenderContext::useShader() {
@@ -135,7 +119,7 @@ namespace arcana {
         }
     }
 
-    void RenderContext::draw() {
+    void RenderContext::draw(Sprite& sprite) {
             // First initialise the vertex array and buffer and EBO
             unsigned int VBO, VAO, EBO;
             glGenVertexArrays(1, &VAO);
@@ -148,14 +132,21 @@ namespace arcana {
             glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
 
             // And buffer the data
-            glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-            glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW); 
+            VertexBuffer targetRect(Quads, 4);
+            targetRect.add(Rectangle(sprite.pos, sprite.width, sprite.height), 0);
+            targetRect[1].texCoords = Vector2(1.0, 0.0);
+            targetRect[2].texCoords = Vector2(0.0, 1.0);
+            targetRect[3].texCoords = Vector2(1.0, 1.0);
+
+            float* fArray = targetRect.getFloatArray();
+            glBufferData(GL_ARRAY_BUFFER, targetRect.getArraySize(), fArray, GL_STATIC_DRAW);
+            glBufferData(GL_ELEMENT_ARRAY_BUFFER, targetRect.getIndexArraySize(), targetRect.getIndexArray(), GL_STATIC_DRAW); 
 
             // Now set vertex attribute pointers    
             setVertexAttributes();
 
             // Draw the buffer
-            glBindTexture(GL_TEXTURE_2D,sprite.getID());
+            glBindTexture(GL_TEXTURE_2D, sprite.getID());
             useShader();
             glBindVertexArray(VAO);      
             glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
@@ -166,6 +157,7 @@ namespace arcana {
             glDeleteVertexArrays(1, &VAO);
             glDeleteBuffers(1, &VBO);
             glDeleteBuffers(1, &EBO);
+            delete[] fArray;
     }
 
     void RenderContext::setCurrentCamera(Camera* camera) {
@@ -178,13 +170,13 @@ namespace arcana {
     }
 
     void RenderContext::setVertexAttributes() {
-        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(float), (void*)0);
+        glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
         glEnableVertexAttribArray(0);    
 
-        glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 9 * sizeof(float), (void*)12);
+        glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)8);
         glEnableVertexAttribArray(1);
 
-        glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 9 * sizeof(float), (void*)28);
+        glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)24);
         glEnableVertexAttribArray(2);        
     }
 }

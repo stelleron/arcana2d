@@ -54,19 +54,17 @@
 
         // ====== VERTEX.HPP ======
         // Used to create a vertex object
+        // Used to create a vertex object
         struct Vertex {
-            Vector3 pos;
+            Vector2 pos;
             Vector2 texCoords;
             Color color;
 
             // Constructor
             Vertex();
             Vertex(Vector2 pos);
-            Vertex(Vector3 pos);
             Vertex(Vector2 pos, Color color);
             Vertex(Vector2 pos, Color color, Vector2 texCoords);
-            Vertex(Vector3 pos, Color color);
-            Vertex(Vector3 pos, Color color, Vector2 texCoords);
         };
 
         // ====== CAMERA.HPP ======
@@ -149,14 +147,11 @@
         // Used to create a triangle with color
         struct DrawTriangle : public Triangle {
             Color color;
-            float z_value;
             DrawTriangle(const Triangle& triangle, const Color& color);
-            DrawTriangle(const Triangle& triangle, const Color& color, const float& z_value);
         };
 
         // Used to make drawable objects
         DrawTriangle makeDrawable(const Triangle triangle, const Color color);
-        DrawTriangle makeDrawable(const Triangle triangle, const Color color, const float z_value);
         
         // ====== VERTEXBUFFER.HPP ======
          // Enum for draw modes
@@ -288,19 +283,23 @@
         // Used to create a sprite
         class Sprite {
             private:
-                unsigned int id;  
-                int width;
-                int height;
-
+                unsigned int id; 
                 bool is_init;
 
             public:
+                // Properties
+                Vector2 pos; 
+                int width;
+                int height;
+
                 // Constructor
                 Sprite();
                 Sprite(const char* path);
 
                 // Load the sprite
                 void load(const char* path);
+                // Get the ID of the sprite
+                inline unsigned int getID() {return id;}
 
                 // Destructor
                 ~Sprite();
@@ -332,7 +331,7 @@
 
                 // Draw functions
                 void draw(VertexBuffer& buffer);
-                void draw();
+                void draw(Sprite& sprite);
         };
 
         // ====== APPCONFIG.HPP ======

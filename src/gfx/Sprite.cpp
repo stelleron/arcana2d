@@ -27,6 +27,9 @@ namespace arcana {
         glGenerateMipmap(GL_TEXTURE_2D);
         glBindTexture(GL_TEXTURE_2D, 0);
 
+        width = image.width;
+        height = image.height;
+        pos = Vector2(0.0, 0.0);
         is_init = true;
     }
 
