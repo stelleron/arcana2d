@@ -14,7 +14,12 @@ class UntitledGame : public arcana::Application {
     }
 
     void update(arcana::GameContext& ctx) {
-
+        if (ctx.wasWindowResized()) {
+            std::puts("hello");
+        }
+        else {
+            std::puts("bye");
+        }
     }
 
     void render(arcana::RenderContext& ctx) {

@@ -27,7 +27,11 @@
 
             WindowData windowData;
             KeyboardData keyboardData;
-            MouseData MouseData;
+            MouseData mouseData;
+            GamepadData gamepadData;
+
+            // Reset event data
+            void reset();
         };
     };
 #endif

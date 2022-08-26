@@ -16,4 +16,12 @@ namespace arcana {
     Camera* GameContext::getCamera() {
         return curr_camera;
     }
+
+    EventData& GameContext::getEventData() {
+        return event_data;
+    }
+
+    void GameContext::resetEvents() {
+        event_data.reset();
+    }
 }

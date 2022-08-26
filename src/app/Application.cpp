@@ -30,6 +30,7 @@ namespace arcana {
             if (window.isActive()) {
 
                 // Update
+                game_ctx.resetEvents();
                 window.pollEvents();
                 game_ctx.setCamera(camera);
                 app.update(game_ctx);
