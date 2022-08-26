@@ -92,6 +92,10 @@ namespace arcana {
         return glfwGetWindowUserPointer(window);
     }
 
+    void Window::updateTitle(const char* title) {
+        glfwSetWindowTitle(window, title);
+    }
+
     Window::~Window() {
         // Destroying for proper practice
         glfwDestroyWindow(window);

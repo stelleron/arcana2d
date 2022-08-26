@@ -40,6 +40,9 @@
 
                 // Get the window user data
                 void* getData();
+
+                // Set the title of the window
+                void updateTitle(const char* title);
         };
     }
 #endif

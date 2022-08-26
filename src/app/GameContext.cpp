@@ -13,6 +13,10 @@ namespace arcana {
         curr_camera = &camera;
     }
 
+    void GameContext::setWindow(Window& window) {
+        win_pointer = &window;
+    }
+
     Camera* GameContext::getCamera() {
         return curr_camera;
     }
@@ -23,5 +27,9 @@ namespace arcana {
 
     void GameContext::resetEvents() {
         event_data.reset();
+    }
+
+    void GameContext::updateTitle(const char* title) {
+        win_pointer->updateTitle(title);
     }
 }

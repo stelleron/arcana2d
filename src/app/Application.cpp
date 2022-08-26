@@ -24,6 +24,7 @@ namespace arcana {
         render_ctx.init();
         app.init();
 
+        game_ctx.setWindow(window);
         window.setData(&game_ctx);
 
         while(!window.shouldClose()) {

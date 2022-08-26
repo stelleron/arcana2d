@@ -5,6 +5,7 @@
     #include <string>
     #include <glm/glm.hpp>
     #include <glad/glad.h>
+    #include <GLFW/glfw3.h>
 
     // Exposed library functions and classes
     namespace arcana {
@@ -375,6 +376,7 @@
                 bool wasResized; // Checks if the window was resized
                 bool wasClosed; // Checks if the window was closed this frame
                 bool wasMoved; // Checks if the window was moved
+                Vector2 windowPos; // Stores the window position
             };
             
             // Store mouse events
@@ -395,12 +397,23 @@
             WindowData windowData;
             KeyboardData keyboardData;
             MouseData mouseData;
+            GamepadData gamepadData;
+        };
+
+        // ===== WINDOW.HPP ======
+        // Used to create a window object
+        class Window {
+            private: 
+                GLFWwindow* window;
+                Color background_color;
+                bool haltWhileHidden;
         };
 
         // ====== GAMECONTEXT.HPP ======
         // Used to communicate with the application logic
         class GameContext {
             private:
+                Window* win_pointer;
                 Camera* curr_camera;
                 EventData event_data;
             public:
@@ -416,10 +429,13 @@
                 // GETTERS
                 // =======
                 Camera* getCamera();
-                
+
                 // FUNCTIONS
                 // =========
                 inline bool wasWindowResized() {return event_data.windowData.wasResized;}
+                inline bool wasWindowMoved() {return event_data.windowData.wasMoved;}
+
+                void updateTitle(const char* title); // Set a new title for the game window during runtime
         };
 
         // ====== APPLICATION.HPP ======
