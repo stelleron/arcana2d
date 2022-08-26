@@ -84,6 +84,7 @@ OBJECTS := \
 	$(OBJDIR)/miniaudio.o \
 	$(OBJDIR)/AppConfig.o \
 	$(OBJDIR)/Application.o \
+	$(OBJDIR)/GameContext.o \
 	$(OBJDIR)/Audio.o \
 	$(OBJDIR)/DrawGeometry.o \
 	$(OBJDIR)/Geometry.o \
@@ -92,7 +93,7 @@ OBJECTS := \
 	$(OBJDIR)/RenderContext.o \
 	$(OBJDIR)/Shader.o \
 	$(OBJDIR)/Sprite.o \
-	$(OBJDIR)/GameContext.o \
+	$(OBJDIR)/EventData.o \
 	$(OBJDIR)/Image.o \
 	$(OBJDIR)/Camera.o \
 	$(OBJDIR)/Color.o \
@@ -165,6 +166,9 @@ $(OBJDIR)/AppConfig.o: src/app/AppConfig.cpp
 $(OBJDIR)/Application.o: src/app/Application.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
+$(OBJDIR)/GameContext.o: src/app/GameContext.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 $(OBJDIR)/Audio.o: src/audio/Audio.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
@@ -189,7 +193,7 @@ $(OBJDIR)/Shader.o: src/gfx/Shader.cpp
 $(OBJDIR)/Sprite.o: src/gfx/Sprite.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
-$(OBJDIR)/GameContext.o: src/input/GameContext.cpp
+$(OBJDIR)/EventData.o: src/input/EventData.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 $(OBJDIR)/Image.o: src/res/Image.cpp

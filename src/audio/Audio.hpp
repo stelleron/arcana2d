@@ -4,7 +4,14 @@
     namespace arcana {
         // Used to create the audio context
         class AudioContext {
+            public:
+                // Constructor
+                AudioContext();
+                // Destructor
+                ~AudioContext();
 
+                // Play a sound
+                void playSound(const char* soundpath);
         };
     }
 #endif

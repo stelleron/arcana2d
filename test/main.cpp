@@ -3,16 +3,17 @@
 
 class UntitledGame : public arcana::Application {
     arcana::Sprite wall;
+    arcana::AudioContext audio_ctx;
 
     void config(arcana::AppConfig& config) {
-
+        config.resizable = true;
     }
 
     void init() {
         wall.load("cache/wall.jpg");
     }
 
-    void update() {
+    void update(arcana::GameContext& ctx) {
 
     }
 

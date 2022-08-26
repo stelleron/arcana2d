@@ -34,6 +34,12 @@
 
                 // Swap buffers on the window
                 void swapBuffer();
+
+                // Set the window user data
+                void setData(void* ptr);
+
+                // Get the window user data
+                void* getData();
         };
     }
 #endif

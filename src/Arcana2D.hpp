@@ -334,6 +334,19 @@
                 void draw(Sprite& sprite);
         };
 
+        // ====== AUDIO.HPP ======
+        // Used to create the audio context
+        class AudioContext {
+            public:
+                // Constructor
+                AudioContext();
+                // Destructor
+                ~AudioContext();
+
+                // Play a sound
+                void playSound(const char* soundpath);
+        };
+
         // ====== APPCONFIG.HPP ======
         // Used to configure the application
         struct AppConfig {
@@ -354,6 +367,26 @@
             AppConfig();
         };
 
+        // ====== GAMECONTEXT.HPP ======
+        // Used to communicate with the application logic
+        class GameContext {
+            private:
+                Camera* curr_camera;
+            public:
+                // Constructor
+                GameContext();
+                // Destructor
+                ~GameContext();
+
+                // SETTERS
+                // =======
+                void setCamera(Camera& camera);
+
+                // GETTERS
+                // =======
+                Camera* getCamera();
+        };
+
         // ====== APPLICATION.HPP ======
         // Used to create the Application class to be extended
         class Application {
@@ -361,7 +394,7 @@
             public:
                 virtual void config(AppConfig& config) = 0;
                 virtual void init() = 0;
-                virtual void update() = 0;
+                virtual void update(GameContext& ctx) = 0;
                 virtual void render(RenderContext& ctx) = 0;
                 virtual void finish() = 0;
         };

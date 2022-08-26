@@ -84,6 +84,14 @@ namespace arcana {
         glfwSwapBuffers(window);
     }
 
+    void Window::setData(void* ptr) {
+        glfwSetWindowUserPointer(window, ptr);
+    }
+
+    void* Window::getData() {
+        return glfwGetWindowUserPointer(window);
+    }
+
     Window::~Window() {
         // Destroying for proper practice
         glfwDestroyWindow(window);

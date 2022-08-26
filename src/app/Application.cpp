@@ -4,6 +4,7 @@
 #include "window/Window.hpp"
 
 #include "app/AppConfig.hpp"
+#include "app/GameContext.hpp"
 #include "app/Application.hpp"
 
 namespace arcana {
@@ -13,6 +14,7 @@ namespace arcana {
         Window window;
         Camera camera;
         RenderContext render_ctx;
+        GameContext game_ctx;
 
         // Game loop
         app.config(config);
@@ -22,13 +24,20 @@ namespace arcana {
         render_ctx.init();
         app.init();
 
+        window.setData(&game_ctx);
+
         while(!window.shouldClose()) {
-            window.pollEvents();
             if (window.isActive()) {
-                render_ctx.setCurrentShader(&shader);
-                render_ctx.setCurrentCamera(&camera);
-                app.update();
+
+                // Update
+                window.pollEvents();
+                game_ctx.setCamera(camera);
+                app.update(game_ctx);
+
+                // Render
                 window.fill();
+                render_ctx.setCurrentShader(&shader);
+                render_ctx.setCurrentCamera(game_ctx.getCamera());
                 app.render(render_ctx);
                 window.swapBuffer();
             }
