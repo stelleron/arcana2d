@@ -19,6 +19,9 @@
 
                 // Get the projection matrix
                 Mat4 getProjectionMatrix();
+
+                // Resize the camera dimensions
+                void resizeCamera(Vector2 new_dim);
         };
     }
 #endif

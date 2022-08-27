@@ -19,4 +19,8 @@ namespace arcana {
     Mat4 Camera::getProjectionMatrix() {
         return glm::ortho(0.0f, camera_dim.x, camera_dim.y, 0.0f, -1.0f, 1.0f);
     }
+
+    void Camera::resizeCamera(Vector2 new_dim) {
+        camera_dim = new_dim;
+    }
 }
