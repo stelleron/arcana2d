@@ -43,6 +43,9 @@
 
                 // Set the title of the window
                 void updateTitle(const char* title);
+
+                // Set the icon of the window
+                void setIcon(int width, int height, unsigned char* data);
         };
     }
 #endif

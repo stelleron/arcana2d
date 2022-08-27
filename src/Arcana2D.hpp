@@ -221,7 +221,7 @@
         };
 
         // ====== IMAGE.HPP ======
-        // Namespace for loading images
+        // Struct for loading images
         struct Image {
             unsigned char* data;
             int width;
@@ -235,6 +235,7 @@
             ~Image();
 
             void load(const char* path);
+            bool isLoaded();
         };
 
         // ====== SHADER.HPP ======
@@ -296,9 +297,11 @@
                 // Constructor
                 Sprite();
                 Sprite(const char* path);
+                Sprite(const Image& image);
 
                 // Load the sprite
                 void load(const char* path);
+                void load(const Image& image);
                 // Get the ID of the sprite
                 inline unsigned int getID() {return id;}
 
@@ -436,6 +439,7 @@
                 inline bool wasWindowMoved() {return event_data.windowData.wasMoved;}
 
                 void updateTitle(const char* title); // Set a new title for the game window during runtime
+                void setWindowIcon(const Image& image); // Set a icon
         };
 
         // ====== APPLICATION.HPP ======
@@ -444,7 +448,7 @@
             // Application virtual functions
             public:
                 virtual void config(AppConfig& config) = 0;
-                virtual void init() = 0;
+                virtual void init(GameContext& ctx) = 0;
                 virtual void update(GameContext& ctx) = 0;
                 virtual void render(RenderContext& ctx) = 0;
                 virtual void finish() = 0;

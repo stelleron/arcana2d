@@ -1,6 +1,5 @@
 #include <glad/glad.h>
 #include "gfx/Sprite.hpp"
-#include "res/Image.hpp"
 
 namespace arcana {
     // SPRITE IMPL.
@@ -12,11 +11,19 @@ namespace arcana {
         load(path);
     }
 
+    Sprite::Sprite(const Image& image) {
+        load(image);
+    }
+
     void Sprite::load(const char* path) {
         // Load image
         Image image(path);
 
         // Load texture
+        load(image);
+    }
+
+    void Sprite::load(const Image& image) {
         glGenTextures(1, &id);
         glBindTexture(GL_TEXTURE_2D, id);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);

@@ -32,4 +32,8 @@ namespace arcana {
     void GameContext::updateTitle(const char* title) {
         win_pointer->updateTitle(title);
     }
+
+    void GameContext::setWindowIcon(const Image& image) {
+        win_pointer->setIcon(image.width, image.height, image.data);
+    }
 }

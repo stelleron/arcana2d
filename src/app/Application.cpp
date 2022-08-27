@@ -22,17 +22,17 @@ namespace arcana {
         Shader shader(0, 0);
         camera.defaultSettings(config.width, config.height);
         render_ctx.init();
-        app.init();
 
         game_ctx.setWindow(window);
         window.setData(&game_ctx);
+        app.init(game_ctx);
 
         while(!window.shouldClose()) {
+            game_ctx.resetEvents();
+            window.pollEvents();
             if (window.isActive()) {
 
-                // Update
-                game_ctx.resetEvents();
-                window.pollEvents();
+                // Update;
                 game_ctx.setCamera(camera);
                 app.update(game_ctx);
 

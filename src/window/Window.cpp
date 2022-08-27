@@ -1,6 +1,8 @@
 #include <glad/glad.h>
 #include "window/Window.hpp"
 #include "window/Callbacks.hpp"
+#include "utils/Logger.hpp"
+#include "res/Image.hpp"
 
 namespace arcana {
     // WINDOW IMPL.
@@ -94,6 +96,14 @@ namespace arcana {
 
     void Window::updateTitle(const char* title) {
         glfwSetWindowTitle(window, title);
+    }
+
+    void Window::setIcon(int width, int height, unsigned char* data) {
+        GLFWimage icon[1] = {0};
+        icon[0].width = width;
+        icon[0].height = height;
+        icon[0].pixels = data;
+        glfwSetWindowIcon(window, 1, icon);
     }
 
     Window::~Window() {

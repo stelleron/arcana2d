@@ -3,6 +3,7 @@
 
     #include "utils/Camera.hpp"
     #include "input/EventData.hpp"
+    #include "res/Image.hpp"
     #include "window/Window.hpp"
 
     namespace arcana {
@@ -36,6 +37,7 @@
                 inline bool wasWindowMoved() {return event_data.windowData.wasMoved;}
 
                 void updateTitle(const char* title); // Set a new title for the game window during runtime
+                void setWindowIcon(const Image& image); // Set a icon
         };
     }
 #endif

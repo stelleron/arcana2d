@@ -1,7 +1,7 @@
 #ifndef ARCANA2D_IMAGE
     #define ARCANA2D_IMAGE
     namespace arcana {
-        // Namespace for loading images
+        // Struct for loading images
         struct Image {
             unsigned char* data;
             int width;
@@ -15,6 +15,7 @@
             ~Image();
 
             void load(const char* path);
+            bool isLoaded();
         };
     }
 #endif

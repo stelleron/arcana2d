@@ -21,4 +21,13 @@ namespace arcana {
         stbi_set_flip_vertically_on_load(1);
         data =  stbi_load(path, &width, &height, &colorChannels, STBI_rgb_alpha); 
     }
+
+    bool Image::isLoaded() {
+        if (data) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
 }

@@ -2,6 +2,7 @@
 #include "Arcana2D.hpp"
 
 class UntitledGame : public arcana::Application {
+    arcana::Image logo;
     arcana::Sprite wall;
     arcana::AudioContext audio_ctx;
 
@@ -9,8 +10,13 @@ class UntitledGame : public arcana::Application {
         config.resizable = true;
     }
 
-    void init() {
-        wall.load("cache/wall.jpg");
+    void init(arcana::GameContext& ctx) {
+        logo.load("cache/wall.jpg");
+        wall.load(logo);
+        
+        if (logo.isLoaded())
+            std::puts("Icon loaded successfully!");
+            ctx.setWindowIcon(logo);
     }
 
     void update(arcana::GameContext& ctx) {
