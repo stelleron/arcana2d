@@ -14,5 +14,7 @@ namespace arcana {
         transparent = false;
         focused = true;
         haltWhileHidden = true;
+
+        fps_cap = 60;
     }
 }

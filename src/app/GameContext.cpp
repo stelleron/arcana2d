@@ -2,7 +2,7 @@
 
 namespace arcana {
     GameContext::GameContext() {
-
+        dt = 0;
     }
 
     GameContext::~GameContext() {
@@ -15,6 +15,10 @@ namespace arcana {
 
     void GameContext::setWindow(Window& window) {
         win_pointer = &window;
+    }
+
+    void GameContext::setDeltaTime(float dt) {
+        this->dt = dt;
     }
 
     Camera* GameContext::getCamera() {

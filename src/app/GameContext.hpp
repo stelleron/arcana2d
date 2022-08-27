@@ -13,6 +13,7 @@
                 Window* win_pointer;
                 Camera* curr_camera;
                 EventData event_data;
+                float dt;
             public:
                 // Constructor
                 GameContext();
@@ -23,6 +24,7 @@
                 // =======
                 void setCamera(Camera& camera);
                 void setWindow(Window& window);
+                void setDeltaTime(float dt);
 
                 // GETTERS
                 // =======
@@ -35,6 +37,9 @@
 
                 inline bool wasWindowResized() {return event_data.windowData.wasResized;}
                 inline bool wasWindowMoved() {return event_data.windowData.wasMoved;}
+
+                inline float getDeltaTime() {return dt;}
+                inline int getFPS() {return (int)1.0f/dt;}
 
                 void updateTitle(const char* title); // Set a new title for the game window during runtime
                 void setWindowIcon(const Image& image); // Set a icon

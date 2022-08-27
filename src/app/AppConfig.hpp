@@ -20,6 +20,9 @@
             bool focused;
             bool haltWhileHidden; // Set whether the app will pause while hidden
 
+            // Framerate cap
+            int fps_cap;
+
             // Default constructor
             AppConfig();
         };

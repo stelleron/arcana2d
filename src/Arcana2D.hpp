@@ -3,6 +3,7 @@
     
     // Includes
     #include <string>
+    #include <chrono>
     #include <glm/glm.hpp>
     #include <glad/glad.h>
     #include <GLFW/glfw3.h>
@@ -84,6 +85,26 @@
 
                 // Get the projection matrix
                 Mat4 getProjectionMatrix();
+        };
+
+        // ====== TIMER.HPP ======
+        using TimePoint = std::chrono::time_point<std::chrono::high_resolution_clock>;
+        // Used to create a timer object
+        class Timer {
+            private:
+                TimePoint startTime;
+            public:
+                // Constructor
+                Timer();
+
+                // Reset the timer
+                void reset();
+
+                // Get the elapsed time
+                float getElapsed();
+
+                // Get the elapsed time in milliseconds
+                float getElapsedMillis();
         };
 
         // ====== GEOMETRY.HPP ======
@@ -362,10 +383,14 @@
             bool resizable; 
             bool maximized; 
             bool fullscreen;
+            bool decorated;
             bool vsync;
             bool transparent;
             bool focused;
             bool haltWhileHidden; // Set whether the app will pause while hidden
+
+            // Framerate cap
+            int fps_cap;
 
             // Default constructor
             AppConfig();
@@ -419,6 +444,7 @@
                 Window* win_pointer;
                 Camera* curr_camera;
                 EventData event_data;
+                float dt;
             public:
                 // Constructor
                 GameContext();
@@ -437,6 +463,9 @@
                 // =========
                 inline bool wasWindowResized() {return event_data.windowData.wasResized;}
                 inline bool wasWindowMoved() {return event_data.windowData.wasMoved;}
+
+                inline float getDeltaTime() {return dt;}
+                inline int getFPS() {return (int)1.0f/dt;}
 
                 void updateTitle(const char* title); // Set a new title for the game window during runtime
                 void setWindowIcon(const Image& image); // Set a icon

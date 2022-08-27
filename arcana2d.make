@@ -95,6 +95,7 @@ OBJECTS := \
 	$(OBJDIR)/Sprite.o \
 	$(OBJDIR)/EventData.o \
 	$(OBJDIR)/Image.o \
+	$(OBJDIR)/Timer.o \
 	$(OBJDIR)/Camera.o \
 	$(OBJDIR)/Color.o \
 	$(OBJDIR)/Callbacks.o \
@@ -197,6 +198,9 @@ $(OBJDIR)/EventData.o: src/input/EventData.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 $(OBJDIR)/Image.o: src/res/Image.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
+$(OBJDIR)/Timer.o: src/time/Timer.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 $(OBJDIR)/Camera.o: src/utils/Camera.cpp
