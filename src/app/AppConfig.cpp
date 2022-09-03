@@ -1,4 +1,6 @@
 #include "app/AppConfig.hpp"
+#include <GLFW/glfw3.h>
+
 namespace arcana {
     AppConfig::AppConfig() {
         width = 800;
@@ -13,8 +15,11 @@ namespace arcana {
         vsync = true;
         transparent = false;
         focused = true;
-        haltWhileHidden = true;
+        halt_while_hidden = true;
 
         fps_cap = 60;
+        opacity = 1.0f;
+        min_size = Vector2(GLFW_DONT_CARE, GLFW_DONT_CARE);
+        max_size = Vector2(GLFW_DONT_CARE, GLFW_DONT_CARE);
     }
 }

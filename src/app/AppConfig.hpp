@@ -3,6 +3,7 @@
     // Includes
     #include <string>
     #include "utils/Color.hpp"
+    #include "utils/Vector.hpp"
 
     namespace arcana {
         struct AppConfig {
@@ -11,6 +12,7 @@
             std::string title;
             Color background_color;
 
+            // Window settings
             bool resizable; 
             bool maximized; 
             bool fullscreen;
@@ -18,10 +20,15 @@
             bool vsync;
             bool transparent;
             bool focused;
-            bool haltWhileHidden; // Set whether the app will pause while hidden
+            bool halt_while_hidden; // Set whether the app will pause while hidden
 
             // Framerate cap
             int fps_cap;
+            // Opacity
+            float opacity;
+            // Min to max size
+            Vector2 min_size;
+            Vector2 max_size;
 
             // Default constructor
             AppConfig();

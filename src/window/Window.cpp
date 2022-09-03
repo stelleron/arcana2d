@@ -1,11 +1,8 @@
 #include <glad/glad.h>
 #include "window/Window.hpp"
-#include "window/Callbacks.hpp"
 #include "utils/Logger.hpp"
-#include "res/Image.hpp"
 
 namespace arcana {
-    // WINDOW IMPL.
     Window::Window() {
         glfwDefaultWindowHints();
         glfwInit();
@@ -15,6 +12,7 @@ namespace arcana {
         #ifdef __APPLE__
             glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
         #endif
+        LOG("Arcana2D: Initialised GLFW!");
     }
 
     void Window::init(const AppConfig& config) {
@@ -34,12 +32,25 @@ namespace arcana {
             window = glfwCreateWindow(config.width, config.height, 
                                   config.title.c_str(), NULL, NULL);
         }
+        if (window == NULL) {
+            LOG("Arcana2D: Could not initialise a window!");
+            exit(1);
+        }
+        else {
+            LOG("Arcana2D: Initialised the window!");
+        }
 
         // Set the window to the current context
         glfwMakeContextCurrent(window);
 
         // Initialise GLAD
-        gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
+        if(!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
+            LOG("Arcana2D: Could not initialise GLAD!");
+            exit(1);
+        }
+        else {
+            LOG("Arcana2D: Initialised GLAD!");
+        }
 
         // And set the OpenGL viewport
         int left, top, right, bottom;
@@ -52,13 +63,21 @@ namespace arcana {
         // And set callbacks
         setCallbacks(window);
 
+        // And set window size limits
+        glfwSetWindowSizeLimits(window, config.min_size.x, config.min_size.y, config.max_size.x, config.max_size.y);
+        min_size = Vector2(config.min_size.x, config.min_size.y);
+        max_size = Vector2(config.max_size.x, config.max_size.y);
+
+        // And opacity
+        glfwSetWindowOpacity(window, config.opacity);
+
         // Finally set vsync
         if (config.vsync) 
             glfwSwapInterval(1);
         else
             glfwSwapInterval(0);
 
-        haltWhileHidden = config.haltWhileHidden;
+        halt_while_hidden = config.halt_while_hidden;
     }
 
     void Window::pollEvents() {
@@ -69,10 +88,44 @@ namespace arcana {
         return glfwWindowShouldClose(window);
     }
 
+    void Window::close() {
+        glfwSetWindowShouldClose(window, true);
+        LOG("Window: Closing the window!");
+    }
+
+    void Window::keepOpen() {
+        glfwSetWindowShouldClose(window, false);
+        LOG("Window: Keeping the window open!");
+    }
+
     bool Window::isActive() {
-        if (haltWhileHidden)
-            if (!glfwGetWindowAttrib(window, GLFW_VISIBLE))
+        #ifdef ENABLE_ARCANA_LOGGER
+            static bool loggedActive = false;
+            static bool loggedInactive = false;
+        #endif
+
+        if (halt_while_hidden) {
+            if (!glfwGetWindowAttrib(window, GLFW_VISIBLE)) {
+                #ifdef ENABLE_ARCANA_LOGGER
+                    if (!loggedActive) {
+                        loggedActive = true;
+                        loggedInactive = false;
+                        LOG("Window: Is currently hidden and inactive!");
+                    }
+                #endif
                 return false;
+            }
+            else {
+                #ifdef ENABLE_ARCANA_LOGGER
+                    if (!loggedInactive) {
+                        loggedInactive = true;
+                        loggedActive = false;
+                        LOG("Window: Is currently active!");
+                    }
+                #endif
+                return true;
+            }
+        }
         return true;
     }
 
@@ -92,18 +145,16 @@ namespace arcana {
 
     void* Window::getData() {
         return glfwGetWindowUserPointer(window);
-    }
+    }   
 
     void Window::updateTitle(const char* title) {
         glfwSetWindowTitle(window, title);
     }
 
-    void Window::setIcon(int width, int height, unsigned char* data) {
-        GLFWimage icon[1] = {0};
-        icon[0].width = width;
-        icon[0].height = height;
-        icon[0].pixels = data;
-        glfwSetWindowIcon(window, 1, icon);
+    Vector2 Window::getWindowSize() {
+        int width, height;
+        glfwGetWindowSize(window, &width, &height);
+        return Vector2(width, height);
     }
 
     Window::~Window() {

@@ -1,6 +1,6 @@
 #ifndef ARCANA2D_LIBRARY
     #define ARCANA2D_LIBRARY
-    
+
     // Includes
     #include <string>
     #include <chrono>
@@ -54,39 +54,6 @@
         using Mat3 = glm::mat3;
         using Mat4 = glm::mat4;
 
-        // ====== VERTEX.HPP ======
-        // Used to create a vertex object
-        // Used to create a vertex object
-        struct Vertex {
-            Vector2 pos;
-            Vector2 texCoords;
-            Color color;
-
-            // Constructor
-            Vertex();
-            Vertex(Vector2 pos);
-            Vertex(Vector2 pos, Color color);
-            Vertex(Vector2 pos, Color color, Vector2 texCoords);
-        };
-
-        // ====== CAMERA.HPP ======
-        // Used to create a 2D camera
-        class Camera {
-            private:
-                Vector2 camera_dim; // Stores the camera dimensions
-            public:
-                // Constructor
-                Camera();
-                // Destructor 
-                ~Camera();
-
-                // Configure the camera to default settings
-                void defaultSettings(int width, int height);
-
-                // Get the projection matrix
-                Mat4 getProjectionMatrix();
-        };
-
         // ====== TIMER.HPP ======
         using TimePoint = std::chrono::time_point<std::chrono::high_resolution_clock>;
         // Used to create a timer object
@@ -107,270 +74,26 @@
                 float getElapsedMillis();
         };
 
-        // ====== GEOMETRY.HPP ======
-        // Used to create a line object
-        struct Line {
-            Vector2 startPoint;
-            Vector2 endPoint;
-            
-            // Constructors
-            Line();
-            Line(Vector2 startPoint, Vector2 endPoint);
-        };
-
-        // Used to create a triangle
-        struct Triangle {
-            Vector2 point1;
-            Vector2 point2;
-            Vector2 point3;
-
-            // Constructors
-            Triangle();
-            Triangle(Vector2 point, int width, int height); // Right angle triangle
-            Triangle(Vector2 point1, Vector2 point2, Vector2 point3);
-        };
-
-        // Used to create a quadrilateral
-        struct Quadrilateral {
-            Vector2 point1;
-            Vector2 point2;
-            Vector2 point3;
-            Vector2 point4;
-
-            // Constructors
-            Quadrilateral();
-            Quadrilateral(Vector2 point1, Vector2 point2, Vector2 point3, Vector2 point4);
-        };   
-
-        // Used to create a rectangle
-        struct Rectangle {
-            Vector2 point;
-            int width;
-            int height;
-
-            // Constructors
-            Rectangle();
-            Rectangle(Vector2 point, int size); // Square
-            Rectangle(Vector2 point, int width, int height);
-        };
-
-        // Used to create a circle
-        struct Circle {
-            Vector2 center;
-            int radius;
-
-            // Constructors
-            Circle();
-            Circle(Vector2 center, int radius);
-        };
-
-        // ====== DRAWGEOMETRY.HPP ======
-
-        // Used to create a triangle with color
-        struct DrawTriangle : public Triangle {
-            Color color;
-            DrawTriangle(const Triangle& triangle, const Color& color);
-        };
-
-        // Used to make drawable objects
-        DrawTriangle makeDrawable(const Triangle triangle, const Color color);
-        
-        // ====== VERTEXBUFFER.HPP ======
-         // Enum for draw modes
-        enum RenderMode {
-            Points,
-            Lines,
-            Triangles,
-            Quads,
-            Circle
-        };
-
-        // Used to create a buffer to track elements 
-        struct ElementBuffer {
-            unsigned int* iArray;
-            size_t totalSize;
-
-            // Constructor
-            ElementBuffer(RenderMode rMode, int size);
-            // Destructor 
-            ~ElementBuffer();
-
-            // Setters/getters
-            size_t getSize();
-        };
-        
-        // Used to create a vertex array buffer with a fixed size
-        struct VertexBuffer {
+        // ====== RANDOM.HPP ======
+        // Used to generate randon numbers
+        class Random {
             private:
-                ElementBuffer* eBuffer; // Pointer to element buffer
-                Vertex* vArray; // List of vertices
-                int vSize; // Number of vertices
-                int primSize; // The size of the primitive
-                RenderMode rMode; // Render mode
+                static unsigned int seed;
             public:
-                // Constructor
-                VertexBuffer(RenderMode rMode, int primNum);
-                // Destructor
-                ~VertexBuffer();
-
-                // Check if there is space to add an object, returns True if available
-                bool checkSpace(int startIndex, int numVertices);
-
-                // Clear the vertex buffer
-                void clear();
-
-                // Convert the vertex array into a float array (heap allocated)
-                float* getFloatArray();
-                // Get the size of the array
-                size_t getArraySize();
-                // Get the render type of the buffer 
-                inline RenderMode getRenderType() {return rMode;}
-                // Get the index array
-                unsigned int* getIndexArray();
-                // Get the size of the index array
-                size_t getIndexArraySize();
-                // Set an induvidual vertex with the array operator
-                Vertex& operator[](int index);
-                // Get an induvidual vertex with the array operator
-                Vertex operator[](int index) const;
-
-                // Used to add objects to the vertex buffer 
-                void add(const Triangle& triangle, int startIndex);
-                void add(const DrawTriangle& triangle, int startIndex);
-
-                void add(const Rectangle& rectangle, int startIndex);
+                // Generate a random number between the two given numbers
+                static int generateNum(int min, int max);
+                // Set a seed
+                static void setSeed(unsigned int nSeed);
         };
 
-        // ====== IMAGE.HPP ======
-        // Struct for loading images
-        struct Image {
-            unsigned char* data;
-            int width;
-            int height;
-            int colorChannels;
-
-            // Constructor
-            Image();
-            Image(const char* path);
-            // Destructor 
-            ~Image();
-
-            void load(const char* path);
-            bool isLoaded();
-        };
-
-        // ====== SHADER.HPP ======
-        // Used to create a shader class 
-        class Shader {
-            private:
-                bool is_init;
-                unsigned int id;
-            public:
-                // Different shader constructors 
-                Shader();
-                Shader(int exclude1, int exclude2);
-                Shader(const char* vSource, int exclude);
-                Shader(int exclude, const char* fSource);
-                Shader(const char* vSource, const char* fSource);
-
-                // Uniform setting functions
-                void setBool(const char* name, bool value);  
-                void setInt(const char* name, int value);   
-                void setFloat(const char* name, float value);
-                void setMat4(const char* name, Mat4 matrix);
-
-                // Use the shader
-                void use();
-
-                // Getters
-                inline const unsigned int getID() {return id;}
-                inline const bool getInit() {return is_init;}
-
-                // Setters
-                void deInit() { is_init = false;}
-
-                // Copy assignment operator
-                Shader& operator=(Shader& shader) {
-                    if (is_init) {glDeleteProgram(id);} 
-                    id = shader.getID();
-                    shader.deInit();
-                    is_init = true;
-                    return *this;
-                }
-
-                // Destructor
-                ~Shader();
-        };
-        
-        // ====== SPRITE.HPP ======
-        // Used to create a sprite
-        class Sprite {
-            private:
-                unsigned int id; 
-                bool is_init;
-
-            public:
-                // Properties
-                Vector2 pos; 
-                int width;
-                int height;
-
-                // Constructor
-                Sprite();
-                Sprite(const char* path);
-                Sprite(const Image& image);
-
-                // Load the sprite
-                void load(const char* path);
-                void load(const Image& image);
-                // Get the ID of the sprite
-                inline unsigned int getID() {return id;}
-
-                // Destructor
-                ~Sprite();
-        };
-
-        // ====== RENDERCONTEXT.HPP ======
-        // Used to create a render context to draw objects
-        class RenderContext {
-            private:
-                Shader* curr_shader; // Stores the current shader
-                Camera* curr_camera; // Stores the current camera
-                unsigned int defaultTextureID; // Stores a default texture
-
-                void setVertexAttributes();
-            public:
-                // Constructor
-                RenderContext();
-                // Destructor
-                ~RenderContext();
-                
-                // Used to initialise the renderer
-                void init();
-                // Use the shader after setting some uniforms
-                void useShader();
-                // Set the current camera
-                void setCurrentCamera(Camera* camera);
-                 // Set the current shader
-                void setCurrentShader(Shader* shader);
-
-                // Draw functions
-                void draw(VertexBuffer& buffer);
-                void draw(Sprite& sprite);
-        };
-
-        // ====== AUDIO.HPP ======
-        // Used to create the audio context
-        class AudioContext {
-            public:
-                // Constructor
-                AudioContext();
-                // Destructor
-                ~AudioContext();
-
-                // Play a sound
-                void playSound(const char* soundpath);
-        };
+        // ====== WINDOW.HPP ======
+        // Used to create a window object
+        class Window {
+            private: 
+                GLFWwindow* window;
+                Color background_color;
+                bool halt_while_hidden;
+        }; // Methods hidden for the purpose of hiding window data
 
         // ====== APPCONFIG.HPP ======
         // Used to configure the application
@@ -380,6 +103,7 @@
             std::string title;
             Color background_color;
 
+            // Window settings
             bool resizable; 
             bool maximized; 
             bool fullscreen;
@@ -387,13 +111,41 @@
             bool vsync;
             bool transparent;
             bool focused;
-            bool haltWhileHidden; // Set whether the app will pause while hidden
+            bool halt_while_hidden; // Set whether the app will pause while hidden
 
             // Framerate cap
             int fps_cap;
+            // Opacity
+            float opacity;
+            // Min to max size
+            Vector2 min_size;
+            Vector2 max_size;
 
             // Default constructor
             AppConfig();
+        };
+
+        // ====== CAMERA.HPP ======
+        // Used to create a 2D camera
+        class Camera {
+            private:
+                Vector2 dimensions; // Stores the camera dimensions
+                Vector2 offset; // Camera offset
+                float rotation; // Camera rotation
+                float zoom; // Camera zoom
+            public:
+                // Constructor
+                Camera();
+                // Destructor 
+                ~Camera();
+
+                // Set the camera dimensions
+                void setDim(int width, int height);
+                // Set the zoom of the camera
+                void setZoom(float zoom);
+
+                // Get the projection matrix
+                Mat4 getProjectionMatrix();
         };
 
         // ====== EVENTDATA.HPP ======
@@ -401,9 +153,9 @@
         struct EventData {
             // Store window data
             struct WindowData {
-                bool wasResized; // Checks if the window was resized
+                bool isResized; // Checks if the window was resized
                 bool wasClosed; // Checks if the window was closed this frame
-                bool wasMoved; // Checks if the window was moved
+                bool isMoved; // Checks if the window was moved
                 Vector2 windowPos; // Stores the window position
             };
             
@@ -426,15 +178,9 @@
             KeyboardData keyboardData;
             MouseData mouseData;
             GamepadData gamepadData;
-        };
 
-        // ===== WINDOW.HPP ======
-        // Used to create a window object
-        class Window {
-            private: 
-                GLFWwindow* window;
-                Color background_color;
-                bool haltWhileHidden;
+            // Reset event data
+            void reset();
         };
 
         // ====== GAMECONTEXT.HPP ======
@@ -455,20 +201,16 @@
                 // =======
                 void setCamera(Camera& camera);
 
-                // GETTERS
-                // =======
-                Camera* getCamera();
-
                 // FUNCTIONS
                 // =========
-                inline bool wasWindowResized() {return event_data.windowData.wasResized;}
-                inline bool wasWindowMoved() {return event_data.windowData.wasMoved;}
+                inline bool wasWindowResized() {return event_data.windowData.isResized;}
+                inline bool wasWindowMoved() {return event_data.windowData.isMoved;}
 
                 inline float getDeltaTime() {return dt;}
                 inline int getFPS() {return (int)1.0f/dt;}
 
                 void updateTitle(const char* title); // Set a new title for the game window during runtime
-                void setWindowIcon(const Image& image); // Set a icon
+                // void setWindowIcon(const Image& image); // Set a icon
         };
 
         // ====== APPLICATION.HPP ======
@@ -479,7 +221,7 @@
                 virtual void config(AppConfig& config) = 0;
                 virtual void init(GameContext& ctx) = 0;
                 virtual void update(GameContext& ctx) = 0;
-                virtual void render(RenderContext& ctx) = 0;
+                virtual void render() = 0;
                 virtual void finish() = 0;
         };
 

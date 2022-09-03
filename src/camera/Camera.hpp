@@ -7,21 +7,23 @@
         // Used to create a 2D camera
         class Camera {
             private:
-                Vector2 camera_dim; // Stores the camera dimensions
+                Vector2 dimensions; // Stores the camera dimensions
+                Vector2 offset; // Camera offset
+                float rotation; // Camera rotation
+                float zoom; // Camera zoom
             public:
                 // Constructor
                 Camera();
                 // Destructor 
                 ~Camera();
 
-                // Configure the camera to default settings
-                void defaultSettings(int width, int height);
+                // Set the camera dimensions
+                void setDim(int width, int height);
+                // Set the zoom of the camera
+                void setZoom(float zoom);
 
                 // Get the projection matrix
                 Mat4 getProjectionMatrix();
-
-                // Resize the camera dimensions
-                void resizeCamera(Vector2 new_dim);
         };
     }
 #endif

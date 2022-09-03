@@ -1,69 +1,71 @@
 #include <thread>
-
-#include "utils/Camera.hpp"
 #include "utils/Logger.hpp"
 #include "time/Timer.hpp"
-#include "gfx/Shader.hpp"
-#include "gfx/RenderContext.hpp"
+#include "camera/Camera.hpp"
 #include "window/Window.hpp"
-
-#include "app/AppConfig.hpp"
-#include "app/GameContext.hpp"
 #include "app/Application.hpp"
+
 
 namespace arcana {
     void build(Application& app) {
+        LOG("Arcana2D: Building the application!");
+
         // Variable declarations
         AppConfig config;
+        Timer internalClock;
         Window window;
-        Camera camera;
-        RenderContext render_ctx;
-        GameContext game_ctx;
-        Timer timer;
-        float deltatime_cap;
+        Camera defaultCamera;
+        GameContext gameCtx;
+        float deltatimeCap;
 
-        // Game loop
-
-        // Init
+        // Game Loop
+        // 1. INIT
+        // First fetch an app config
+        LOG("Arcana2D: Configuring the application!");
         app.config(config);
+
+        // Then initialise the app based on conifgurations
+        deltatimeCap = 1.0f/config.fps_cap;
         window.init(config);
-        deltatime_cap = 1.0f/config.fps_cap;
-        Shader shader(0, 0);
-        camera.defaultSettings(config.width, config.height);
-        render_ctx.init();
-        game_ctx.setWindow(window);
-        window.setData(&game_ctx);
-        app.init(game_ctx);
+        defaultCamera.setDim(config.width, config.height);
+        gameCtx.setWindow(window);
+        gameCtx.setCamera(defaultCamera);
+        window.setData(&gameCtx);
 
+        // And then set a game context
+        LOG("Arcana2D: Initialising the application!");
+        app.init(gameCtx);
+
+        // 2. UPDATE
+        LOG("Arcana2D: Starting game loop!");
         while(!window.shouldClose()) {
-            // Reset stuff and poll events
-            timer.reset();
-            game_ctx.resetEvents();
+            // Check if game loop should be run 
+            gameCtx.resetEvents();
             window.pollEvents();
-
             if (window.isActive()) {
-
-                // Update;
-                game_ctx.setCamera(camera);
-                app.update(game_ctx);
+                // Update
+                internalClock.reset();
+                app.update(gameCtx);
+                LOG(gameCtx.isWindowIconified());
+                gameCtx.iconifyWindow();
 
                 // Render
                 window.fill();
-                render_ctx.setCurrentShader(&shader);
-                render_ctx.setCurrentCamera(game_ctx.getCamera());
-                app.render(render_ctx);
+                app.render();
                 window.swapBuffer();
 
+                // End loop
                 // Put thread to sleep to cap framerate
-                if (timer.getElapsed() < deltatime_cap) {
-                    float sleepTime = deltatime_cap - timer.getElapsed();
+                if (internalClock.getElapsed() < deltatimeCap) {
+                    float sleepTime = deltatimeCap - internalClock.getElapsed();
                     std::this_thread::sleep_for(std::chrono::milliseconds(static_cast<long int>(sleepTime * 1000.0f)));
                 }
             }
-            game_ctx.setDeltaTime(timer.getElapsed());
-            LOG(game_ctx.getFPS());
+            gameCtx.setDeltaTime(internalClock.getElapsed());
         }
 
+        // 3. FINISH
+        LOG("Arcana2D: Disposing the application!");
         app.finish();
     }
 }

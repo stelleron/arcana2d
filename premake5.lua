@@ -18,7 +18,7 @@ project "arcana2d"
     "IOKit.framework", "OpenGL.framework", "Cocoa.framework"}
 
     filter "configurations:Debug"
-        defines {"DEBUG", "ARCANA_DEBUG"}
+        defines {"DEBUG", "ENABLE_ARCANA_LOGGER"}
         symbols "On"
 
     filter "configurations:Release"

@@ -1,28 +1,24 @@
-#include <iostream>
+#include <iostream> 
 #include "Arcana2D.hpp"
 
-class UntitledGame : public arcana::Application {
-    arcana::Image logo;
-    arcana::Sprite wall;
-    arcana::AudioContext audio_ctx;
+using namespace arcana;
 
-
-    void config(arcana::AppConfig& config) {
+class ExampleGame : public Application {
+    void config(AppConfig& config) {
         config.resizable = true;
-        config.vsync = false;
+        config.halt_while_hidden = false;
     }
 
-    void init(arcana::GameContext& ctx) {
-        logo.load("cache/wall.jpg");
-        wall.load(logo);
-    }
-
-    void update(arcana::GameContext& ctx) {
+    void init(GameContext& ctx) {
 
     }
 
-    void render(arcana::RenderContext& ctx) {
-        ctx.draw(wall);
+    void update(GameContext& ctx) {
+
+    }
+
+    void render() {
+
     }
 
     void finish() {
@@ -31,6 +27,6 @@ class UntitledGame : public arcana::Application {
 };
 
 int main() {
-    UntitledGame game;
-    arcana::build(game);
+    ExampleGame game;
+    build(game);
 }

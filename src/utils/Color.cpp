@@ -1,4 +1,5 @@
 #include "utils/Color.hpp"
+#include "utils/Logger.hpp"
 #include <tgmath.h>
 
 namespace arcana {
@@ -121,6 +122,7 @@ namespace arcana {
     }
 
     Color Color::RGB(unsigned char r, unsigned char g, unsigned char b) {
+        LOG("Hello Wordl");
         return Color(r,g,b);
     }
 

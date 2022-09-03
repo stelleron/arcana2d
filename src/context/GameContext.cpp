@@ -1,4 +1,4 @@
-#include "app/GameContext.hpp"
+#include "context/GameContext.hpp"
 
 namespace arcana {
     GameContext::GameContext() {
@@ -37,7 +37,16 @@ namespace arcana {
         win_pointer->updateTitle(title);
     }
 
-    void GameContext::setWindowIcon(const Image& image) {
+    Vector2 GameContext::getWindowSize() {return win_pointer->getWindowSize();}
+    void GameContext::setMinWindowSize(int min_width, int min_height) {win_pointer->setMinSize(Vector2(min_width, min_height));}
+    void GameContext::setMaxWindowSize(int max_width, int max_height) {win_pointer->setMaxSize(Vector2(max_width, max_height));}
+    void GameContext::setWindowPos(int x, int y) {setWindowPos(Vector2(x, y));}
+    void GameContext::setWindowPos(Vector2 pos) {win_pointer->setWindowPos(pos);}
+    void GameContext::restoreWindow() {win_pointer->restore();}
+    void GameContext::iconifyWindow() {win_pointer->iconify();}
+
+
+    /* void GameContext::setWindowIcon(const Image& image) {
         win_pointer->setIcon(image.width, image.height, image.data);
-    }
+    } */
 }

@@ -1,5 +1,4 @@
 #include "time/Timer.hpp"
-#include "utils/Logger.hpp"
 
 namespace arcana {
     Timer::Timer() {

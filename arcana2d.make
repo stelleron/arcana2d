@@ -23,7 +23,7 @@ ifeq ($(config),debug)
   TARGETDIR = build
   TARGET = $(TARGETDIR)/libarcana2d.dylib
   OBJDIR = build/obj/Debug/arcana2d
-  DEFINES += -DDEBUG -DARCANA_DEBUG
+  DEFINES += -DDEBUG -DENABLE_ARCANA_LOGGER
   INCLUDES += -Iexternal/include -Isrc
   FORCE_INCLUDE +=
   ALL_CPPFLAGS += $(CPPFLAGS) -MMD -MP $(DEFINES) $(INCLUDES)
@@ -84,20 +84,12 @@ OBJECTS := \
 	$(OBJDIR)/miniaudio.o \
 	$(OBJDIR)/AppConfig.o \
 	$(OBJDIR)/Application.o \
-	$(OBJDIR)/GameContext.o \
-	$(OBJDIR)/Audio.o \
-	$(OBJDIR)/DrawGeometry.o \
-	$(OBJDIR)/Geometry.o \
-	$(OBJDIR)/Vertex.o \
-	$(OBJDIR)/VertexBuffer.o \
-	$(OBJDIR)/RenderContext.o \
-	$(OBJDIR)/Shader.o \
-	$(OBJDIR)/Sprite.o \
-	$(OBJDIR)/EventData.o \
-	$(OBJDIR)/Image.o \
-	$(OBJDIR)/Timer.o \
 	$(OBJDIR)/Camera.o \
+	$(OBJDIR)/GameContext.o \
+	$(OBJDIR)/EventData.o \
+	$(OBJDIR)/Timer.o \
 	$(OBJDIR)/Color.o \
+	$(OBJDIR)/Random.o \
 	$(OBJDIR)/Callbacks.o \
 	$(OBJDIR)/Window.o \
 
@@ -167,46 +159,22 @@ $(OBJDIR)/AppConfig.o: src/app/AppConfig.cpp
 $(OBJDIR)/Application.o: src/app/Application.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
-$(OBJDIR)/GameContext.o: src/app/GameContext.cpp
+$(OBJDIR)/Camera.o: src/camera/Camera.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
-$(OBJDIR)/Audio.o: src/audio/Audio.cpp
-	@echo $(notdir $<)
-	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
-$(OBJDIR)/DrawGeometry.o: src/geom/DrawGeometry.cpp
-	@echo $(notdir $<)
-	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
-$(OBJDIR)/Geometry.o: src/geom/Geometry.cpp
-	@echo $(notdir $<)
-	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
-$(OBJDIR)/Vertex.o: src/geom/Vertex.cpp
-	@echo $(notdir $<)
-	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
-$(OBJDIR)/VertexBuffer.o: src/geom/VertexBuffer.cpp
-	@echo $(notdir $<)
-	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
-$(OBJDIR)/RenderContext.o: src/gfx/RenderContext.cpp
-	@echo $(notdir $<)
-	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
-$(OBJDIR)/Shader.o: src/gfx/Shader.cpp
-	@echo $(notdir $<)
-	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
-$(OBJDIR)/Sprite.o: src/gfx/Sprite.cpp
+$(OBJDIR)/GameContext.o: src/context/GameContext.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 $(OBJDIR)/EventData.o: src/input/EventData.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
-$(OBJDIR)/Image.o: src/res/Image.cpp
-	@echo $(notdir $<)
-	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 $(OBJDIR)/Timer.o: src/time/Timer.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
-$(OBJDIR)/Camera.o: src/utils/Camera.cpp
+$(OBJDIR)/Color.o: src/utils/Color.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
-$(OBJDIR)/Color.o: src/utils/Color.cpp
+$(OBJDIR)/Random.o: src/utils/Random.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 $(OBJDIR)/Callbacks.o: src/window/Callbacks.cpp
