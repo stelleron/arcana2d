@@ -18,6 +18,7 @@ namespace arcana {
             mouseData.buttonLastPressed[x] = false;
             mouseData.buttonPressed[x] = false;
         }
+        mouseData.mousePos = {0,0};
     }
 
     void EventData::reset() {
@@ -37,5 +38,8 @@ namespace arcana {
         for (int x = 0; x < MouseButton::RightButton; x++) {
             mouseData.buttonLastPressed[x] = mouseData.buttonPressed[x];
         }
+        mouseData.mouseLastPos = mouseData.mousePos;
+        mouseData.mScrollH = 0.0f;
+        mouseData.mScrollV = 0.0f;
     }
 }

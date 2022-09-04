@@ -92,6 +92,19 @@
                     return false;
                 }
 
+                // Get mouse position 
+                inline Vector2 getMousePos() {return event_data.mouseData.mousePos;}
+
+                // Get mouse delta
+                inline Vector2 getMouseDelta() {return Vector2(event_data.mouseData.mousePos.x - event_data.mouseData.mouseLastPos.x, 
+                                                event_data.mouseData.mousePos.y - event_data.mouseData.mouseLastPos.y);}
+
+                // Get vertical scroll
+                inline float getVerticalScroll() {return event_data.mouseData.mScrollV;}
+
+                // Get scroll vector
+                inline Vector2 getScroll() {return Vector2(event_data.mouseData.mScrollH, event_data.mouseData.mScrollV);}
+
                 // == Keyboard input functions
                 // If the key was just pressed
                 inline bool isKeyPressed(Key key) {

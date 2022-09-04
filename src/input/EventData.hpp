@@ -149,6 +149,9 @@
             // Store mouse events
             struct MouseData {
                 Vector2 mousePos; 
+                Vector2 mouseLastPos;
+                float mScrollH;
+                float mScrollV;
                 bool buttonPressed[MouseButton::RightButton];
                 bool buttonLastPressed[MouseButton::RightButton];
             };
@@ -162,7 +165,7 @@
 
             // Store gamepad data
             struct GamepadData {
-
+                // TODO in a later version
             };
 
             WindowData windowData;

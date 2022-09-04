@@ -180,6 +180,17 @@ namespace arcana {
         }
     }
 
+    void mousePosCallback(GLFWwindow* window, double xpos, double ypos) {
+        GameContext* ctx = (GameContext*)glfwGetWindowUserPointer(window);
+        (ctx->getEventData()).mouseData.mousePos = {xpos, ypos};
+    }
+
+    void mouseScrollCallback(GLFWwindow* window, double xoffset, double yoffset) {
+        GameContext* ctx = (GameContext*)glfwGetWindowUserPointer(window);
+        (ctx->getEventData()).mouseData.mScrollH = xoffset;
+        (ctx->getEventData()).mouseData.mScrollV = yoffset;
+    }
+
     void setCallbacks(GLFWwindow* window) {
         glfwSetWindowIconifyCallback(window, windowIconifyCallback);
         glfwSetWindowMaximizeCallback(window, windowMaxmizeCallback);
@@ -188,5 +199,7 @@ namespace arcana {
         glfwSetKeyCallback(window, keyboardCallback);
         glfwSetCharCallback(window, charCallback);
         glfwSetMouseButtonCallback(window, mouseButtonCallback);
+        glfwSetCursorPosCallback(window, mousePosCallback);
+        glfwSetScrollCallback(window, mouseScrollCallback);
     }
 }
