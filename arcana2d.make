@@ -87,6 +87,7 @@ OBJECTS := \
 	$(OBJDIR)/Camera.o \
 	$(OBJDIR)/GameContext.o \
 	$(OBJDIR)/EventData.o \
+	$(OBJDIR)/Filesystem.o \
 	$(OBJDIR)/Timer.o \
 	$(OBJDIR)/Color.o \
 	$(OBJDIR)/Random.o \
@@ -166,6 +167,9 @@ $(OBJDIR)/GameContext.o: src/context/GameContext.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 $(OBJDIR)/EventData.o: src/input/EventData.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
+$(OBJDIR)/Filesystem.o: src/res/Filesystem.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 $(OBJDIR)/Timer.o: src/time/Timer.cpp

@@ -4,6 +4,7 @@
 namespace arcana {
     Random::Random() {
         seed = 1;
+        srand(seed);
     }
 
     Random::Random(unsigned int seed) {
@@ -12,7 +13,6 @@ namespace arcana {
 
     int Random::generateNum(int min, int max) {
         // Make sure that max is greater than min. Else swap them around
-        srand(seed);
         int nMax, nMin;
         if (min > max) {
             nMax = min;
@@ -27,5 +27,6 @@ namespace arcana {
 
     void Random::setSeed(unsigned int nSeed) {
         seed = nSeed;
+        srand(seed);
     }
 }

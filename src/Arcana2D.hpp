@@ -90,6 +90,25 @@
                 void setSeed(unsigned int nSeed);
         };
 
+        // ====== FILESYSTEM.CPP ======
+        // Used to create a filesystem
+        class Filesystem {
+            private:
+                std::string currentWorkingDir; // Stores the current working directory to load files from
+            public: 
+                // Constructor
+                Filesystem();
+                // Set the working directory
+                void setDir(const std::string& dir);
+                // File loading functions
+                std::string loadFileStr(const std::string& fpath); // Load it as a string instead
+                char* loadFileText(const std::string& fpath); // Null terminates the file text
+                unsigned char* loadFileData(const std::string& path);
+                // File unloading functions
+                void unloadFileText(char* data);
+                void unloadFileData(unsigned char* data);
+        };
+
         // ====== WINDOW.HPP ======
         // Used to create a window object
         class Window {
@@ -336,6 +355,7 @@
                 Window* win_pointer;
                 Camera* curr_camera;
                 EventData event_data;
+                Random randNumGen;
                 float dt;
             public:
                 // SETTERS
@@ -462,6 +482,10 @@
                 }
 
                 // == Gamepad input functions
+
+                // == Random functions
+                inline void setSeed(unsigned int seed) {randNumGen.setSeed(seed);}
+                inline int generateNum(int min, int max) {return randNumGen.generateNum(min, max);}
         };
 
         // ====== APPLICATION.HPP ======
