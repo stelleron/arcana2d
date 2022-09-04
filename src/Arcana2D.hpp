@@ -4,6 +4,7 @@
     // Includes
     #include <string>
     #include <chrono>
+    #include <queue>
     #include <glm/glm.hpp>
     #include <glad/glad.h>
     #include <GLFW/glfw3.h>
@@ -149,35 +150,177 @@
         };
 
         // ====== EVENTDATA.HPP ======
+        // Current supported keys enum
+        enum Key {
+            Space = 1,
+            Apostrophe,
+            Comma,
+            Minus,
+            Period,
+            Slash,
+            Zero,
+            One,
+            Two, 
+            Three,
+            Four,
+            Five,
+            Six,
+            Seven,
+            Eight,
+            Nine,
+            Semicolon,
+            Equal,
+            A,
+            B,
+            C,
+            D,
+            E,
+            F, 
+            G,
+            H,
+            I,
+            J,
+            K, 
+            L,
+            M,
+            N,
+            O,
+            P,
+            Q,
+            R,
+            S,
+            T,
+            U,
+            V,
+            W,
+            X,
+            Y,
+            Z,
+            LeftBracket,
+            Backslash,
+            RightBracket,
+            GraveAccent,
+            World1,
+            World2,
+            Escape,
+            Enter,
+            Tab,
+            Backspace,
+            Insert,
+            Delete,
+            Right,
+            Left,
+            Down,
+            Up,
+            PageUp,
+            PageDown,
+            Home,
+            End,
+            CapsLock,
+            ScrollLock,
+            NumLock,
+            PrintScreen,
+            Pause,
+            F1,
+            F2,
+            F3,
+            F4,
+            F5,
+            F6,
+            F7, 
+            F8,
+            F9,
+            F10,
+            F11,
+            F12,
+            F13,
+            F14, 
+            F15,
+            F16,
+            F17,
+            F18,
+            F19,
+            F20,
+            F21,
+            F22,
+            F23,
+            F24, 
+            F25,
+            KP0,
+            KP1,
+            KP2,
+            KP3,
+            KP4,
+            KP5,
+            KP6,
+            KP7,
+            KP8,
+            KP9,
+            KPDecimal,
+            KPDivide,
+            KPMultiply,
+            KPSubtract,
+            KPAdd,
+            KPEnter,
+            KPEqual,
+            LeftShift,
+            LeftControl,
+            LeftAlt,
+            LeftSuper,
+            RightShift,
+            RightControl,
+            RightAlt,
+            RightSuper,
+            Menu 
+        };
+
+        // Current supported buttons enum
+        enum MouseButton {
+            LeftButton = 1,
+            MiddleButton,
+            RightButton
+        };
+
         // Used to store event data
         struct EventData {
             // Store window data
             struct WindowData {
-                bool wasResized; // Checks if the window was resized
-                bool wasClosed; // Checks if the window was closed this frame
-                bool wasMoved; // Checks if the window was moved
+                bool wasResized; // Checks if the window has been resized
+                bool wasMoved; // Checks if the window has been moved
+                bool isMinimized; // Checks if the window is minimized
+                bool isMaximized; // Checks if the window is maximized
                 Vector2 windowPos; // Stores the window position
             };
             
             // Store mouse events
             struct MouseData {
-
+                Vector2 mousePos; 
+                Vector2 mouseLastPos;
+                float mScrollH;
+                float mScrollV;
+                bool buttonPressed[MouseButton::RightButton];
+                bool buttonLastPressed[MouseButton::RightButton];
             };
 
             // Store keyboard events
             struct KeyboardData {
-            
+                bool keyPressed[Key::Menu];
+                bool keyLastPressed[Key::Menu];
+                std::queue<unsigned char> charQueue;
             };
 
             // Store gamepad data
             struct GamepadData {
-
+                // TODO in a later version
             };
 
             WindowData windowData;
             KeyboardData keyboardData;
             MouseData mouseData;
             GamepadData gamepadData;
+
+            // Default initialiser
+            EventData();
 
             // Reset event data
             void reset();
@@ -200,17 +343,134 @@
                 // SETTERS
                 // =======
                 void setCamera(Camera& camera);
+                void setWindow(Window& window);
+                void setDeltaTime(float dt);
+
+                // GETTERS
+                // =======
+                Camera* getCamera();
+                EventData& getEventData();
 
                 // FUNCTIONS
                 // =========
-                inline bool wasWindowResized() {return event_data.windowData.wasResized;}
-                inline bool wasWindowMoved() {return event_data.windowData.wasMoved;}
+                void resetEvents(); // Reset the event data buffer
 
-                inline float getDeltaTime() {return dt;}
-                inline int getFPS() {return (int)1.0f/dt;}
+
+                // == Window functions
+                inline bool wasWindowResized() {return event_data.windowData.wasResized;} // Was the window resized last frame?
+                inline bool wasWindowMoved() {return event_data.windowData.wasMoved;} // Was the window moved last frame?
+                inline bool isWindowMinimized() {return event_data.windowData.isMinimized;} // Is the window minimized?
+                inline bool isWindowMaxmized() {return event_data.windowData.isMaximized;} // Is the window maximized?
+                inline Vector2 getWindowPos() {return event_data.windowData.windowPos;} // Gets the window position
+
+                Vector2 getWindowSize();
+                void setMinWindowSize(int min_width, int min_height);
+                void setMaxWindowSize(int max_width, int max_height);
+                void setWindowPos(int x, int y);
+                void setWindowPos(Vector2 pos);
+                void restoreWindow();
+                void minimizeWindow();
+                void maximizeWindow();
 
                 void updateTitle(const char* title); // Set a new title for the game window during runtime
                 // void setWindowIcon(const Image& image); // Set a icon
+
+                // == Time functions
+                inline float getDeltaTime() {return dt;}
+                inline int getFPS() {return (int)1.0f/dt;}
+
+                // == Mouse input functions
+                // If the mouse button was just pressed
+                inline bool isMouseButtonPressed(MouseButton button) {
+                    if (event_data.mouseData.buttonPressed[button - 1] && !event_data.mouseData.buttonLastPressed[button - 1]) {
+                        return true;
+                    }
+                    return false;
+                }
+
+                // If the mouse button was just released
+                inline bool isMouseButtonReleased(MouseButton button) {
+                    if (!event_data.mouseData.buttonPressed[button - 1] && event_data.mouseData.buttonLastPressed[button - 1]) {
+                        return true;
+                    }
+                    return false;
+                }
+
+                // If the mouse button was being held
+                inline bool isMouseButtonHeld(MouseButton button) {
+                    if (event_data.mouseData.buttonPressed[button - 1] && event_data.mouseData.buttonLastPressed[button - 1]) {
+                        return true;
+                    }
+                    return false;
+                }
+
+                // If the mouse button is up
+                inline bool isMouseButtonUp(MouseButton button) {
+                    if (!event_data.mouseData.buttonPressed[button - 1] && !event_data.mouseData.buttonLastPressed[button - 1]) {
+                        return true;
+                    }
+                    return false;
+                }
+
+                // Get mouse position 
+                inline Vector2 getMousePos() {return event_data.mouseData.mousePos;}
+
+                // Get mouse delta
+                inline Vector2 getMouseDelta() {return Vector2(event_data.mouseData.mousePos.x - event_data.mouseData.mouseLastPos.x, 
+                                                event_data.mouseData.mousePos.y - event_data.mouseData.mouseLastPos.y);}
+
+                // Get vertical scroll
+                inline float getVerticalScroll() {return event_data.mouseData.mScrollV;}
+
+                // Get scroll vector
+                inline Vector2 getScroll() {return Vector2(event_data.mouseData.mScrollH, event_data.mouseData.mScrollV);}
+
+                // == Keyboard input functions
+                // If the key was just pressed
+                inline bool isKeyPressed(Key key) {
+                    if (event_data.keyboardData.keyPressed[key - 1] && !event_data.keyboardData.keyLastPressed[key - 1]) {
+                        return true;
+                    }
+                    return false;
+                }
+
+                // If the key was just released
+                inline bool isKeyReleased(Key key) {
+                    if (!event_data.keyboardData.keyPressed[key - 1] && event_data.keyboardData.keyLastPressed[key - 1]) {
+                        return true;
+                    }
+                    return false;
+                }
+
+                // If the key is being held down
+                inline bool isKeyHeld(Key key) {
+                    if (event_data.keyboardData.keyPressed[key - 1] && event_data.keyboardData.keyLastPressed[key - 1]) {
+                        return true;
+                    }
+                    return false;
+                }
+
+                // If the key isn't being pressed at all
+                inline bool isKeyUp(Key key) {
+                    if (!event_data.keyboardData.keyPressed[key - 1] && !event_data.keyboardData.keyLastPressed[key - 1]) {
+                        return true;
+                    }
+                    return false;
+                }
+
+                // Get typed characters one at a time
+                inline unsigned char getCharPressed() {
+                    if (event_data.keyboardData.charQueue.size() > 0) {
+                        unsigned char val = event_data.keyboardData.charQueue.front();
+                        event_data.keyboardData.charQueue.pop();
+                        return val;
+                    }
+                    else {
+                        return 0;
+                    }
+                }
+
+                // == Gamepad input functions
         };
 
         // ====== APPLICATION.HPP ======
