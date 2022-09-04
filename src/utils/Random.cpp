@@ -2,9 +2,17 @@
 #include "utils/Random.hpp"
 
 namespace arcana {
-    unsigned int Random::seed = 1;
+    Random::Random() {
+        seed = 1;
+    }
+
+    Random::Random(unsigned int seed) {
+        this->seed = seed;
+    }
+
     int Random::generateNum(int min, int max) {
         // Make sure that max is greater than min. Else swap them around
+        srand(seed);
         int nMax, nMin;
         if (min > max) {
             nMax = min;
@@ -19,6 +27,5 @@ namespace arcana {
 
     void Random::setSeed(unsigned int nSeed) {
         seed = nSeed;
-        srand(seed);
     }
 }

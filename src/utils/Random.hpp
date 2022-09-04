@@ -1,15 +1,18 @@
 #ifndef ARCANA2D_RANDOM
     #define ARCANA2D_RANDOM
     namespace arcana {
-        // Used to generate randon numbers
+        // Used to generate random numbers
         class Random {
             private:
-                static unsigned int seed;
+                unsigned int seed;
             public:
+                // Constructor
+                Random();
+                Random(unsigned int seed);
                 // Generate a random number between the two given numbers
-                static int generateNum(int min, int max);
+                int generateNum(int min, int max);
                 // Set a seed
-                static void setSeed(unsigned int nSeed);
+                void setSeed(unsigned int nSeed);
         };
     }
 #endif

@@ -76,15 +76,18 @@
         };
 
         // ====== RANDOM.HPP ======
-        // Used to generate randon numbers
+        // Used to generate random numbers
         class Random {
             private:
-                static unsigned int seed;
+                unsigned int seed;
             public:
+                // Constructor
+                Random();
+                Random(unsigned int seed);
                 // Generate a random number between the two given numbers
-                static int generateNum(int min, int max);
+                int generateNum(int min, int max);
                 // Set a seed
-                static void setSeed(unsigned int nSeed);
+                void setSeed(unsigned int nSeed);
         };
 
         // ====== WINDOW.HPP ======
@@ -335,27 +338,15 @@
                 EventData event_data;
                 float dt;
             public:
-                // Constructor
-                GameContext();
-                // Destructor
-                ~GameContext();
-
                 // SETTERS
                 // =======
                 void setCamera(Camera& camera);
-                void setWindow(Window& window);
-                void setDeltaTime(float dt);
 
                 // GETTERS
                 // =======
-                Camera* getCamera();
-                EventData& getEventData();
 
                 // FUNCTIONS
                 // =========
-                void resetEvents(); // Reset the event data buffer
-
-
                 // == Window functions
                 inline bool wasWindowResized() {return event_data.windowData.wasResized;} // Was the window resized last frame?
                 inline bool wasWindowMoved() {return event_data.windowData.wasMoved;} // Was the window moved last frame?
