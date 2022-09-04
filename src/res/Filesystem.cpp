@@ -1,5 +1,4 @@
 #include "res/Filesystem.hpp"
-#include <filesystem>
 #include <fstream>
 #include <sstream>
 #include <string.h>
@@ -13,6 +12,11 @@ namespace arcana {
     }
 
     void Filesystem::setDir(const std::string& dir) {
+        if (!dirExists(dir)) {
+            LOG("Filesystem: Directory does not exist!");
+            exit(1);
+        }
+
         currentWorkingDir = dir;
         if (dir[-1] != '/') {
             currentWorkingDir += '/';
@@ -42,6 +46,11 @@ namespace arcana {
     }
 
     std::string Filesystem::loadFileStr(const std::string& dir) {
+        if (!fileExists(dir)) {
+            LOG("Filesystem: File does not exist!");
+            exit(1);
+        }
+
         std::string path = currentWorkingDir;
         path += dir;
         std::ifstream fin(path, std::ios::in);
@@ -51,6 +60,11 @@ namespace arcana {
     }
 
     char* Filesystem::loadFileText(const std::string& dir) {
+        if (!fileExists(dir)) {
+            LOG("Filesystem: File does not exist!");
+            exit(1);
+        }
+
         std::string source = loadFileStr(dir);
         char* buffer = new char[source.size()];
         memcpy( buffer, source.c_str(), source.size() );
@@ -58,6 +72,11 @@ namespace arcana {
     }
 
     unsigned char* Filesystem::loadFileData(const std::string& dir) {
+        if (!fileExists(dir)) {
+            LOG("Filesystem: File does not exist!");
+            exit(1);
+        }
+
         std::string source = loadFileStr(dir);
         unsigned char* buffer = new unsigned char[source.size()];
         strcpy((char*)buffer, source.c_str());
