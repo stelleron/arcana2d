@@ -59,7 +59,9 @@
                 // Restore the window
                 inline void restore() {glfwRestoreWindow(window);}
                 // Iconify the window
-                inline void iconify() {glfwIconifyWindow(window);}; 
+                inline void minimize() {glfwIconifyWindow(window);}; 
+                // Maximize the window
+                inline void maximize() {glfwMaximizeWindow(window);}
         };
     }
 #endif

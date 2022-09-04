@@ -153,9 +153,9 @@
         struct EventData {
             // Store window data
             struct WindowData {
-                bool isResized; // Checks if the window was resized
+                bool wasResized; // Checks if the window was resized
                 bool wasClosed; // Checks if the window was closed this frame
-                bool isMoved; // Checks if the window was moved
+                bool wasMoved; // Checks if the window was moved
                 Vector2 windowPos; // Stores the window position
             };
             
@@ -203,8 +203,8 @@
 
                 // FUNCTIONS
                 // =========
-                inline bool wasWindowResized() {return event_data.windowData.isResized;}
-                inline bool wasWindowMoved() {return event_data.windowData.isMoved;}
+                inline bool wasWindowResized() {return event_data.windowData.wasResized;}
+                inline bool wasWindowMoved() {return event_data.windowData.wasMoved;}
 
                 inline float getDeltaTime() {return dt;}
                 inline int getFPS() {return (int)1.0f/dt;}

@@ -43,7 +43,8 @@ namespace arcana {
     void GameContext::setWindowPos(int x, int y) {setWindowPos(Vector2(x, y));}
     void GameContext::setWindowPos(Vector2 pos) {win_pointer->setWindowPos(pos);}
     void GameContext::restoreWindow() {win_pointer->restore();}
-    void GameContext::iconifyWindow() {win_pointer->iconify();}
+    void GameContext::minimizeWindow() {win_pointer->minimize();}
+    void GameContext::maximizeWindow() {win_pointer->maximize();}
 
 
     /* void GameContext::setWindowIcon(const Image& image) {

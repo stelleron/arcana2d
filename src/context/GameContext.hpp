@@ -35,10 +35,11 @@
                 void resetEvents(); // Reset the event data buffer
 
 
-                // Window functions
-                inline bool isWindowResized() {return event_data.windowData.isResized;} // Was the window resized 
-                inline bool isWindowMoved() {return event_data.windowData.isMoved;} // Was the window moved 
-                inline bool isWindowIconified() {return event_data.windowData.isIconified;} // Is the window iconified
+                // == Window functions
+                inline bool wasWindowResized() {return event_data.windowData.wasResized;} // Was the window resized last frame?
+                inline bool wasWindowMoved() {return event_data.windowData.wasMoved;} // Was the window moved last frame?
+                inline bool isWindowMinimized() {return event_data.windowData.isMinimized;} // Is the window minimized?
+                inline bool isWindowMaxmized() {return event_data.windowData.isMaximized;} // Is the window maximized?
                 inline Vector2 getWindowPos() {return event_data.windowData.windowPos;} // Gets the window position
 
                 Vector2 getWindowSize();
@@ -47,13 +48,17 @@
                 void setWindowPos(int x, int y);
                 void setWindowPos(Vector2 pos);
                 void restoreWindow();
-                void iconifyWindow();
-
-                inline float getDeltaTime() {return dt;}
-                inline int getFPS() {return (int)1.0f/dt;}
+                void minimizeWindow();
+                void maximizeWindow();
 
                 void updateTitle(const char* title); // Set a new title for the game window during runtime
                 // void setWindowIcon(const Image& image); // Set a icon
+
+                // == Time functions
+                inline float getDeltaTime() {return dt;}
+                inline int getFPS() {return (int)1.0f/dt;}
+
+                // == Mouse input functions
         };
     }
 #endif

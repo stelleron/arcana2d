@@ -3,6 +3,7 @@
 
 namespace arcana {
     void EventData::reset() {
-
+        windowData.wasResized = false;
+        windowData.wasMoved = false;
     }
 }

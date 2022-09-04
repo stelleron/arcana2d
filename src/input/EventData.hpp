@@ -7,9 +7,10 @@
         struct EventData {
             // Store window data
             struct WindowData {
-                bool isResized; // Checks if the window has been resized
-                bool isMoved; // Checks if the window has been moved
-                bool isIconified; // Checks if the window is iconified
+                bool wasResized; // Checks if the window has been resized
+                bool wasMoved; // Checks if the window has been moved
+                bool isMinimized; // Checks if the window is minimized
+                bool isMaximized; // Checks if the window is maximized
                 Vector2 windowPos; // Stores the window position
             };
             

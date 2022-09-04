@@ -46,8 +46,6 @@ namespace arcana {
                 // Update
                 internalClock.reset();
                 app.update(gameCtx);
-                LOG(gameCtx.isWindowIconified());
-                gameCtx.iconifyWindow();
 
                 // Render
                 window.fill();
