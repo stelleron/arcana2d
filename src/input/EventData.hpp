@@ -1,5 +1,6 @@
 #ifndef ARCANA2D_EVENTDATA
     #define ARCANA2D_EVENTDATA
+    #include <queue>
     #include "utils/Vector.hpp"
     
     namespace arcana {
@@ -147,6 +148,7 @@
             struct KeyboardData {
                 bool keyPressed[Key::Menu];
                 bool keyLastPressed[Key::Menu];
+                std::queue<unsigned char> charQueue;
             };
 
             // Store gamepad data

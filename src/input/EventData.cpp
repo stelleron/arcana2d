@@ -11,5 +11,8 @@ namespace arcana {
         for (int x = 0; x < Key::Menu; x++) {
             keyboardData.keyLastPressed[x] = keyboardData.keyPressed[x];
         }
+        for (int x = 0; x < keyboardData.charQueue.size(); x++) {
+            keyboardData.charQueue.pop();
+        }
     }
 }

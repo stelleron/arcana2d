@@ -82,6 +82,18 @@
                     }
                 }
 
+                // Get typed characters one at a time
+                inline unsigned char getCharPressed() {
+                    if (event_data.keyboardData.charQueue.size() > 0) {
+                        unsigned char val = event_data.keyboardData.charQueue.front();
+                        event_data.keyboardData.charQueue.pop();
+                        return val;
+                    }
+                    else {
+                        return 0;
+                    }
+                }
+
                 // == Gamepad input functions
         };
     }

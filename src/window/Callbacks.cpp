@@ -164,11 +164,17 @@ namespace arcana {
         }
     }
 
+    void charCallback(GLFWwindow* window, unsigned int codepoint) {
+        GameContext* ctx = (GameContext*)glfwGetWindowUserPointer(window);
+        (ctx->getEventData()).keyboardData.charQueue.push(codepoint);
+    }
+
     void setCallbacks(GLFWwindow* window) {
         glfwSetWindowIconifyCallback(window, windowIconifyCallback);
         glfwSetWindowMaximizeCallback(window, windowMaxmizeCallback);
         glfwSetFramebufferSizeCallback(window, framebufferSizeCallback);
         glfwSetWindowSizeCallback(window, windowSizeCallback);
         glfwSetKeyCallback(window, keyboardCallback);
+        glfwSetCharCallback(window, charCallback);
     }
 }

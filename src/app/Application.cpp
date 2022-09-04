@@ -48,11 +48,7 @@ namespace arcana {
                 // Update
                 internalClock.reset();
                 app.update(gameCtx);
-                if(gameCtx.isKeyReleased(Key::Enter)) {
-                    LOG("Hello " << x << "!");
-                    x++;
-                }
-
+                
                 // Render
                 window.fill();
                 app.render();
