@@ -122,7 +122,6 @@ namespace arcana {
     }
 
     Color Color::RGB(unsigned char r, unsigned char g, unsigned char b) {
-        LOG("Hello Wordl");
         return Color(r,g,b);
     }
 

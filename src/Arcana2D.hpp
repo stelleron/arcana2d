@@ -367,18 +367,32 @@
                 Window* win_pointer;
                 Camera* curr_camera;
                 EventData event_data;
-                Random randNumGen;
                 float dt;
             public:
+                Random random;
+                Filesystem filesystem;
+
+                // Constructor
+                GameContext();
+                // Destructor
+                ~GameContext();
+
                 // SETTERS
                 // =======
                 void setCamera(Camera& camera);
+                void setWindow(Window& window);
+                void setDeltaTime(float dt);
 
                 // GETTERS
                 // =======
+                Camera* getCamera();
+                EventData& getEventData();
 
                 // FUNCTIONS
                 // =========
+                void resetEvents(); // Reset the event data buffer
+
+
                 // == Window functions
                 inline bool wasWindowResized() {return event_data.windowData.wasResized;} // Was the window resized last frame?
                 inline bool wasWindowMoved() {return event_data.windowData.wasMoved;} // Was the window moved last frame?
@@ -492,12 +506,7 @@
                         return 0;
                     }
                 }
-
                 // == Gamepad input functions
-
-                // == Random functions
-                inline void setSeed(unsigned int seed) {randNumGen.setSeed(seed);}
-                inline int generateNum(int min, int max) {return randNumGen.generateNum(min, max);}
         };
 
         // ====== APPLICATION.HPP ======

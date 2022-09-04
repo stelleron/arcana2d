@@ -6,6 +6,7 @@
     #include "window/Window.hpp"
     #include "input/EventData.hpp"
     #include "utils/Random.hpp"
+    #include "res/Filesystem.hpp"
 
     namespace arcana {
         // Used to communicate with the application logic
@@ -14,9 +15,11 @@
                 Window* win_pointer;
                 Camera* curr_camera;
                 EventData event_data;
-                Random randNumGen;
                 float dt;
             public:
+                Random random;
+                Filesystem filesystem;
+
                 // Constructor
                 GameContext();
                 // Destructor
@@ -151,11 +154,6 @@
                         return 0;
                     }
                 }
-
-                // == Random functions
-                inline void setSeed(unsigned int seed) {randNumGen.setSeed(seed);}
-                inline int generateNum(int min, int max) {return randNumGen.generateNum(min, max);}
-
                 // == Gamepad input functions
         };
     }
