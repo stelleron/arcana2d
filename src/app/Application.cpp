@@ -48,7 +48,7 @@ namespace arcana {
                 // Update
                 internalClock.reset();
                 app.update(gameCtx);
-                
+
                 // Render
                 window.fill();
                 app.render();

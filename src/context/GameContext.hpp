@@ -1,6 +1,7 @@
 #ifndef ARCANA2D_GAME_CONTEXT
     #define ARCANA2D_GAME_CONTEXT
 
+    #include "utils/Logger.hpp"
     #include "camera/Camera.hpp"
     #include "window/Window.hpp"
     #include "input/EventData.hpp"
@@ -59,27 +60,69 @@
                 inline int getFPS() {return (int)1.0f/dt;}
 
                 // == Mouse input functions
+                // If the mouse button was just pressed
+                inline bool isMouseButtonPressed(MouseButton button) {
+                    if (event_data.mouseData.buttonPressed[button - 1] && !event_data.mouseData.buttonLastPressed[button - 1]) {
+                        return true;
+                    }
+                    return false;
+                }
+
+                // If the mouse button was just released
+                inline bool isMouseButtonReleased(MouseButton button) {
+                    if (!event_data.mouseData.buttonPressed[button - 1] && event_data.mouseData.buttonLastPressed[button - 1]) {
+                        return true;
+                    }
+                    return false;
+                }
+
+                // If the mouse button was being held
+                inline bool isMouseButtonHeld(MouseButton button) {
+                    if (event_data.mouseData.buttonPressed[button - 1] && event_data.mouseData.buttonLastPressed[button - 1]) {
+                        return true;
+                    }
+                    return false;
+                }
+
+                // If the mouse button is up
+                inline bool isMouseButtonUp(MouseButton button) {
+                    if (!event_data.mouseData.buttonPressed[button - 1] && !event_data.mouseData.buttonLastPressed[button - 1]) {
+                        return true;
+                    }
+                    return false;
+                }
 
                 // == Keyboard input functions
                 // If the key was just pressed
                 inline bool isKeyPressed(Key key) {
-                    if (event_data.keyboardData.keyPressed[key] && !event_data.keyboardData.keyLastPressed[key]) {
+                    if (event_data.keyboardData.keyPressed[key - 1] && !event_data.keyboardData.keyLastPressed[key - 1]) {
                         return true;
                     }
+                    return false;
                 }
 
                 // If the key was just released
                 inline bool isKeyReleased(Key key) {
-                    if (!event_data.keyboardData.keyPressed[key] && event_data.keyboardData.keyLastPressed[key]) {
+                    if (!event_data.keyboardData.keyPressed[key - 1] && event_data.keyboardData.keyLastPressed[key - 1]) {
                         return true;
                     }
+                    return false;
                 }
 
                 // If the key is being held down
                 inline bool isKeyHeld(Key key) {
-                    if (event_data.keyboardData.keyPressed[key] && event_data.keyboardData.keyLastPressed[key]) {
+                    if (event_data.keyboardData.keyPressed[key - 1] && event_data.keyboardData.keyLastPressed[key - 1]) {
                         return true;
                     }
+                    return false;
+                }
+
+                // If the key isn't being pressed at all
+                inline bool isKeyUp(Key key) {
+                    if (!event_data.keyboardData.keyPressed[key - 1] && !event_data.keyboardData.keyLastPressed[key - 1]) {
+                        return true;
+                    }
+                    return false;
                 }
 
                 // Get typed characters one at a time

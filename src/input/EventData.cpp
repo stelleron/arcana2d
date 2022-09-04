@@ -2,6 +2,24 @@
 #include "utils/Logger.hpp"
 
 namespace arcana {
+    EventData::EventData() {
+        // Reset window events
+        windowData.wasResized = false;
+        windowData.wasMoved = false;
+
+        // Reset keyboard events
+        for (int x = 0; x < Key::Menu; x++) {
+            keyboardData.keyLastPressed[x] = false;
+            keyboardData.keyPressed[x] = false;
+        }
+
+        // Reset mouse events
+        for (int x = 0; x < MouseButton::RightButton; x++) {
+            mouseData.buttonLastPressed[x] = false;
+            mouseData.buttonPressed[x] = false;
+        }
+    }
+
     void EventData::reset() {
         // Reset window events
         windowData.wasResized = false;
@@ -13,6 +31,11 @@ namespace arcana {
         }
         for (int x = 0; x < keyboardData.charQueue.size(); x++) {
             keyboardData.charQueue.pop();
+        }
+
+        // Reset mouse events
+        for (int x = 0; x < MouseButton::RightButton; x++) {
+            mouseData.buttonLastPressed[x] = mouseData.buttonPressed[x];
         }
     }
 }

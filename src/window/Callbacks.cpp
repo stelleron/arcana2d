@@ -4,7 +4,8 @@
 #include "context/GameContext.hpp"
 
 // Macro defines
-#define KEY_MAP_FUNC(glfw_key, arcana_key) case glfw_key: do {if(action == GLFW_PRESS) {(ctx->getEventData()).keyboardData.keyPressed[arcana_key] = true;} else if(action == GLFW_RELEASE) {(ctx->getEventData()).keyboardData.keyPressed[arcana_key] = false;}}  while (false); break;
+#define KEY_MAP_FUNC(glfw_key, arcana_key) case glfw_key: do {if(action == GLFW_PRESS) {(ctx->getEventData()).keyboardData.keyPressed[arcana_key - 1] = true;} else if(action == GLFW_RELEASE) {(ctx->getEventData()).keyboardData.keyPressed[arcana_key - 1] = false;}}  while (false); break;
+#define MOUSE_MAP_FUNC(glfw_button, arcana_button) case glfw_button: do {if(action == GLFW_PRESS) {(ctx->getEventData()).mouseData.buttonPressed[arcana_button - 1] = true;} else if(action == GLFW_RELEASE) {(ctx->getEventData()).mouseData.buttonPressed[arcana_button - 1] = false;}}  while (false); break;
 
 namespace arcana {
     void framebufferSizeCallback(GLFWwindow* window, int width, int height) {
@@ -169,6 +170,16 @@ namespace arcana {
         (ctx->getEventData()).keyboardData.charQueue.push(codepoint);
     }
 
+    void mouseButtonCallback(GLFWwindow* window,int button, int action, int mods) {
+        GameContext* ctx = (GameContext*)glfwGetWindowUserPointer(window);
+        switch (button) {
+            MOUSE_MAP_FUNC(GLFW_MOUSE_BUTTON_LEFT, MouseButton::LeftButton);
+            MOUSE_MAP_FUNC(GLFW_MOUSE_BUTTON_MIDDLE, MouseButton::MiddleButton);
+            MOUSE_MAP_FUNC(GLFW_MOUSE_BUTTON_RIGHT, MouseButton::RightButton);
+            default: break;
+        }
+    }
+
     void setCallbacks(GLFWwindow* window) {
         glfwSetWindowIconifyCallback(window, windowIconifyCallback);
         glfwSetWindowMaximizeCallback(window, windowMaxmizeCallback);
@@ -176,5 +187,6 @@ namespace arcana {
         glfwSetWindowSizeCallback(window, windowSizeCallback);
         glfwSetKeyCallback(window, keyboardCallback);
         glfwSetCharCallback(window, charCallback);
+        glfwSetMouseButtonCallback(window, mouseButtonCallback);
     }
 }

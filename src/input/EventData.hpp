@@ -128,6 +128,13 @@
             Menu 
         };
 
+        // Current supported buttons enum
+        enum MouseButton {
+            LeftButton = 1,
+            MiddleButton,
+            RightButton
+        };
+
         // Used to store event data
         struct EventData {
             // Store window data
@@ -141,7 +148,9 @@
             
             // Store mouse events
             struct MouseData {
-
+                Vector2 mousePos; 
+                bool buttonPressed[MouseButton::RightButton];
+                bool buttonLastPressed[MouseButton::RightButton];
             };
 
             // Store keyboard events
@@ -160,6 +169,9 @@
             KeyboardData keyboardData;
             MouseData mouseData;
             GamepadData gamepadData;
+
+            // Default initialiser
+            EventData();
 
             // Reset event data
             void reset();
