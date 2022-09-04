@@ -59,6 +59,30 @@
                 inline int getFPS() {return (int)1.0f/dt;}
 
                 // == Mouse input functions
+
+                // == Keyboard input functions
+                // If the key was just pressed
+                inline bool isKeyPressed(Key key) {
+                    if (event_data.keyboardData.keyPressed[key] && !event_data.keyboardData.keyLastPressed[key]) {
+                        return true;
+                    }
+                }
+
+                // If the key was just released
+                inline bool isKeyReleased(Key key) {
+                    if (!event_data.keyboardData.keyPressed[key] && event_data.keyboardData.keyLastPressed[key]) {
+                        return true;
+                    }
+                }
+
+                // If the key is being held down
+                inline bool isKeyHeld(Key key) {
+                    if (event_data.keyboardData.keyPressed[key] && event_data.keyboardData.keyLastPressed[key]) {
+                        return true;
+                    }
+                }
+
+                // == Gamepad input functions
         };
     }
 #endif

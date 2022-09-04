@@ -35,6 +35,7 @@ namespace arcana {
         // And then set a game context
         LOG("Arcana2D: Initialising the application!");
         app.init(gameCtx);
+        int x = 0;
 
         // 2. UPDATE
         LOG("Arcana2D: Starting game loop!");
@@ -42,10 +43,15 @@ namespace arcana {
             // Check if game loop should be run 
             gameCtx.resetEvents();
             window.pollEvents();
+
             if (window.isActive()) {
                 // Update
                 internalClock.reset();
                 app.update(gameCtx);
+                if(gameCtx.isKeyReleased(Key::Enter)) {
+                    LOG("Hello " << x << "!");
+                    x++;
+                }
 
                 // Render
                 window.fill();

@@ -3,7 +3,13 @@
 
 namespace arcana {
     void EventData::reset() {
+        // Reset window events
         windowData.wasResized = false;
         windowData.wasMoved = false;
+
+        // Reset keyboard events
+        for (int x = 0; x < Key::Menu; x++) {
+            keyboardData.keyLastPressed[x] = keyboardData.keyPressed[x];
+        }
     }
 }
