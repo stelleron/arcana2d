@@ -4,13 +4,13 @@
 using namespace arcana;
 
 class ExampleGame : public Application {
+    Image img;
     void config(AppConfig& config) {
-        config.resizable = true;
-        config.halt_while_hidden = false;
+        config.halt_while_hidden = true;
     }
 
     void init(GameContext& ctx) {
-        ctx.filesystem.setDir("cache");
+
     }
 
     void update(GameContext& ctx) {

@@ -11,12 +11,12 @@
             // Constructor
             Image();
             Image(const char* path);
-            Image(unsigned char* data);
+            Image(unsigned char* data, size_t size);
             // Destructor 
             ~Image();
 
             void load(const char* path);
-            void load(unsigned char* data);
+            void load(unsigned char* data, size_t size);
             bool isLoaded(); // Check if the image has been loaded
         };
     }

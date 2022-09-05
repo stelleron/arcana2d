@@ -59,7 +59,7 @@ namespace arcana {
         return buffer.str();
     }
 
-    char* Filesystem::loadFileText(const std::string& dir) {
+    char* Filesystem::loadFileText(const std::string& dir, size_t& fsize) {
         if (!fileExists(dir)) {
             LOG("Filesystem: File does not exist!");
             exit(1);
@@ -67,11 +67,12 @@ namespace arcana {
 
         std::string source = loadFileStr(dir);
         char* buffer = new char[source.size()];
+        fsize = source.size() * sizeof(char);
         memcpy( buffer, source.c_str(), source.size() );
         return buffer;
     }
 
-    unsigned char* Filesystem::loadFileData(const std::string& dir) {
+    unsigned char* Filesystem::loadFileData(const std::string& dir, size_t& fsize) {
         if (!fileExists(dir)) {
             LOG("Filesystem: File does not exist!");
             exit(1);
@@ -79,6 +80,7 @@ namespace arcana {
 
         std::string source = loadFileStr(dir);
         unsigned char* buffer = new unsigned char[source.size()];
+        fsize = source.size() * sizeof(unsigned char);
         strcpy((char*)buffer, source.c_str());
         return buffer;
     }

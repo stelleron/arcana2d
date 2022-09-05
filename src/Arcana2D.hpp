@@ -90,8 +90,27 @@
                 void setSeed(unsigned int nSeed);
         };
 
-        // ====== FILESYSTEM.CPP ======
-        // Used to create a filesystem
+        // ====== IMAGE.HPP ======
+        // Struct for loading images
+        struct Image {
+            unsigned char* data;
+            int width;
+            int height;
+            int colorChannels;
+
+            // Constructor
+            Image();
+            Image(const char* path);
+            Image(unsigned char* data, size_t size);
+            // Destructor 
+            ~Image();
+
+            void load(const char* path);
+            void load(unsigned char* data, size_t size);
+            bool isLoaded(); // Check if the image has been loaded
+        };
+
+        // ====== FILESYSTEM.HPP ======
         // Used to create a filesystem
         class Filesystem {
             private:
@@ -110,8 +129,8 @@
 
                 // File loading functions
                 std::string loadFileStr(const std::string& fpath); // Load it as a string instead
-                char* loadFileText(const std::string& fpath); // Null terminates the file text
-                unsigned char* loadFileData(const std::string& path);
+                char* loadFileText(const std::string& fpath, size_t& fsize); // Null terminates the file text
+                unsigned char* loadFileData(const std::string& path, size_t& fsize);
                 // File unloading functions
                 void unloadFileText(char* data);
                 void unloadFileData(unsigned char* data);

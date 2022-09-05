@@ -20,8 +20,8 @@
 
                 // File loading functions
                 std::string loadFileStr(const std::string& fpath); // Load it as a string instead
-                char* loadFileText(const std::string& fpath); // Null terminates the file text
-                unsigned char* loadFileData(const std::string& path);
+                char* loadFileText(const std::string& fpath, size_t& fsize); // Null terminates the file text
+                unsigned char* loadFileData(const std::string& path, size_t& fsize);
                 // File unloading functions
                 void unloadFileText(char* data);
                 void unloadFileData(unsigned char* data);
