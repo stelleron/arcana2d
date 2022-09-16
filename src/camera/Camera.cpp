@@ -16,7 +16,7 @@ namespace arcana {
 
     Mat4 Camera::getProjectionMatrix() {
         // First create the projection matrix
-        Mat4 projectionMat = glm::ortho(0.0f, dimensions.x, dimensions.y, 0.0f, -1.0f, 1.0f);
+        Mat4 projectionMat = glm::ortho(0.0f, dimensions.x, dimensions.y, 0.0f, -100.0f, 100.0f);
         return projectionMat;
     }
 }

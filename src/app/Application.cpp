@@ -1,7 +1,7 @@
 #include "utils/Logger.hpp"
 #include "time/Timer.hpp"
-#include "context/GameContext.hpp"
 #include "app/Application.hpp"
+#include "gfx/Shader.hpp"
 
 #include <thread>
 
@@ -12,10 +12,12 @@ namespace arcana {
         // Variable declarations
         AppConfig config;
         GameContext gameCtx;
+        RenderContext renderCtx;
         Timer internalClock;
         float deltatimeCap; // Used for capping frame speed
         Window window;
         Camera camera;
+        Shader shader;
 
         // Game Loop
         // 1. INIT
@@ -26,7 +28,6 @@ namespace arcana {
         // And then initialise the application
         deltatimeCap = 1.0f/config.fps_cap;
         window.init(config);
-        RenderContext renderCtx;
         camera.dimensions = Vector2(config.width, config.height);
         gameCtx.window.set(window);
         gameCtx.camera.set(camera);
@@ -34,8 +35,8 @@ namespace arcana {
         LOG("Arcana2D: Initialising the application!");
         app.init(gameCtx);
 
-        gameCtx.camera.set(camera);
-        renderCtx.setCurrentCamera(camera);
+        renderCtx.init();
+        shader.load(0, 0);
 
         // 2. UPDATE
         LOG("Arcana2D: Starting game loop!");
@@ -45,11 +46,14 @@ namespace arcana {
 
             if (window.isActive()) {
                 // Update
+                gameCtx.camera.set(camera);
                 internalClock.reset();
                 app.update(gameCtx);
 
                 // Render
                 window.fill();
+                renderCtx.setCurrentCamera(*gameCtx.camera.get());
+                renderCtx.setCurrentShader(shader);
                 app.render(renderCtx);
                 window.swapBuffer();
 
