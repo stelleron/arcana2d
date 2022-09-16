@@ -21,7 +21,7 @@ namespace arcana {
         mouseData.mousePos = {0,0};
     }
 
-    void EventData::reset() {
+    void EventData::reload() {
         // Reset window events
         windowData.wasResized = false;
         windowData.wasMoved = false;

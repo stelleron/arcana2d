@@ -1,5 +1,6 @@
 #include <glad/glad.h>
 #include "window/Window.hpp"
+#include "window/Callbacks.hpp"
 #include "utils/Logger.hpp"
 
 namespace arcana {
@@ -33,7 +34,7 @@ namespace arcana {
                                   config.title.c_str(), NULL, NULL);
         }
         if (window == NULL) {
-            LOG("Arcana2D: Could not initialise a window!");
+            ERROR("Arcana2D: Could not initialise a window!");
             exit(1);
         }
         else {
@@ -45,7 +46,7 @@ namespace arcana {
 
         // Initialise GLAD
         if(!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
-            LOG("Arcana2D: Could not initialise GLAD!");
+            ERROR("Arcana2D: Could not initialise GLAD!");
             exit(1);
         }
         else {
@@ -59,9 +60,6 @@ namespace arcana {
 
         // And set the background color
         background_color = config.background_color;
-
-        // And set callbacks
-        setCallbacks(window);
 
         // And set window size limits
         glfwSetWindowSizeLimits(window, config.min_size.x, config.min_size.y, config.max_size.x, config.max_size.y);
@@ -78,6 +76,7 @@ namespace arcana {
             glfwSwapInterval(0);
 
         halt_while_hidden = config.halt_while_hidden;
+        setCallbacks(window);
     }
 
     void Window::pollEvents() {
@@ -143,18 +142,20 @@ namespace arcana {
         glfwSetWindowUserPointer(window, ptr);
     }
 
+    void Window::setIcon(int width, int height, unsigned char* data) {
+        GLFWimage image;
+        image.width = width;
+        image.height = height;
+        image.pixels = data;
+        glfwSetWindowIcon(window, 1, &image);
+    }
+
     void* Window::getData() {
         return glfwGetWindowUserPointer(window);
     }   
 
     void Window::updateTitle(const char* title) {
         glfwSetWindowTitle(window, title);
-    }
-
-    Vector2 Window::getWindowSize() {
-        int width, height;
-        glfwGetWindowSize(window, &width, &height);
-        return Vector2(width, height);
     }
 
     Window::~Window() {

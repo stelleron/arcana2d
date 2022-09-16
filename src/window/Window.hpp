@@ -3,7 +3,6 @@
 
     // Includes
     #include <GLFW/glfw3.h>
-    #include "window/Callbacks.hpp"
     #include "utils/Vector.hpp"
     #include "app/AppConfig.hpp"
 
@@ -49,8 +48,9 @@
                 void updateTitle(const char* title);
                 // Set the icon of the window
                 void setIcon(int width, int height, unsigned char* data);
+
                 // Get the size of the window
-                Vector2 getWindowSize();
+                inline Vector2 getWindowSize() {int width, height; glfwGetWindowSize(window, &width, &height); return Vector2(width, height);}
                 // Set size limits for the window
                 inline void setMinSize(Vector2 minDim) {glfwSetWindowSizeLimits(window, minDim.x, minDim.y, max_size.x, max_size.y); min_size = minDim;}
                 inline void setMaxSize(Vector2 maxDim) {glfwSetWindowSizeLimits(window, min_size.x, min_size.y, maxDim.x, maxDim.y); max_size = maxDim;}

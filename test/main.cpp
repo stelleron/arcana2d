@@ -1,12 +1,11 @@
-#include <iostream> 
+#include <iostream>
 #include "Arcana2D.hpp"
 
 using namespace arcana;
 
-class ExampleGame : public Application {
-    Image img;
+class UntitledGame : public Application {
     void config(AppConfig& config) {
-        config.halt_while_hidden = true;
+
     }
 
     void init(GameContext& ctx) {
@@ -17,8 +16,8 @@ class ExampleGame : public Application {
 
     }
 
-    void render() {
-
+    void render(RenderContext& ctx) {
+        ctx.draw();
     }
 
     void finish() {
@@ -26,7 +25,7 @@ class ExampleGame : public Application {
     }
 };
 
-int main() {
-    ExampleGame game;
+int main() {  
+    UntitledGame game;
     build(game);
 }

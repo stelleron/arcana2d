@@ -176,8 +176,8 @@
             // Default initialiser
             EventData();
 
-            // Reset event data
-            void reset();
+            // Reload event data to prepare for new data
+            void reload();
         };
     };
 #endif

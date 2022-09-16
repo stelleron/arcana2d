@@ -86,11 +86,14 @@ OBJECTS := \
 	$(OBJDIR)/Application.o \
 	$(OBJDIR)/Camera.o \
 	$(OBJDIR)/GameContext.o \
+	$(OBJDIR)/RenderContext.o \
+	$(OBJDIR)/Vertex.o \
 	$(OBJDIR)/EventData.o \
 	$(OBJDIR)/Filesystem.o \
 	$(OBJDIR)/Image.o \
 	$(OBJDIR)/Timer.o \
 	$(OBJDIR)/Color.o \
+	$(OBJDIR)/Logger.o \
 	$(OBJDIR)/Random.o \
 	$(OBJDIR)/Callbacks.o \
 	$(OBJDIR)/Window.o \
@@ -167,6 +170,12 @@ $(OBJDIR)/Camera.o: src/camera/Camera.cpp
 $(OBJDIR)/GameContext.o: src/context/GameContext.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
+$(OBJDIR)/RenderContext.o: src/context/RenderContext.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
+$(OBJDIR)/Vertex.o: src/geom/Vertex.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 $(OBJDIR)/EventData.o: src/input/EventData.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
@@ -180,6 +189,9 @@ $(OBJDIR)/Timer.o: src/time/Timer.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 $(OBJDIR)/Color.o: src/utils/Color.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
+$(OBJDIR)/Logger.o: src/utils/Logger.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 $(OBJDIR)/Random.o: src/utils/Random.cpp

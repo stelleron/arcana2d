@@ -1,5 +1,4 @@
 #include "utils/Color.hpp"
-#include "utils/Logger.hpp"
 #include <tgmath.h>
 
 namespace arcana {

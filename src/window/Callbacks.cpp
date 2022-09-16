@@ -4,8 +4,8 @@
 #include "context/GameContext.hpp"
 
 // Macro defines
-#define KEY_MAP_FUNC(glfw_key, arcana_key) case glfw_key: do {if(action == GLFW_PRESS) {(ctx->getEventData()).keyboardData.keyPressed[arcana_key - 1] = true;} else if(action == GLFW_RELEASE) {(ctx->getEventData()).keyboardData.keyPressed[arcana_key - 1] = false;}}  while (false); break;
-#define MOUSE_MAP_FUNC(glfw_button, arcana_button) case glfw_button: do {if(action == GLFW_PRESS) {(ctx->getEventData()).mouseData.buttonPressed[arcana_button - 1] = true;} else if(action == GLFW_RELEASE) {(ctx->getEventData()).mouseData.buttonPressed[arcana_button - 1] = false;}}  while (false); break;
+#define KEY_MAP_FUNC(glfw_key, arcana_key) case glfw_key: do {if(action == GLFW_PRESS) {(ctx->events.get()).keyboardData.keyPressed[arcana_key - 1] = true;} else if(action == GLFW_RELEASE) {(ctx->events.get()).keyboardData.keyPressed[arcana_key - 1] = false;}}  while (false); break;
+#define MOUSE_MAP_FUNC(glfw_button, arcana_button) case glfw_button: do {if(action == GLFW_PRESS) {(ctx->events.get()).mouseData.buttonPressed[arcana_button - 1] = true;} else if(action == GLFW_RELEASE) {(ctx->events.get()).mouseData.buttonPressed[arcana_button - 1] = false;}}  while (false); break;
 
 namespace arcana {
     void framebufferSizeCallback(GLFWwindow* window, int width, int height) {
@@ -15,26 +15,26 @@ namespace arcana {
     void windowSizeCallback(GLFWwindow* window, int width, int height) {
         GameContext* ctx = (GameContext*)glfwGetWindowUserPointer(window);
         // Resize the camera
-        (ctx->getCamera())->setDim(width, height);
+        (ctx->camera.get())->dimensions = Vector2(width, height);
         // Modify window data
-        (ctx->getEventData()).windowData.wasResized = true;
+        (ctx->events.get()).windowData.wasResized = true;
     }
 
     void windowPosCallback(GLFWwindow* window, int xpos, int ypos) {
         GameContext* ctx = (GameContext*)glfwGetWindowUserPointer(window);
         // Modify window data
-        (ctx->getEventData()).windowData.wasMoved = true;
-        (ctx->getEventData()).windowData.windowPos = {xpos, ypos};
+        (ctx->events.get()).windowData.wasMoved = true;
+        (ctx->events.get()).windowData.windowPos = {xpos, ypos};
     }
 
     void windowIconifyCallback(GLFWwindow* window, int iconified) {
         GameContext* ctx = (GameContext*)glfwGetWindowUserPointer(window);
-        (ctx->getEventData()).windowData.isMinimized = iconified;
+        (ctx->events.get()).windowData.isMinimized = iconified;
     }
 
     void windowMaxmizeCallback(GLFWwindow* window, int maximized) {
         GameContext* ctx = (GameContext*)glfwGetWindowUserPointer(window);
-        (ctx->getEventData()).windowData.isMaximized = maximized;        
+        (ctx->events.get()).windowData.isMaximized = maximized;        
     }
 
     void keyboardCallback(GLFWwindow* window, int key, int scancode, int action, int mods) {
@@ -167,7 +167,7 @@ namespace arcana {
 
     void charCallback(GLFWwindow* window, unsigned int codepoint) {
         GameContext* ctx = (GameContext*)glfwGetWindowUserPointer(window);
-        (ctx->getEventData()).keyboardData.charQueue.push(codepoint);
+        (ctx->events.get()).keyboardData.charQueue.push(codepoint);
     }
 
     void mouseButtonCallback(GLFWwindow* window,int button, int action, int mods) {
@@ -182,13 +182,13 @@ namespace arcana {
 
     void mousePosCallback(GLFWwindow* window, double xpos, double ypos) {
         GameContext* ctx = (GameContext*)glfwGetWindowUserPointer(window);
-        (ctx->getEventData()).mouseData.mousePos = {xpos, ypos};
+        (ctx->events.get()).mouseData.mousePos = {xpos, ypos};
     }
 
     void mouseScrollCallback(GLFWwindow* window, double xoffset, double yoffset) {
         GameContext* ctx = (GameContext*)glfwGetWindowUserPointer(window);
-        (ctx->getEventData()).mouseData.mScrollH = xoffset;
-        (ctx->getEventData()).mouseData.mScrollV = yoffset;
+        (ctx->events.get()).mouseData.mScrollH = xoffset;
+        (ctx->events.get()).mouseData.mScrollV = yoffset;
     }
 
     void setCallbacks(GLFWwindow* window) {
@@ -196,10 +196,12 @@ namespace arcana {
         glfwSetWindowMaximizeCallback(window, windowMaxmizeCallback);
         glfwSetFramebufferSizeCallback(window, framebufferSizeCallback);
         glfwSetWindowSizeCallback(window, windowSizeCallback);
+        glfwSetWindowPosCallback(window, windowPosCallback);
         glfwSetKeyCallback(window, keyboardCallback);
         glfwSetCharCallback(window, charCallback);
         glfwSetMouseButtonCallback(window, mouseButtonCallback);
         glfwSetCursorPosCallback(window, mousePosCallback);
         glfwSetScrollCallback(window, mouseScrollCallback);
+        LOG("Events: Set all callbacks!");
     }
 }

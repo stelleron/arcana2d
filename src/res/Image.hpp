@@ -1,12 +1,19 @@
 #ifndef ARCANA2D_IMAGE
     #define ARCANA2D_IMAGE
     namespace arcana {
+        // Enumerate the image formats
+        enum ImageFormat {
+            RGB,
+            RGBA,
+            GRAYSCALE,
+            GRAY_ALPHA
+        };
         // Struct for loading images
         struct Image {
             unsigned char* data;
             int width;
             int height;
-            int colorChannels;
+            ImageFormat format;
 
             // Constructor
             Image();

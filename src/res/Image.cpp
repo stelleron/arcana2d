@@ -4,7 +4,6 @@
 #include "res/Image.hpp"
 
 namespace arcana {
-    static Filesystem fsys; // Internal filesystem
     Image::Image() {
         data = nullptr;
     }
@@ -24,13 +23,21 @@ namespace arcana {
 
     void Image::load(const char* path) {
         size_t fsize;
-        unsigned char* data = fsys.loadFileData(path, fsize);
+        unsigned char* data = filesystem::loadFileData(path, fsize);
         load(data, fsize);
     }
 
     void Image::load(unsigned char* data, size_t size) {
         stbi_set_flip_vertically_on_load(1);
+        int colorChannels;
         this->data = stbi_load_from_memory(data, size, &width, &height, &colorChannels, 0);
+        switch (colorChannels) {
+            case 1: format = GRAYSCALE; break;
+            case 2: format = GRAY_ALPHA; break;
+            case 3: format = RGB; break;
+            case 4: format = RGBA; break;
+            default: break;
+        }
     }
 
     bool Image::isLoaded() {
