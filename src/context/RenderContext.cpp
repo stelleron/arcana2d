@@ -6,9 +6,9 @@
 namespace arcana {
     unsigned int VBO, VAO;
     Vertex vertices[] = {
-        Vertex(Vector2(150.0f, 50.0f),  Color(255, 0, 0, 255)),
-        Vertex(Vector2(50.0f, 150.0f),  Color(0, 255, 0, 255)),  
-        Vertex(Vector2(150.0f, 150.0f), Color(0, 0, 255, 255))  
+        Vertex(Vector3(150.0f, 50.0f, 25.0f),  Color(255, 0, 0, 255)),
+        Vertex(Vector3(50.0f, 150.0f, 25.0f),  Color(0, 255, 0, 255)),  
+        Vertex(Vector3(150.0f, 150.0f, 25.0f), Color(0, 0, 255, 255))  
     }; 
 
     // RENDER CONTEXT IMPL.
