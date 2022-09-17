@@ -4,7 +4,10 @@
 
 #define RENDER_TYPE_ASSERT(arg) if (rMode != arg) {ERROR("Error: Vertex buffer is not the correct type!"); return;}
 #define BATCH_SPACE_ASSERT(start, value) if (!checkSpace(start, value)) {ERROR("Error: Vertex buffer does not have enough space!"); return;}
-#define V_MULTIPLY(arg) (x * VERTEX_SIZE)
+#define NUM_SECTORS 36
+#define SECTOR_ANGLE 360.0f/(float)NUM_SECTORS
+#define CIRCLE_VSIZE NUM_SECTORS + 1
+#define NUM_INDICES NUM_SECTORS * 3
 
 namespace arcana {
     // ELEMENT BUFFER IMPL.
@@ -14,7 +17,7 @@ namespace arcana {
         switch (rMode)
         {
             case Quads: 
-                // If the mode is Quads, store six times the given size of indices, and auto generate
+                // If the mode is Quads, store six times the given size of vertices as indices, and auto generate
                 iArray = new unsigned int[size * 6];
                 totalSize = sizeof(unsigned int) * size * 6;
                 for (int x = 0; x < size; x++) {
@@ -26,6 +29,24 @@ namespace arcana {
                     iArray[x * 6 + 5] = iVal + 3;
                     iVal = iVal + 4;
                 }
+                break;
+            case Circles:
+                // If the mode is Circles, store 108 times the given size of vertices as indices, and auto generate
+                iArray = new unsigned int[size * NUM_INDICES];
+                totalSize = sizeof(unsigned int) * size * NUM_INDICES;
+                for (int x = 0; x < size; x++) {
+                    for (int y = 0; y < NUM_SECTORS; y++) {
+                        iArray[(x * NUM_INDICES) + (y * 3)] = iVal;
+                        iArray[(x * NUM_INDICES) + (y * 3 + 1)] = iVal + y + 1;
+                        if (iVal + y + 2 != CIRCLE_VSIZE * (x + 1)) {
+                            iArray[(x * NUM_INDICES) + (y * 3 + 2)] = iVal + y + 2;
+                        }
+                        else {
+                            iArray[(x * NUM_INDICES) + (y * 3 + 2)] = 1;
+                        }
+                    }
+                    iVal += CIRCLE_VSIZE;
+                } 
                 break;
             default: break;
         }
@@ -50,6 +71,7 @@ namespace arcana {
             case Lines: primSize = 2; break;
             case Triangles: primSize = 3; break;
             case Quads: primSize = 4; eBuffer = new ElementBuffer(rMode, vertexNum/primSize); break;
+            case Circles: primSize = CIRCLE_VSIZE; eBuffer = new ElementBuffer(rMode, vertexNum/primSize); break;
             default: break;
         }
 
@@ -210,10 +232,29 @@ namespace arcana {
 
     void VertexArray::add(const Circle& circle, int startIndex) {
         // TODO
+        // First make sure that object has a compatiable type
+        RENDER_TYPE_ASSERT(RenderMode::Circles);
+
+        // Then ensure that there is enough space for the primitive
+        BATCH_SPACE_ASSERT(startIndex, CIRCLE_VSIZE);
+
+        // Now time to add all of the vertices to the vertex array
+        vArray[startIndex] = Vertex(circle.center);
+        for (int x = 0; x < NUM_SECTORS; x++) {
+            vArray[startIndex + x + 1] = Vertex(Vector2(
+                circle.center.x + sinf(glm::radians(SECTOR_ANGLE * x)) * circle.radius, 
+                circle.center.y - cosf(glm::radians(SECTOR_ANGLE * x)) * circle.radius
+            ));
+        }
     }
 
     void VertexArray::add(const DrawCircle& circle, int startIndex) {
         // TODO
+        // First make sure that object has a compatiable type
+        RENDER_TYPE_ASSERT(RenderMode::Circles);
+
+        // Then ensure that there is enough space for the primitive
+        BATCH_SPACE_ASSERT(startIndex, 37);
     }
 
     unsigned int* VertexArray::getIndexArray() {

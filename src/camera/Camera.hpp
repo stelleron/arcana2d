@@ -8,6 +8,9 @@
         class Camera { 
             public:
                 Vector2 dimensions; // Stores the camera dimensions
+                Vector2 offset;
+                float zoom; 
+                float rotation;
 
                 // Constructor
                 Camera();

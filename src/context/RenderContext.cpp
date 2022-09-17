@@ -61,7 +61,8 @@ namespace arcana {
             glBindBuffer(GL_ARRAY_BUFFER, 0);  
             GLenum drawType;
             switch (rMode) {
-                case Quads: drawType = GL_TRIANGLES;
+                case Circles: drawType = GL_TRIANGLES; break;
+                case Quads: drawType = GL_TRIANGLES; break;
                 default: break;
             }
 

@@ -150,7 +150,7 @@ namespace arcana {
         image.pixels = data;
         glfwSetWindowIcon(window, 1, &image);
     }
-
+    
     void* Window::getData() {
         return glfwGetWindowUserPointer(window);
     }   
