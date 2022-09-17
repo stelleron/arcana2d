@@ -4,21 +4,14 @@
 
 
 namespace arcana {
-    unsigned int VBO, VAO;
-    Vertex vertices[] = {
-        Vertex(Vector3(150.0f, 50.0f, 25.0f),  Color(255, 0, 0, 255)),
-        Vertex(Vector3(50.0f, 150.0f, 25.0f),  Color(0, 255, 0, 255)),  
-        Vertex(Vector3(150.0f, 150.0f, 25.0f), Color(0, 0, 255, 255))  
-    }; 
-
     // RENDER CONTEXT IMPL.
     RenderContext::RenderContext() {
         
     }
 
     RenderContext::~RenderContext() {
-        glDeleteVertexArrays(1, &VAO);
-        glDeleteBuffers(1, &VBO);
+        glDeleteVertexArrays(1, &defaultVAO);
+        glDeleteBuffers(1, &defaultVBO);
         glDeleteTextures(1, &defaultTextureID);
     } 
 
@@ -33,18 +26,8 @@ namespace arcana {
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);  
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 1, 1, 0, GL_RGBA, GL_UNSIGNED_BYTE, defaultTexture);
         glGenerateMipmap(GL_TEXTURE_2D);
-        glGenVertexArrays(1, &VAO);
-        glGenBuffers(1, &VBO);
-
-        glGenVertexArrays(1, &VAO);
-        glGenBuffers(1, &VBO);
-
-        // Then bind all vertex objects
-        glBindVertexArray(VAO);
-        glBindBuffer(GL_ARRAY_BUFFER, VBO); 
-        glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-        setVertexAttributes();
-        glBindBuffer(GL_ARRAY_BUFFER, 0);  
+        glGenVertexArrays(1, &defaultVAO);
+        glGenBuffers(1, &defaultVBO);
     }
 
     void RenderContext::setVertexAttributes() {
@@ -63,11 +46,32 @@ namespace arcana {
         currShader->use();
     }
 
-    void RenderContext::draw() {
-        useShader();
-        glBindTexture(GL_TEXTURE_2D, defaultTextureID);
-        glBindVertexArray(VAO); // seeing as we only have a single VAO there's no need to bind it every time, but we'll do so to keep things a bit more organized
-        glDrawArrays(GL_TRIANGLES, 0, 3);
+    void RenderContext::draw(VertexArray& vArray) {
+        RenderMode rMode = vArray.getRenderType();
+        if (rMode == Quads && rMode == Circle) {
+
+        }
+        else {
+            // Bind all vertex objects
+            glBindVertexArray(defaultVAO);
+            glBindBuffer(GL_ARRAY_BUFFER, defaultVBO); 
+            glBufferData(GL_ARRAY_BUFFER, vArray.getArraySize(), vArray.getVertexArray(), GL_STATIC_DRAW);
+            setVertexAttributes();
+            glBindBuffer(GL_ARRAY_BUFFER, 0);  
+            GLenum drawType;
+            switch (rMode) {
+                case Points: drawType = GL_LINES; break;
+                case Lines: drawType = GL_LINES; break;
+                case Triangles: drawType = GL_TRIANGLES; break;
+                default: break;
+            }
+
+            useShader();
+            glBindTexture(GL_TEXTURE_2D, defaultTextureID);
+            glBindVertexArray(defaultVAO); // seeing as we only have a single VAO there's no need to bind it every time, but we'll do so to keep things a bit more organized
+            glDrawArrays(drawType, 0, vArray.getArraySize()/sizeof(Vertex));
+        }
+        
     }
 }
 

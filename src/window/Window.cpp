@@ -52,6 +52,7 @@ namespace arcana {
         else {
             LOG("Arcana2D: Initialised GLAD!");
         }
+        glEnable(GL_DEPTH_TEST);
 
         // And set the OpenGL viewport
         int left, top, right, bottom;
@@ -130,7 +131,7 @@ namespace arcana {
 
     void Window::fill() {
         glClearColor(COLOR_TO_FLOAT(background_color));
-        glClear(GL_COLOR_BUFFER_BIT);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     }
 
     void Window::swapBuffer() {

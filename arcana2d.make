@@ -87,11 +87,12 @@ OBJECTS := \
 	$(OBJDIR)/Camera.o \
 	$(OBJDIR)/GameContext.o \
 	$(OBJDIR)/RenderContext.o \
+	$(OBJDIR)/DrawGeometry.o \
 	$(OBJDIR)/Geometry.o \
 	$(OBJDIR)/Vertex.o \
 	$(OBJDIR)/Shader.o \
 	$(OBJDIR)/Sprite.o \
-	$(OBJDIR)/VertexBatch.o \
+	$(OBJDIR)/VertexArray.o \
 	$(OBJDIR)/EventData.o \
 	$(OBJDIR)/Filesystem.o \
 	$(OBJDIR)/Image.o \
@@ -177,6 +178,9 @@ $(OBJDIR)/GameContext.o: src/context/GameContext.cpp
 $(OBJDIR)/RenderContext.o: src/context/RenderContext.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
+$(OBJDIR)/DrawGeometry.o: src/geom/DrawGeometry.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 $(OBJDIR)/Geometry.o: src/geom/Geometry.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
@@ -189,7 +193,7 @@ $(OBJDIR)/Shader.o: src/gfx/Shader.cpp
 $(OBJDIR)/Sprite.o: src/gfx/Sprite.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
-$(OBJDIR)/VertexBatch.o: src/gfx/VertexBatch.cpp
+$(OBJDIR)/VertexArray.o: src/gfx/VertexArray.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 $(OBJDIR)/EventData.o: src/input/EventData.cpp

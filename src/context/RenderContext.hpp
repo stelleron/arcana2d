@@ -3,6 +3,8 @@
 
     #include "camera/Camera.hpp"
     #include "gfx/Shader.hpp"
+    #include "gfx/VertexArray.hpp"
+
 
     namespace arcana {
         // Creates the render context
@@ -11,6 +13,8 @@
                 Shader* currShader;
                 Camera* currCamera;
                 unsigned int defaultTextureID;
+                unsigned int defaultVBO;
+                unsigned int defaultVAO;
 
                 void setVertexAttributes();
                 void useShader();
@@ -22,7 +26,9 @@
                 void init();
                 void setCurrentCamera(Camera& camera) {currCamera = &camera;}
                 void setCurrentShader(Shader& shader) {currShader = &shader;}
-                void draw();
+
+                // Draw functions
+                void draw(VertexArray& vArray);
         };
     }
 
