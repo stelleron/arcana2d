@@ -48,7 +48,7 @@ namespace arcana {
 
     void RenderContext::draw(VertexArray& vArray) {
         RenderMode rMode = vArray.getRenderType();
-        if (rMode == Quads && rMode == Circle) {
+        if (rMode == Quads && rMode == Circles) {
 
         }
         else {

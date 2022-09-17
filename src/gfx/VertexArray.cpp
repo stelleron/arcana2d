@@ -46,6 +46,7 @@ namespace arcana {
         eBuffer = nullptr;
         switch (rMode)
         {
+            case Points: primSize = 2; break;
             case Lines: primSize = 2; break;
             case Triangles: primSize = 3; break;
             case Quads: primSize = 4; eBuffer = new ElementBuffer(rMode, vertexNum/primSize); break;
@@ -91,6 +92,54 @@ namespace arcana {
         return vArray;
     }
 
+    void VertexArray::add(const Point& point, int startIndex) {
+        // First make sure that object has a compatiable type
+        RENDER_TYPE_ASSERT(RenderMode::Points);
+
+        // Then ensure that there is enough space for the primitive
+        BATCH_SPACE_ASSERT(startIndex, 2);
+
+        // Now time to add all of the vertices to the vertex array
+        vArray[startIndex] = Vertex(point.pos);
+        vArray[startIndex + 1] = Vertex(Vector2(point.pos.x + 1, point.pos.y + 1));
+    }
+
+    void VertexArray::add(const DrawPoint& point, int startIndex) {
+        // First make sure that object has a compatiable type
+        RENDER_TYPE_ASSERT(RenderMode::Points);
+
+        // Then ensure that there is enough space for the primitive
+        BATCH_SPACE_ASSERT(startIndex, 2);
+
+        // Now time to add all of the vertices to the vertex array
+        vArray[startIndex] = Vertex(Vector3(point.pos.x, point.pos.y, point.z), point.color);
+        vArray[startIndex + 1] = Vertex(Vector3(point.pos.x + 1, point.pos.y + 1, point.z), point.color);
+    }
+
+    void VertexArray::add(const Line& line, int startIndex) {
+        // First make sure that object has a compatiable type
+        RENDER_TYPE_ASSERT(RenderMode::Lines);
+
+        // Then ensure that there is enough space for the primitive
+        BATCH_SPACE_ASSERT(startIndex, 2);
+
+        // Now time to add all of the vertices to the vertex array
+        vArray[startIndex] = Vertex(line.startPoint);
+        vArray[startIndex + 1] = Vertex(line.endPoint);
+    }
+
+    void VertexArray::add(const DrawLine& line, int startIndex) {
+        // First make sure that object has a compatiable type
+        RENDER_TYPE_ASSERT(RenderMode::Lines);
+
+        // Then ensure that there is enough space for the primitive
+        BATCH_SPACE_ASSERT(startIndex, 2);
+
+        // Now time to add all of the vertices to the vertex array
+        vArray[startIndex] = Vertex(Vector3(line.startPoint.x, line.startPoint.y, line.z), line.color);
+        vArray[startIndex + 1] = Vertex(Vector3(line.endPoint.x, line.endPoint.y, line.z), line.color);
+    }
+
     void VertexArray::add(const Triangle& triangle, int startIndex) {
         // First make sure that object has a compatiable type
         RENDER_TYPE_ASSERT(RenderMode::Triangles);
@@ -129,6 +178,42 @@ namespace arcana {
         vArray[startIndex + 1] = Vertex(Vector2(rectangle.point.x + rectangle.width, rectangle.point.y));
         vArray[startIndex + 2] = Vertex(Vector2(rectangle.point.x, rectangle.point.y + rectangle.height));
         vArray[startIndex + 3] = Vertex(Vector2(rectangle.point.x + rectangle.width, rectangle.point.y + rectangle.height));
+    }
+
+    void VertexArray::add(const Quadrilateral& quad, int startIndex) {
+        // First make sure that object has a compatiable type
+        RENDER_TYPE_ASSERT(RenderMode::Quads);
+
+        // Then ensure that there is enough space for the primitive
+        BATCH_SPACE_ASSERT(startIndex, 4);
+
+        // Now time to add all of the vertices to the vertex array
+        vArray[startIndex] = Vertex(quad.point1);
+        vArray[startIndex + 1] = Vertex(quad.point2);
+        vArray[startIndex + 2] = Vertex(quad.point3);
+        vArray[startIndex + 3] = Vertex(quad.point4);
+    }
+
+    void VertexArray::add(const DrawQuad& quad, int startIndex) {
+        // First make sure that object has a compatiable type
+        RENDER_TYPE_ASSERT(RenderMode::Quads);
+
+        // Then ensure that there is enough space for the primitive
+        BATCH_SPACE_ASSERT(startIndex, 4);
+
+        // Now time to add all of the vertices to the vertex array
+        vArray[startIndex] = Vertex(Vector3(quad.point1, quad.z), quad.color);
+        vArray[startIndex + 1] = Vertex(Vector3(quad.point2, quad.z), quad.color);
+        vArray[startIndex + 2] = Vertex(Vector3(quad.point3, quad.z), quad.color);
+        vArray[startIndex + 3] = Vertex(Vector3(quad.point4, quad.z), quad.color);
+    }
+
+    void VertexArray::add(const Circle& circle, int startIndex) {
+        // TODO
+    }
+
+    void VertexArray::add(const DrawCircle& circle, int startIndex) {
+        // TODO
     }
 
     unsigned int* VertexArray::getIndexArray() {

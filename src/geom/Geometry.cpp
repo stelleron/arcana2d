@@ -1,5 +1,13 @@
 #include "geom/Geometry.hpp"
 namespace arcana {
+    Point::Point() {
+        pos = Vector2(0,0);
+    }
+
+    Point::Point(Vector2 pos) {
+        this->pos = pos;
+    }
+
     Line::Line() {
         startPoint = Vector2(0,0);
         endPoint = Vector2(0,0);

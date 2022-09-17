@@ -12,7 +12,7 @@
             Lines,
             Triangles,
             Quads,
-            Circle
+            Circles
         };
 
         // Used to create a buffer to track elements 
@@ -65,10 +65,21 @@
                 Vertex operator[](int index) const;
 
                 // Used to add objects to the vertex buffer 
+                void add(const Point& point, int startIndex);
+                void add(const DrawPoint& point, int startIndex);
+
+                void add(const Line& line, int startIndex);
+                void add(const DrawLine& line, int startIndex);
+
                 void add(const Triangle& triangle, int startIndex);
                 void add(const DrawTriangle& triangle, int startIndex);
 
                 void add(const Rectangle& rectangle, int startIndex);
+                void add(const Quadrilateral& quad, int startIndex);
+                void add(const DrawQuad& quad, int startIndex);
+
+                void add(const Circle& circle, int startIndex);
+                void add(const DrawCircle& circle, int startIndex);
         };
     }
 #endif

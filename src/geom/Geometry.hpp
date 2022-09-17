@@ -4,6 +4,15 @@
     #include "utils/Vector.hpp"
 
     namespace arcana {
+        // Used to create a point object
+        struct Point {
+            Vector2 pos;
+            
+            // Constructors
+            Point();
+            Point(Vector2 pos);
+        };
+
         // Used to create a line object
         struct Line {
             Vector2 startPoint;
