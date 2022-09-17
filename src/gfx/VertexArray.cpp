@@ -112,9 +112,9 @@ namespace arcana {
         BATCH_SPACE_ASSERT(startIndex, 3);
 
         // Now time to add all of the vertices to the vertex array
-        vArray[startIndex] = Vertex(triangle.point1, triangle.color);
-        vArray[startIndex + 1] = Vertex(triangle.point2, triangle.color);
-        vArray[startIndex + 2] = Vertex(triangle.point3, triangle.color);
+        vArray[startIndex] = Vertex(Vector3(triangle.point1.x, triangle.point1.y, triangle.z), triangle.color);
+        vArray[startIndex + 1] = Vertex(Vector3(triangle.point2.x, triangle.point2.y, triangle.z), triangle.color);
+        vArray[startIndex + 2] = Vertex(Vector3(triangle.point3.x, triangle.point3.y, triangle.z), triangle.color);
     }
 
     void VertexArray::add(const Rectangle& rectangle, int startIndex) {
