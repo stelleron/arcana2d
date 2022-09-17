@@ -3,7 +3,7 @@
 using namespace arcana;
 
 class UntitledGame : public Application {
-    
+    VertexArray vArray = VertexArray(RenderMode::Quads, 4);
 
     void config(AppConfig& config) {
 
@@ -18,7 +18,7 @@ class UntitledGame : public Application {
     }
 
     void render(RenderContext& ctx) {
-        
+        ctx.draw(vArray);
     }
 
     void finish() {

@@ -15,6 +15,7 @@
                 unsigned int defaultTextureID;
                 unsigned int defaultVBO;
                 unsigned int defaultVAO;
+                unsigned int defaultEBO;
 
                 void setVertexAttributes();
                 void useShader();

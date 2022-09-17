@@ -13,6 +13,7 @@ namespace arcana {
         glDeleteVertexArrays(1, &defaultVAO);
         glDeleteBuffers(1, &defaultVBO);
         glDeleteTextures(1, &defaultTextureID);
+        glDeleteBuffers(1, &defaultEBO);
     } 
 
     void RenderContext::init() {
@@ -28,6 +29,7 @@ namespace arcana {
         glGenerateMipmap(GL_TEXTURE_2D);
         glGenVertexArrays(1, &defaultVAO);
         glGenBuffers(1, &defaultVBO);
+        glGenBuffers(1, &defaultEBO);
     }
 
     void RenderContext::setVertexAttributes() {
@@ -48,8 +50,25 @@ namespace arcana {
 
     void RenderContext::draw(VertexArray& vArray) {
         RenderMode rMode = vArray.getRenderType();
-        if (rMode == Quads && rMode == Circles) {
+        if (rMode == Quads || rMode == Circles) {
+            // Bind all vertex objects
+            glBindVertexArray(defaultVAO);
+            glBindBuffer(GL_ARRAY_BUFFER, defaultVBO); 
+            glBufferData(GL_ARRAY_BUFFER, vArray.getArraySize(), vArray.getVertexArray(), GL_STATIC_DRAW);
+            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, defaultEBO);
+            glBufferData(GL_ELEMENT_ARRAY_BUFFER, vArray.getIndexArraySize(), vArray.getIndexArray(), GL_STATIC_DRAW);
+            setVertexAttributes();
+            glBindBuffer(GL_ARRAY_BUFFER, 0);  
+            GLenum drawType;
+            switch (rMode) {
+                case Quads: drawType = GL_TRIANGLES;
+                default: break;
+            }
 
+            useShader();
+            glBindTexture(GL_TEXTURE_2D, defaultTextureID);
+            glBindVertexArray(defaultVAO); // seeing as we only have a single VAO there's no need to bind it every time, but we'll do so to keep things a bit more organized
+            glDrawElements(drawType, vArray.getIndexArraySize()/sizeof(unsigned int), GL_UNSIGNED_INT, 0);
         }
         else {
             // Bind all vertex objects
