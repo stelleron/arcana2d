@@ -8,6 +8,7 @@
     namespace arcana {
         // Enum for draw modes
         enum RenderMode {
+            None,
             Points,
             Lines,
             Triangles,
@@ -39,6 +40,7 @@
                 RenderMode rMode; // Render mode
             public:
                 // Constructor
+                VertexArray();
                 VertexArray(RenderMode rMode, int vertexNum);
                 // Destructor
                 ~VertexArray();
@@ -46,19 +48,27 @@
                 // Check if there is space to add an object, returns True if available
                 bool checkSpace(int startIndex, int numVertices);
 
+                // Create a new vertex buffer 
+                void create(RenderMode rMode, int vertexNum);
                 // Clear the vertex buffer
                 void clear();
+                // Reset the vertex buffer and change its size and type
+                void reset(RenderMode rMode, int vertexNum);
+                void reset();
 
                 // Get vertex array
                 Vertex* getVertexArray();
                 // Get the size of the vertex array
                 size_t getArraySize();
+                // Get the number of vertices in the array
+                inline int getNumVertices() {return vSize;}
                 // Get the render type of the buffer 
                 inline RenderMode getRenderType() {return rMode;}
                 // Get the index array
                 unsigned int* getIndexArray();
                 // Get the size of the index array
                 size_t getIndexArraySize();
+
                 // Set an induvidual vertex with the array operator
                 Vertex& operator[](int index);
                 // Get an induvidual vertex with the array operator

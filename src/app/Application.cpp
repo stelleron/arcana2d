@@ -55,6 +55,7 @@ namespace arcana {
                 renderCtx.setCurrentCamera(*gameCtx.camera.get());
                 renderCtx.setCurrentShader(shader);
                 app.render(renderCtx);
+                renderCtx.drawBatch();
                 window.swapBuffer();
 
                 // End loop

@@ -61,10 +61,42 @@ namespace arcana {
     }
  
     // VERTEX BUFFER IMPL.
-    // NOTE: Size is the number of primitives
-    VertexArray::VertexArray(RenderMode rMode, int vertexNum) {
-        // First get the size of the primitive in vertices
+    VertexArray::VertexArray() {
         eBuffer = nullptr;
+        vArray = nullptr;
+        vSize = 0;
+        primSize = 0;
+        rMode = RenderMode::None;
+    }
+
+    VertexArray::VertexArray(RenderMode rMode, int vertexNum) {
+        eBuffer = nullptr;
+        vArray = nullptr;
+        create(rMode, vertexNum);
+    }
+
+    VertexArray::~VertexArray() {
+        if (eBuffer) {
+            delete eBuffer;
+        }
+        if (vArray)
+            delete[] vArray;
+    }
+
+    void VertexArray::create(RenderMode rMode, int vertexNum) {
+        if (eBuffer) {
+            delete eBuffer;
+            eBuffer = nullptr;
+        }
+        if (vArray) {
+            delete[] vArray;
+            vArray = nullptr;
+        }
+        if (rMode == RenderMode::None) {
+            ERROR("Error: Cannot set the render mode of a vertex array as None!");
+            exit(0);
+        }
+
         switch (rMode)
         {
             case Points: primSize = 2; break;
@@ -83,18 +115,29 @@ namespace arcana {
         this->rMode = rMode;
     }
 
-    VertexArray::~VertexArray() {
-        if (eBuffer != nullptr) {
-            delete eBuffer;
-        }
-        delete[] vArray;
+    void VertexArray::clear() {
+        if (vArray)
+            for (int x = 0; x < vSize; x++) {
+                vArray[vSize] = Vertex();
+            }
     }
 
-    void VertexArray::clear() {
-        // First erase vertex data
-        delete[] vArray;
-        // Then reallocate them
-        vArray = new Vertex[vSize];
+    void VertexArray::reset(RenderMode rMode, int vertexNum) {
+        create(rMode, vertexNum);
+    }
+
+    void VertexArray::reset() {
+        if (eBuffer) {
+            delete eBuffer;
+            eBuffer = nullptr;
+        }
+        if (vArray) {
+            delete[] vArray;
+            vArray = nullptr;
+        }
+        vSize = 0;
+        primSize = 0;
+        rMode = RenderMode::None;
     }
 
     bool VertexArray::checkSpace(int startIndex, int numVertices) {
@@ -258,11 +301,19 @@ namespace arcana {
     }
 
     unsigned int* VertexArray::getIndexArray() {
-        return eBuffer->iArray;
+        if (eBuffer)
+            return eBuffer->iArray;
+        else 
+            ERROR("Error: Nothing in the index array!");
+            return nullptr;
     }
 
     size_t VertexArray::getIndexArraySize() {
-        return eBuffer->getSize();
+        if (eBuffer)
+            return eBuffer->getSize();
+        else 
+            ERROR("Error: Nothing in the index array!");
+            return 0;
     }
 
     Vertex& VertexArray::operator[](int index) {

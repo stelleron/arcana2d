@@ -1,9 +1,75 @@
 #include <glad/glad.h>
 #include "context/RenderContext.hpp"
 #include "geom/Vertex.hpp"
+#include "utils/Logger.hpp"
 
+#define MAX_BATCH_SIZE 8000
 
 namespace arcana {
+    // RENDER BATCH IMPL.
+    RenderContext::RenderBatch::RenderBatch() {
+        vertexPointer = 0;
+    }
+
+    RenderContext::RenderBatch::~RenderBatch() {
+
+    }
+
+    void RenderContext::RenderBatch::add(const Point& point) {
+        vertexArray.add(point, vertexPointer);
+        vertexPointer += 2;
+    }
+
+    void RenderContext::RenderBatch::add(const DrawPoint& point) {
+        vertexArray.add(point, vertexPointer);
+        vertexPointer += 2;
+    }
+
+    void RenderContext::RenderBatch::add(const Line& line) {
+        vertexArray.add(line, vertexPointer);
+        vertexPointer += 2;
+    }
+
+    void RenderContext::RenderBatch::add(const DrawLine& line) {
+        vertexArray.add(line, vertexPointer);
+        vertexPointer += 2;
+    }
+
+    void RenderContext::RenderBatch::add(const Triangle& triangle) {
+        vertexArray.add(triangle, vertexPointer);
+        vertexPointer += 3;
+    }
+
+    void RenderContext::RenderBatch::add(const DrawTriangle& triangle) {
+        vertexArray.add(triangle, vertexPointer);
+        vertexPointer += 3;
+    }
+
+    void RenderContext::RenderBatch::add(const Rectangle& rectangle) {
+        vertexArray.add(rectangle, vertexPointer);
+        vertexPointer += 4;
+    }
+
+    void RenderContext::RenderBatch::add(const Quadrilateral& quad) {
+        vertexArray.add(quad, vertexPointer);
+        vertexPointer += 4;
+    }
+
+    void RenderContext::RenderBatch::add(const DrawQuad& quad) {
+        vertexArray.add(quad, vertexPointer);
+        vertexPointer += 4;
+    }
+
+    void RenderContext::RenderBatch::add(const Circle& circle) {
+        vertexArray.add(circle, vertexPointer);
+        vertexPointer += 37;
+    }
+
+    void RenderContext::RenderBatch::add(const DrawCircle& circle) {
+        vertexArray.add(circle, vertexPointer);
+        vertexPointer += 37;
+    }
+
     // RENDER CONTEXT IMPL.
     RenderContext::RenderContext() {
         
@@ -50,7 +116,10 @@ namespace arcana {
 
     void RenderContext::draw(VertexArray& vArray) {
         RenderMode rMode = vArray.getRenderType();
-        if (rMode == Quads || rMode == Circles) {
+        if (rMode == None) {
+            ERROR("Error: Cannot draw a vertex array with type None!");
+        }
+        else if (rMode == Quads || rMode == Circles) {
             // Bind all vertex objects
             glBindVertexArray(defaultVAO);
             glBindBuffer(GL_ARRAY_BUFFER, defaultVBO); 
@@ -89,9 +158,182 @@ namespace arcana {
             useShader();
             glBindTexture(GL_TEXTURE_2D, defaultTextureID);
             glBindVertexArray(defaultVAO); // seeing as we only have a single VAO there's no need to bind it every time, but we'll do so to keep things a bit more organized
-            glDrawArrays(drawType, 0, vArray.getArraySize()/sizeof(Vertex));
+            glDrawArrays(drawType, 0, vArray.getNumVertices());
         }
         
+    }
+
+    void RenderContext::draw(const Point& point) {
+        RenderMode rmode = rBatch.vertexArray.getRenderType();
+        if (rmode == Points && rBatch.vertexArray.checkSpace(rBatch.vertexPointer, 2)) {
+            rBatch.add(point);
+        }
+        else {
+            if (rmode != None) {
+                draw(rBatch.vertexArray);
+            }
+            rBatch.vertexArray.reset(Points, MAX_BATCH_SIZE);
+            rBatch.vertexPointer = 0;
+            rBatch.add(point);
+        }
+    }
+
+    void RenderContext::draw(const DrawPoint& point) {
+        RenderMode rmode = rBatch.vertexArray.getRenderType();
+        if (rmode == Points && rBatch.vertexArray.checkSpace(rBatch.vertexPointer, 2)) {
+            rBatch.add(point);
+        }
+        else {
+            if (rmode != None) {
+                draw(rBatch.vertexArray);
+            }
+            rBatch.vertexArray.reset(Points, MAX_BATCH_SIZE);
+            rBatch.vertexPointer = 0;
+            rBatch.add(point);
+        }
+    }
+
+    void RenderContext::draw(const Line& line) {
+        RenderMode rmode = rBatch.vertexArray.getRenderType();
+        if (rmode == Lines && rBatch.vertexArray.checkSpace(rBatch.vertexPointer, 2)) {
+            rBatch.add(line);
+        }
+        else {
+            if (rmode != None) {
+                draw(rBatch.vertexArray);
+            }
+            rBatch.vertexArray.reset(Lines, MAX_BATCH_SIZE);
+            rBatch.vertexPointer = 0;
+            rBatch.add(line);
+        }
+    }
+
+    void RenderContext::draw(const DrawLine& line) {
+        RenderMode rmode = rBatch.vertexArray.getRenderType();
+        if (rmode == Lines && rBatch.vertexArray.checkSpace(rBatch.vertexPointer, 2)) {
+            rBatch.add(line);
+        }
+        else {
+            if (rmode != None) {
+                draw(rBatch.vertexArray);
+            }
+            rBatch.vertexArray.reset(Lines, MAX_BATCH_SIZE);
+            rBatch.vertexPointer = 0;
+            rBatch.add(line);
+        }
+    }
+
+    void RenderContext::draw(const Triangle& triangle) {
+        RenderMode rmode = rBatch.vertexArray.getRenderType();
+        if (rmode == Triangles && rBatch.vertexArray.checkSpace(rBatch.vertexPointer, 3)) {
+            rBatch.add(triangle);
+        }
+        else {
+            if (rmode != None) {
+                draw(rBatch.vertexArray);
+            }
+            rBatch.vertexArray.reset(Triangles, MAX_BATCH_SIZE);
+            rBatch.vertexPointer = 0;
+            rBatch.add(triangle);
+        }
+    }
+
+    void RenderContext::draw(const DrawTriangle& triangle) {
+        RenderMode rmode = rBatch.vertexArray.getRenderType();
+        if (rmode == Triangles && rBatch.vertexArray.checkSpace(rBatch.vertexPointer, 3)) {
+            rBatch.add(triangle);
+        }
+        else {
+            if (rmode != None) {
+                draw(rBatch.vertexArray);
+            }
+            rBatch.vertexArray.reset(Triangles, MAX_BATCH_SIZE);
+            rBatch.vertexPointer = 0;
+            rBatch.add(triangle);
+        }
+    }
+
+    void RenderContext::draw(const Rectangle& rectangle) {
+        RenderMode rmode = rBatch.vertexArray.getRenderType();
+        if (rmode == Quads && rBatch.vertexArray.checkSpace(rBatch.vertexPointer, 4)) {
+            rBatch.add(rectangle);
+        }
+        else {
+            if (rmode != None) {
+                draw(rBatch.vertexArray);
+            }
+            rBatch.vertexArray.reset(Quads, MAX_BATCH_SIZE);
+            rBatch.vertexPointer = 0;
+            rBatch.add(rectangle);
+        }
+    }
+
+    void RenderContext::draw(const Quadrilateral& quad) {
+        RenderMode rmode = rBatch.vertexArray.getRenderType();
+        if (rmode == Quads && rBatch.vertexArray.checkSpace(rBatch.vertexPointer, 4)) {
+            rBatch.add(quad);
+        }
+        else {
+            if (rmode != None) {
+                draw(rBatch.vertexArray);
+            }
+            rBatch.vertexArray.reset(Quads, MAX_BATCH_SIZE);
+            rBatch.vertexPointer = 0;
+            rBatch.add(quad);
+        }
+    }
+
+    void RenderContext::draw(const DrawQuad& quad) {
+        RenderMode rmode = rBatch.vertexArray.getRenderType();
+        if (rmode == Quads && rBatch.vertexArray.checkSpace(rBatch.vertexPointer, 4)) {
+            rBatch.add(quad);
+        }
+        else {
+            if (rmode != None) {
+                draw(rBatch.vertexArray);
+            }
+            rBatch.vertexArray.reset(Quads, MAX_BATCH_SIZE);
+            rBatch.vertexPointer = 0;
+            rBatch.add(quad);
+        }
+    }
+
+    void RenderContext::draw(const Circle& circle) {
+        RenderMode rmode = rBatch.vertexArray.getRenderType();
+        if (rmode == Circles && rBatch.vertexArray.checkSpace(rBatch.vertexPointer, 37)) {
+            rBatch.add(circle);
+        }
+        else {
+            if (rmode != None) {
+                draw(rBatch.vertexArray);
+            }
+            rBatch.vertexArray.reset(Circles, MAX_BATCH_SIZE);
+            rBatch.vertexPointer = 0;
+            rBatch.add(circle);
+        }
+    }
+
+    void RenderContext::draw(const DrawCircle& circle) {
+        RenderMode rmode = rBatch.vertexArray.getRenderType();
+        if (rmode == Circles && rBatch.vertexArray.checkSpace(rBatch.vertexPointer, 37)) {
+            rBatch.add(circle);
+        }
+        else {
+            drawBatch();
+            rBatch.vertexArray.reset(Circles, MAX_BATCH_SIZE);
+            rBatch.vertexPointer = 0;
+            rBatch.add(circle);
+        }
+    }
+
+    void RenderContext::drawBatch() {
+        // Reset the draw batch
+        RenderMode rmode = rBatch.vertexArray.getRenderType();
+        if (rmode != None) {
+            draw(rBatch.vertexArray);
+        }
+        rBatch.vertexArray.reset();
+        rBatch.vertexPointer = 0;
     }
 }
 
