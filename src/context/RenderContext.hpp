@@ -44,6 +44,7 @@
                 unsigned int defaultVAO;
                 unsigned int defaultEBO;
                 unsigned int defaultTextureID;
+                unsigned int currentTextureID;
 
                 void setVertexAttributes();
                 void useShader();

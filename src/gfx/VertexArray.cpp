@@ -38,12 +38,17 @@ namespace arcana {
                     for (int y = 0; y < NUM_SECTORS; y++) {
                         iArray[(x * NUM_INDICES) + (y * 3)] = iVal;
                         iArray[(x * NUM_INDICES) + (y * 3 + 1)] = iVal + y + 1;
-                        if (iVal + y + 2 != CIRCLE_VSIZE * (x + 1)) {
+                        if (y != NUM_SECTORS - 1) {
                             iArray[(x * NUM_INDICES) + (y * 3 + 2)] = iVal + y + 2;
                         }
                         else {
-                            iArray[(x * NUM_INDICES) + (y * 3 + 2)] = 1;
+                            iArray[(x * NUM_INDICES) + (y * 3 + 2)] = iVal + 1;
                         }
+                        LOG("[" << iArray[(x * NUM_INDICES) + (y * 3)] << 
+                            "," << iArray[(x * NUM_INDICES) + (y * 3 + 1)] << 
+                            "," << iArray[(x * NUM_INDICES) + (y * 3 + 2)] << 
+                            "]");
+                        
                     }
                     iVal += CIRCLE_VSIZE;
                 } 

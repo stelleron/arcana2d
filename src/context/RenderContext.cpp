@@ -96,6 +96,7 @@ namespace arcana {
         glGenVertexArrays(1, &defaultVAO);
         glGenBuffers(1, &defaultVBO);
         glGenBuffers(1, &defaultEBO);
+        currentTextureID = defaultTextureID;
     }
 
     void RenderContext::setVertexAttributes() {
@@ -136,7 +137,7 @@ namespace arcana {
             }
 
             useShader();
-            glBindTexture(GL_TEXTURE_2D, defaultTextureID);
+            glBindTexture(GL_TEXTURE_2D, currentTextureID);
             glBindVertexArray(defaultVAO); // seeing as we only have a single VAO there's no need to bind it every time, but we'll do so to keep things a bit more organized
             glDrawElements(drawType, vArray.getIndexArraySize()/sizeof(unsigned int), GL_UNSIGNED_INT, 0);
         }
@@ -156,7 +157,7 @@ namespace arcana {
             }
 
             useShader();
-            glBindTexture(GL_TEXTURE_2D, defaultTextureID);
+            glBindTexture(GL_TEXTURE_2D, currentTextureID);
             glBindVertexArray(defaultVAO); // seeing as we only have a single VAO there's no need to bind it every time, but we'll do so to keep things a bit more organized
             glDrawArrays(drawType, 0, vArray.getNumVertices());
         }
@@ -165,13 +166,14 @@ namespace arcana {
 
     void RenderContext::draw(const Point& point) {
         RenderMode rmode = rBatch.vertexArray.getRenderType();
-        if (rmode == Points && rBatch.vertexArray.checkSpace(rBatch.vertexPointer, 2)) {
+        if (rmode == Points && rBatch.vertexArray.checkSpace(rBatch.vertexPointer, 2) && currentTextureID == defaultTextureID) {
             rBatch.add(point);
         }
         else {
             if (rmode != None) {
                 draw(rBatch.vertexArray);
             }
+            currentTextureID = defaultTextureID;
             rBatch.vertexArray.reset(Points, MAX_BATCH_SIZE);
             rBatch.vertexPointer = 0;
             rBatch.add(point);
@@ -180,13 +182,14 @@ namespace arcana {
 
     void RenderContext::draw(const DrawPoint& point) {
         RenderMode rmode = rBatch.vertexArray.getRenderType();
-        if (rmode == Points && rBatch.vertexArray.checkSpace(rBatch.vertexPointer, 2)) {
+        if (rmode == Points && rBatch.vertexArray.checkSpace(rBatch.vertexPointer, 2) && currentTextureID == defaultTextureID) {
             rBatch.add(point);
         }
         else {
             if (rmode != None) {
                 draw(rBatch.vertexArray);
             }
+            currentTextureID = defaultTextureID;
             rBatch.vertexArray.reset(Points, MAX_BATCH_SIZE);
             rBatch.vertexPointer = 0;
             rBatch.add(point);
@@ -195,7 +198,7 @@ namespace arcana {
 
     void RenderContext::draw(const Line& line) {
         RenderMode rmode = rBatch.vertexArray.getRenderType();
-        if (rmode == Lines && rBatch.vertexArray.checkSpace(rBatch.vertexPointer, 2)) {
+        if (rmode == Lines && rBatch.vertexArray.checkSpace(rBatch.vertexPointer, 2) && currentTextureID == defaultTextureID) {
             rBatch.add(line);
         }
         else {
@@ -203,6 +206,7 @@ namespace arcana {
                 draw(rBatch.vertexArray);
             }
             rBatch.vertexArray.reset(Lines, MAX_BATCH_SIZE);
+            currentTextureID = defaultTextureID;
             rBatch.vertexPointer = 0;
             rBatch.add(line);
         }
@@ -210,13 +214,14 @@ namespace arcana {
 
     void RenderContext::draw(const DrawLine& line) {
         RenderMode rmode = rBatch.vertexArray.getRenderType();
-        if (rmode == Lines && rBatch.vertexArray.checkSpace(rBatch.vertexPointer, 2)) {
+        if (rmode == Lines && rBatch.vertexArray.checkSpace(rBatch.vertexPointer, 2) && currentTextureID == defaultTextureID) {
             rBatch.add(line);
         }
         else {
             if (rmode != None) {
                 draw(rBatch.vertexArray);
             }
+            currentTextureID = defaultTextureID;
             rBatch.vertexArray.reset(Lines, MAX_BATCH_SIZE);
             rBatch.vertexPointer = 0;
             rBatch.add(line);
@@ -225,13 +230,14 @@ namespace arcana {
 
     void RenderContext::draw(const Triangle& triangle) {
         RenderMode rmode = rBatch.vertexArray.getRenderType();
-        if (rmode == Triangles && rBatch.vertexArray.checkSpace(rBatch.vertexPointer, 3)) {
+        if (rmode == Triangles && rBatch.vertexArray.checkSpace(rBatch.vertexPointer, 3) && currentTextureID == defaultTextureID) {
             rBatch.add(triangle);
         }
         else {
             if (rmode != None) {
                 draw(rBatch.vertexArray);
             }
+            currentTextureID = defaultTextureID;
             rBatch.vertexArray.reset(Triangles, MAX_BATCH_SIZE);
             rBatch.vertexPointer = 0;
             rBatch.add(triangle);
@@ -240,13 +246,14 @@ namespace arcana {
 
     void RenderContext::draw(const DrawTriangle& triangle) {
         RenderMode rmode = rBatch.vertexArray.getRenderType();
-        if (rmode == Triangles && rBatch.vertexArray.checkSpace(rBatch.vertexPointer, 3)) {
+        if (rmode == Triangles && rBatch.vertexArray.checkSpace(rBatch.vertexPointer, 3) && currentTextureID == defaultTextureID) {
             rBatch.add(triangle);
         }
         else {
             if (rmode != None) {
                 draw(rBatch.vertexArray);
             }
+            currentTextureID = defaultTextureID;
             rBatch.vertexArray.reset(Triangles, MAX_BATCH_SIZE);
             rBatch.vertexPointer = 0;
             rBatch.add(triangle);
@@ -255,13 +262,14 @@ namespace arcana {
 
     void RenderContext::draw(const Rectangle& rectangle) {
         RenderMode rmode = rBatch.vertexArray.getRenderType();
-        if (rmode == Quads && rBatch.vertexArray.checkSpace(rBatch.vertexPointer, 4)) {
+        if (rmode == Quads && rBatch.vertexArray.checkSpace(rBatch.vertexPointer, 4) && currentTextureID == defaultTextureID) {
             rBatch.add(rectangle);
         }
         else {
             if (rmode != None) {
                 draw(rBatch.vertexArray);
             }
+            currentTextureID = defaultTextureID;
             rBatch.vertexArray.reset(Quads, MAX_BATCH_SIZE);
             rBatch.vertexPointer = 0;
             rBatch.add(rectangle);
@@ -270,13 +278,14 @@ namespace arcana {
 
     void RenderContext::draw(const Quadrilateral& quad) {
         RenderMode rmode = rBatch.vertexArray.getRenderType();
-        if (rmode == Quads && rBatch.vertexArray.checkSpace(rBatch.vertexPointer, 4)) {
+        if (rmode == Quads && rBatch.vertexArray.checkSpace(rBatch.vertexPointer, 4) && currentTextureID == defaultTextureID) {
             rBatch.add(quad);
         }
         else {
             if (rmode != None) {
                 draw(rBatch.vertexArray);
             }
+            currentTextureID = defaultTextureID;
             rBatch.vertexArray.reset(Quads, MAX_BATCH_SIZE);
             rBatch.vertexPointer = 0;
             rBatch.add(quad);
@@ -285,13 +294,14 @@ namespace arcana {
 
     void RenderContext::draw(const DrawQuad& quad) {
         RenderMode rmode = rBatch.vertexArray.getRenderType();
-        if (rmode == Quads && rBatch.vertexArray.checkSpace(rBatch.vertexPointer, 4)) {
+        if (rmode == Quads && rBatch.vertexArray.checkSpace(rBatch.vertexPointer, 4) && currentTextureID == defaultTextureID) {
             rBatch.add(quad);
         }
         else {
             if (rmode != None) {
                 draw(rBatch.vertexArray);
             }
+            currentTextureID = defaultTextureID;
             rBatch.vertexArray.reset(Quads, MAX_BATCH_SIZE);
             rBatch.vertexPointer = 0;
             rBatch.add(quad);
@@ -300,13 +310,14 @@ namespace arcana {
 
     void RenderContext::draw(const Circle& circle) {
         RenderMode rmode = rBatch.vertexArray.getRenderType();
-        if (rmode == Circles && rBatch.vertexArray.checkSpace(rBatch.vertexPointer, 37)) {
+        if (rmode == Circles && rBatch.vertexArray.checkSpace(rBatch.vertexPointer, 37) && currentTextureID == defaultTextureID) {
             rBatch.add(circle);
         }
         else {
             if (rmode != None) {
                 draw(rBatch.vertexArray);
             }
+            currentTextureID = defaultTextureID;
             rBatch.vertexArray.reset(Circles, MAX_BATCH_SIZE);
             rBatch.vertexPointer = 0;
             rBatch.add(circle);
@@ -315,11 +326,14 @@ namespace arcana {
 
     void RenderContext::draw(const DrawCircle& circle) {
         RenderMode rmode = rBatch.vertexArray.getRenderType();
-        if (rmode == Circles && rBatch.vertexArray.checkSpace(rBatch.vertexPointer, 37)) {
+        if (rmode == Circles && rBatch.vertexArray.checkSpace(rBatch.vertexPointer, 37) && currentTextureID == defaultTextureID) {
             rBatch.add(circle);
         }
         else {
-            drawBatch();
+            if (rmode != None) {
+                draw(rBatch.vertexArray);
+            }
+            currentTextureID = defaultTextureID;
             rBatch.vertexArray.reset(Circles, MAX_BATCH_SIZE);
             rBatch.vertexPointer = 0;
             rBatch.add(circle);

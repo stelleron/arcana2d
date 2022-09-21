@@ -42,6 +42,7 @@
                 Logger& operator<<(const std::string& message);
                 Logger& operator<<(const char* message);
                 Logger& operator<<(const int num);
+                Logger& operator<<(const unsigned int num);
                 Logger& operator<<(const float num);
                 Logger& operator<<(const unsigned long num);
                 void operator<<(const EndLog end);

@@ -59,6 +59,11 @@ namespace arcana {
         return *this;
     }
 
+    Logger& Logger::operator<<(const unsigned int num) {
+        this->message += std::to_string(num);
+        return *this;
+    }
+
     Logger& Logger::operator<<(const unsigned long num) {
         this->message += std::to_string(num);
         return *this;
