@@ -77,10 +77,18 @@ namespace arcana {
 
     void RenderContext::RenderBatch::add(Sprite& sprite) {
         Texture* tex = sprite.getTexturePtr();
-        vertexArray[vertexPointer] = Vertex({sprite.pos.x, sprite.pos.y, sprite.z}, sprite.color);
-        vertexArray[vertexPointer + 1] = Vertex({sprite.pos.x + (tex->width * sprite.scale.x), sprite.pos.y, sprite.z}, sprite.color, {1.0f, 0.0f});
-        vertexArray[vertexPointer + 2] = Vertex({sprite.pos.x, sprite.pos.y + (tex->height * sprite.scale.y), sprite.z}, sprite.color, {0.0f, 1.0f});
-        vertexArray[vertexPointer + 3] = Vertex({sprite.pos.x + (tex->width * sprite.scale.x), sprite.pos.y + (tex->height * sprite.scale.y), sprite.z}, sprite.color, {1.0f, 1.0f});
+        vertexArray[vertexPointer] = Vertex({sprite.pos.x, sprite.pos.y, sprite.z}, 
+                                         sprite.color,
+                                         {sprite.targetRect.point.x/tex->width, sprite.targetRect.point.y/tex->height});
+        vertexArray[vertexPointer + 1] = Vertex({sprite.pos.x + (tex->width * sprite.scale.x), sprite.pos.y, sprite.z}, 
+                                         sprite.color, 
+                                         {(sprite.targetRect.point.x + sprite.targetRect.width)/tex->width, sprite.targetRect.point.y/tex->height});
+        vertexArray[vertexPointer + 2] = Vertex({sprite.pos.x, sprite.pos.y + (tex->height * sprite.scale.y), sprite.z}, 
+                                         sprite.color, 
+                                         {sprite.targetRect.point.x/tex->width, (sprite.targetRect.point.y + sprite.targetRect.height)/tex->height});
+        vertexArray[vertexPointer + 3] = Vertex({sprite.pos.x + (tex->width * sprite.scale.x), sprite.pos.y + (tex->height * sprite.scale.y), sprite.z}, 
+                                         sprite.color, 
+                                         {(sprite.targetRect.point.x + sprite.targetRect.width)/tex->width, (sprite.targetRect.point.y + sprite.targetRect.height)/tex->height});
         vertexPointer += 4;
     }
 

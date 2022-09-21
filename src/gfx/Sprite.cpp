@@ -100,13 +100,22 @@ namespace arcana {
 
     void Sprite::load(const char* path) {
         tex.load(path);
+        targetRect.point = {0.0f, 0.0f};
+        targetRect.width = tex.width;
+        targetRect.height = tex.height;
     }
 
     void Sprite::load(unsigned char* data, size_t size) {
         tex.load(data, size);
+        targetRect.point = {0.0f, 0.0f};
+        targetRect.width = tex.width;
+        targetRect.height = tex.height;
     }
 
     void Sprite::load(const Image& image) {
         tex.load(image);
+        targetRect.point = {0.0f, 0.0f};
+        targetRect.width = tex.width;
+        targetRect.height = tex.height;
     }
 }
