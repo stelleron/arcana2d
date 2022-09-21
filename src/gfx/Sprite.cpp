@@ -4,7 +4,10 @@
 
 namespace arcana {
     SpriteData::SpriteData() {
+        scale = {1.0f, 1.0f};
         rotation = 0.0f;
+        z = 0.0f;
+        color = Color::RGB(255, 255, 255);
     }
 
     Texture::Texture() {
@@ -44,8 +47,8 @@ namespace arcana {
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE); 
         // Default color swizzling
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_SWIZZLE_R, GL_RED);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_SWIZZLE_G, GL_BLUE);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_SWIZZLE_B, GL_GREEN);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_SWIZZLE_G, GL_GREEN);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_SWIZZLE_B, GL_BLUE);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_SWIZZLE_A, GL_ALPHA);
         switch (image.format)
         {

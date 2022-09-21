@@ -4,6 +4,21 @@
 #include "utils/Logger.hpp"
 
 #define MAX_BATCH_SIZE 8000
+#define DRAW_OBJECT(type, vnum, obj) do { \
+    RenderMode rmode = rBatch.vertexArray.getRenderType(); \
+    if (rmode == type && rBatch.vertexArray.checkSpace(rBatch.vertexPointer, vnum) && currentTextureID == defaultTextureID) { \
+        rBatch.add(obj); \
+    } \
+    else { \
+        if (rmode != None) { \
+            draw(rBatch.vertexArray); \
+        } \
+        currentTextureID = defaultTextureID; \
+        rBatch.vertexArray.reset(type, MAX_BATCH_SIZE); \
+        rBatch.vertexPointer = 0; \
+        rBatch.add(obj); \
+    } \
+} while (false); \
 
 namespace arcana {
     // RENDER BATCH IMPL.
@@ -57,6 +72,15 @@ namespace arcana {
 
     void RenderContext::RenderBatch::add(const DrawQuad& quad) {
         vertexArray.add(quad, vertexPointer);
+        vertexPointer += 4;
+    }
+
+    void RenderContext::RenderBatch::add(Sprite& sprite) {
+        Texture* tex = sprite.getTexturePtr();
+        vertexArray[vertexPointer] = Vertex({sprite.pos.x, sprite.pos.y, sprite.z}, sprite.color);
+        vertexArray[vertexPointer + 1] = Vertex({sprite.pos.x + (tex->width * sprite.scale.x), sprite.pos.y, sprite.z}, sprite.color, {1.0f, 0.0f});
+        vertexArray[vertexPointer + 2] = Vertex({sprite.pos.x, sprite.pos.y + (tex->height * sprite.scale.y), sprite.z}, sprite.color, {0.0f, 1.0f});
+        vertexArray[vertexPointer + 3] = Vertex({sprite.pos.x + (tex->width * sprite.scale.x), sprite.pos.y + (tex->height * sprite.scale.y), sprite.z}, sprite.color, {1.0f, 1.0f});
         vertexPointer += 4;
     }
 
@@ -165,179 +189,64 @@ namespace arcana {
     }
 
     void RenderContext::draw(const Point& point) {
-        RenderMode rmode = rBatch.vertexArray.getRenderType();
-        if (rmode == Points && rBatch.vertexArray.checkSpace(rBatch.vertexPointer, 2) && currentTextureID == defaultTextureID) {
-            rBatch.add(point);
-        }
-        else {
-            if (rmode != None) {
-                draw(rBatch.vertexArray);
-            }
-            currentTextureID = defaultTextureID;
-            rBatch.vertexArray.reset(Points, MAX_BATCH_SIZE);
-            rBatch.vertexPointer = 0;
-            rBatch.add(point);
-        }
+        DRAW_OBJECT(Points, 2, point);
     }
 
     void RenderContext::draw(const DrawPoint& point) {
-        RenderMode rmode = rBatch.vertexArray.getRenderType();
-        if (rmode == Points && rBatch.vertexArray.checkSpace(rBatch.vertexPointer, 2) && currentTextureID == defaultTextureID) {
-            rBatch.add(point);
-        }
-        else {
-            if (rmode != None) {
-                draw(rBatch.vertexArray);
-            }
-            currentTextureID = defaultTextureID;
-            rBatch.vertexArray.reset(Points, MAX_BATCH_SIZE);
-            rBatch.vertexPointer = 0;
-            rBatch.add(point);
-        }
+        DRAW_OBJECT(Points, 2, point);
     }
 
     void RenderContext::draw(const Line& line) {
-        RenderMode rmode = rBatch.vertexArray.getRenderType();
-        if (rmode == Lines && rBatch.vertexArray.checkSpace(rBatch.vertexPointer, 2) && currentTextureID == defaultTextureID) {
-            rBatch.add(line);
-        }
-        else {
-            if (rmode != None) {
-                draw(rBatch.vertexArray);
-            }
-            rBatch.vertexArray.reset(Lines, MAX_BATCH_SIZE);
-            currentTextureID = defaultTextureID;
-            rBatch.vertexPointer = 0;
-            rBatch.add(line);
-        }
+        DRAW_OBJECT(Lines, 2, line);
     }
 
     void RenderContext::draw(const DrawLine& line) {
-        RenderMode rmode = rBatch.vertexArray.getRenderType();
-        if (rmode == Lines && rBatch.vertexArray.checkSpace(rBatch.vertexPointer, 2) && currentTextureID == defaultTextureID) {
-            rBatch.add(line);
-        }
-        else {
-            if (rmode != None) {
-                draw(rBatch.vertexArray);
-            }
-            currentTextureID = defaultTextureID;
-            rBatch.vertexArray.reset(Lines, MAX_BATCH_SIZE);
-            rBatch.vertexPointer = 0;
-            rBatch.add(line);
-        }
+        DRAW_OBJECT(Lines, 2, line);
     }
 
     void RenderContext::draw(const Triangle& triangle) {
-        RenderMode rmode = rBatch.vertexArray.getRenderType();
-        if (rmode == Triangles && rBatch.vertexArray.checkSpace(rBatch.vertexPointer, 3) && currentTextureID == defaultTextureID) {
-            rBatch.add(triangle);
-        }
-        else {
-            if (rmode != None) {
-                draw(rBatch.vertexArray);
-            }
-            currentTextureID = defaultTextureID;
-            rBatch.vertexArray.reset(Triangles, MAX_BATCH_SIZE);
-            rBatch.vertexPointer = 0;
-            rBatch.add(triangle);
-        }
+        DRAW_OBJECT(Triangles, 3, triangle);
     }
 
     void RenderContext::draw(const DrawTriangle& triangle) {
-        RenderMode rmode = rBatch.vertexArray.getRenderType();
-        if (rmode == Triangles && rBatch.vertexArray.checkSpace(rBatch.vertexPointer, 3) && currentTextureID == defaultTextureID) {
-            rBatch.add(triangle);
-        }
-        else {
-            if (rmode != None) {
-                draw(rBatch.vertexArray);
-            }
-            currentTextureID = defaultTextureID;
-            rBatch.vertexArray.reset(Triangles, MAX_BATCH_SIZE);
-            rBatch.vertexPointer = 0;
-            rBatch.add(triangle);
-        }
+        DRAW_OBJECT(Triangles, 3, triangle);
     }
 
     void RenderContext::draw(const Rectangle& rectangle) {
-        RenderMode rmode = rBatch.vertexArray.getRenderType();
-        if (rmode == Quads && rBatch.vertexArray.checkSpace(rBatch.vertexPointer, 4) && currentTextureID == defaultTextureID) {
-            rBatch.add(rectangle);
-        }
-        else {
-            if (rmode != None) {
-                draw(rBatch.vertexArray);
-            }
-            currentTextureID = defaultTextureID;
-            rBatch.vertexArray.reset(Quads, MAX_BATCH_SIZE);
-            rBatch.vertexPointer = 0;
-            rBatch.add(rectangle);
-        }
+        DRAW_OBJECT(Quads, 4, rectangle);
     }
 
     void RenderContext::draw(const Quadrilateral& quad) {
-        RenderMode rmode = rBatch.vertexArray.getRenderType();
-        if (rmode == Quads && rBatch.vertexArray.checkSpace(rBatch.vertexPointer, 4) && currentTextureID == defaultTextureID) {
-            rBatch.add(quad);
-        }
-        else {
-            if (rmode != None) {
-                draw(rBatch.vertexArray);
-            }
-            currentTextureID = defaultTextureID;
-            rBatch.vertexArray.reset(Quads, MAX_BATCH_SIZE);
-            rBatch.vertexPointer = 0;
-            rBatch.add(quad);
-        }
+        DRAW_OBJECT(Quads, 4, quad);
     }
 
     void RenderContext::draw(const DrawQuad& quad) {
-        RenderMode rmode = rBatch.vertexArray.getRenderType();
-        if (rmode == Quads && rBatch.vertexArray.checkSpace(rBatch.vertexPointer, 4) && currentTextureID == defaultTextureID) {
-            rBatch.add(quad);
-        }
-        else {
-            if (rmode != None) {
-                draw(rBatch.vertexArray);
-            }
-            currentTextureID = defaultTextureID;
-            rBatch.vertexArray.reset(Quads, MAX_BATCH_SIZE);
-            rBatch.vertexPointer = 0;
-            rBatch.add(quad);
-        }
+        DRAW_OBJECT(Quads, 4, quad);
     }
 
     void RenderContext::draw(const Circle& circle) {
-        RenderMode rmode = rBatch.vertexArray.getRenderType();
-        if (rmode == Circles && rBatch.vertexArray.checkSpace(rBatch.vertexPointer, 37) && currentTextureID == defaultTextureID) {
-            rBatch.add(circle);
-        }
-        else {
-            if (rmode != None) {
-                draw(rBatch.vertexArray);
-            }
-            currentTextureID = defaultTextureID;
-            rBatch.vertexArray.reset(Circles, MAX_BATCH_SIZE);
-            rBatch.vertexPointer = 0;
-            rBatch.add(circle);
-        }
+        DRAW_OBJECT(Circles, 37, circle);
     }
 
     void RenderContext::draw(const DrawCircle& circle) {
-        RenderMode rmode = rBatch.vertexArray.getRenderType();
-        if (rmode == Circles && rBatch.vertexArray.checkSpace(rBatch.vertexPointer, 37) && currentTextureID == defaultTextureID) {
-            rBatch.add(circle);
-        }
-        else {
-            if (rmode != None) {
-                draw(rBatch.vertexArray);
-            }
-            currentTextureID = defaultTextureID;
-            rBatch.vertexArray.reset(Circles, MAX_BATCH_SIZE);
-            rBatch.vertexPointer = 0;
-            rBatch.add(circle);
-        }
+        DRAW_OBJECT(Circles, 37, circle);
+    }
+
+    void RenderContext::draw(Sprite& sprite) {
+        Texture* tex = sprite.getTexturePtr();
+        RenderMode rmode = rBatch.vertexArray.getRenderType(); 
+        if (rmode == Quads && rBatch.vertexArray.checkSpace(rBatch.vertexPointer, 4) && currentTextureID == tex->id) { 
+            rBatch.add(sprite); 
+        } 
+        else { 
+            if (rmode != None) { 
+                draw(rBatch.vertexArray); 
+            } 
+            currentTextureID = tex->id; 
+            rBatch.vertexArray.reset(Quads, MAX_BATCH_SIZE); 
+            rBatch.vertexPointer = 0; 
+            rBatch.add(sprite); 
+        } 
     }
 
     void RenderContext::drawBatch() {

@@ -43,12 +43,7 @@ namespace arcana {
                         }
                         else {
                             iArray[(x * NUM_INDICES) + (y * 3 + 2)] = iVal + 1;
-                        }
-                        LOG("[" << iArray[(x * NUM_INDICES) + (y * 3)] << 
-                            "," << iArray[(x * NUM_INDICES) + (y * 3 + 1)] << 
-                            "," << iArray[(x * NUM_INDICES) + (y * 3 + 2)] << 
-                            "]");
-                        
+                        }                        
                     }
                     iVal += CIRCLE_VSIZE;
                 } 

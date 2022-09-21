@@ -3,6 +3,7 @@
 
     #include "camera/Camera.hpp"
     #include "gfx/Shader.hpp"
+    #include "gfx/Sprite.hpp"
     #include "gfx/VertexArray.hpp"
 
 
@@ -33,6 +34,8 @@
 
                 void add(const Circle& circle);
                 void add(const DrawCircle& circle);
+
+                void add(Sprite& sprite);
             };
 
             private:
@@ -48,6 +51,7 @@
 
                 void setVertexAttributes();
                 void useShader();
+                void drawBatchAndReset();
             public:
                 // Constructor
                 RenderContext();
@@ -76,6 +80,9 @@
 
                 void draw(const Circle& circle);
                 void draw(const DrawCircle& circle);
+
+                // Used to render textures and sprites
+                void draw(Sprite& sprite);
 
                 void drawBatch();
         };

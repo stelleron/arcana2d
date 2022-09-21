@@ -1,6 +1,7 @@
 #ifndef ARCANA2D_SPRITE
     #define ARCANA2D_SPRITE
     
+    #include "utils/Color.hpp"
     #include "geom/Geometry.hpp"
     #include "res/Image.hpp"
 
@@ -10,7 +11,9 @@
             Vector2 pos;
             Vector2 scale;
             Rectangle targetRect;
+            Color color;
             float rotation;
+            float z;
             SpriteData();
         };
 
