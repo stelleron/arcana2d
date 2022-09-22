@@ -100,6 +100,7 @@ namespace arcana {
 
     void Sprite::load(const char* path) {
         tex.load(path);
+        pos = {tex.width/2, tex.height/2};
         targetRect.point = {0.0f, 0.0f};
         targetRect.width = tex.width;
         targetRect.height = tex.height;
@@ -107,6 +108,7 @@ namespace arcana {
 
     void Sprite::load(unsigned char* data, size_t size) {
         tex.load(data, size);
+        pos = {tex.width/2, tex.height/2};
         targetRect.point = {0.0f, 0.0f};
         targetRect.width = tex.width;
         targetRect.height = tex.height;
@@ -114,6 +116,7 @@ namespace arcana {
 
     void Sprite::load(const Image& image) {
         tex.load(image);
+        pos = {tex.width/2, tex.height/2};
         targetRect.point = {0.0f, 0.0f};
         targetRect.width = tex.width;
         targetRect.height = tex.height;

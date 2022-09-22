@@ -1,4 +1,6 @@
 #include <glad/glad.h>
+#include <algorithm>
+#include <cmath>
 #include "context/RenderContext.hpp"
 #include "geom/Vertex.hpp"
 #include "utils/Logger.hpp"
@@ -77,24 +79,48 @@ namespace arcana {
 
     void RenderContext::RenderBatch::add(Sprite& sprite) {
         Texture* tex = sprite.getTexturePtr();
-        vertexArray[vertexPointer] = Vertex({sprite.pos.x, sprite.pos.y, sprite.z}, 
-                                         sprite.color,
-                                         {sprite.targetRect.point.x/tex->width, sprite.targetRect.point.y/tex->height});
-        vertexArray[vertexPointer + 1] = Vertex({sprite.pos.x + (tex->width * sprite.scale.x), sprite.pos.y, sprite.z}, 
-                                         sprite.color, 
-                                         {(sprite.targetRect.point.x + sprite.targetRect.width)/tex->width, sprite.targetRect.point.y/tex->height});
-        vertexArray[vertexPointer + 2] = Vertex({sprite.pos.x, sprite.pos.y + (tex->height * sprite.scale.y), sprite.z}, 
-                                         sprite.color, 
-                                         {sprite.targetRect.point.x/tex->width, (sprite.targetRect.point.y + sprite.targetRect.height)/tex->height});
-        vertexArray[vertexPointer + 3] = Vertex({sprite.pos.x + (tex->width * sprite.scale.x), sprite.pos.y + (tex->height * sprite.scale.y), sprite.z}, 
-                                         sprite.color, 
-                                         {(sprite.targetRect.point.x + sprite.targetRect.width)/tex->width, (sprite.targetRect.point.y + sprite.targetRect.height)/tex->height});
+        // First set the color of all vertices
+        vertexArray[vertexPointer].color = sprite.color;
+        vertexArray[vertexPointer + 1].color = sprite.color;
+        vertexArray[vertexPointer + 2].color = sprite.color;
+        vertexArray[vertexPointer + 3].color = sprite.color;
+        // Now set the tex coords
+        vertexArray[vertexPointer].texCoords = {sprite.targetRect.point.x/tex->width, sprite.targetRect.point.y/tex->height};
+        vertexArray[vertexPointer + 1].texCoords = {(sprite.targetRect.point.x + sprite.targetRect.width)/tex->width, sprite.targetRect.point.y/tex->height};
+        vertexArray[vertexPointer + 2].texCoords = {sprite.targetRect.point.x/tex->width, (sprite.targetRect.point.y + sprite.targetRect.height)/tex->height};
+        vertexArray[vertexPointer + 3].texCoords = {(sprite.targetRect.point.x + sprite.targetRect.width)/tex->width, (sprite.targetRect.point.y + sprite.targetRect.height)/tex->height};
+        // And finally positions
+        // First convert the desination rectangle into a circle
+        Vector2 centerPos = sprite.pos;
+        float radius = sqrt((tex->width * tex->width *  sprite.scale.x *  sprite.scale.x) + (tex->height * tex->height * sprite.scale.y * sprite.scale.y))/2; 
+        float topRightAngle = atan( (tex->height * sprite.scale.y) / (tex->width *  sprite.scale.x) ) * 180/M_PI;
+        float bottomRightAngle = 180 - topRightAngle;
+        float bottomLeftAngle = 180 + topRightAngle;
+        float topLeftAngle = 180 + bottomRightAngle;
+
+        vertexArray[vertexPointer].pos = {
+            sprite.pos.x + sinf(glm::radians(topLeftAngle + sprite.rotation)) * radius, 
+            sprite.pos.y - cosf(glm::radians(topLeftAngle + sprite.rotation)) * radius, 
+            sprite.z};
+        vertexArray[vertexPointer + 1].pos = {
+            sprite.pos.x + sinf(glm::radians(topRightAngle + sprite.rotation)) * radius, 
+            sprite.pos.y - cosf(glm::radians(topRightAngle + sprite.rotation)) * radius,  
+            sprite.z};
+        vertexArray[vertexPointer + 2].pos = {
+            sprite.pos.x + sinf(glm::radians(bottomLeftAngle + sprite.rotation)) * radius, 
+            sprite.pos.y - cosf(glm::radians(bottomLeftAngle + sprite.rotation)) * radius, 
+            sprite.z};
+        vertexArray[vertexPointer + 3].pos = {
+            sprite.pos.x + sinf(glm::radians(bottomRightAngle + sprite.rotation)) * radius, 
+            sprite.pos.y - cosf(glm::radians(bottomRightAngle + sprite.rotation)) * radius,
+            sprite.z};
+
         vertexPointer += 4;
     }
 
     void RenderContext::RenderBatch::add(const Circle& circle) {
         vertexArray.add(circle, vertexPointer);
-        vertexPointer += 37;
+        vertexPointer += 37; 
     }
 
     void RenderContext::RenderBatch::add(const DrawCircle& circle) {
