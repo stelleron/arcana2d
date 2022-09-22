@@ -69,7 +69,7 @@ namespace arcana {
         radius = 0;
     }
 
-    Circle::Circle(Vector2 center, int radius) 
+    Circle::Circle(Vector2 center, float radius) 
     : center(center), radius(radius) {
 
     }

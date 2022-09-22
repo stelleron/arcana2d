@@ -62,11 +62,11 @@
         // Used to create a circle
         struct Circle {
             Vector2 center;
-            int radius;
+            float radius;
 
             // Constructors
             Circle();
-            Circle(Vector2 center, int radius);
+            Circle(Vector2 center, float radius);
         };    
     }
 #endif

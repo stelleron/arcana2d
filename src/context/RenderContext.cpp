@@ -1,5 +1,4 @@
 #include <glad/glad.h>
-#include <algorithm>
 #include <cmath>
 #include "context/RenderContext.hpp"
 #include "geom/Vertex.hpp"
@@ -90,31 +89,106 @@ namespace arcana {
         vertexArray[vertexPointer + 2].texCoords = {sprite.targetRect.point.x/tex->width, (sprite.targetRect.point.y + sprite.targetRect.height)/tex->height};
         vertexArray[vertexPointer + 3].texCoords = {(sprite.targetRect.point.x + sprite.targetRect.width)/tex->width, (sprite.targetRect.point.y + sprite.targetRect.height)/tex->height};
         // And finally positions
-        // First convert the desination rectangle into a circle
-        Vector2 centerPos = sprite.pos;
-        float radius = sqrt((tex->width * tex->width *  sprite.scale.x *  sprite.scale.x) + (tex->height * tex->height * sprite.scale.y * sprite.scale.y))/2; 
-        float topRightAngle = atan( (tex->height * sprite.scale.y) / (tex->width *  sprite.scale.x) ) * 180/M_PI;
-        float bottomRightAngle = 180 - topRightAngle;
-        float bottomLeftAngle = 180 + topRightAngle;
-        float topLeftAngle = 180 + bottomRightAngle;
+        if (sprite.rotation != 0.0f) {
+            float radius = sqrt((tex->width * tex->width *  sprite.scale.x *  sprite.scale.x) + (tex->height * tex->height * sprite.scale.y * sprite.scale.y))/2; 
+            float topRightAngle = atan( (tex->height * sprite.scale.y) / (tex->width *  sprite.scale.x) ) * 180/M_PI;
+            float bottomRightAngle = 180 - topRightAngle;
+            float bottomLeftAngle = 180 + topRightAngle;
+            float topLeftAngle = 180 + bottomRightAngle;
 
-        vertexArray[vertexPointer].pos = {
-            sprite.pos.x + sinf(glm::radians(topLeftAngle + sprite.rotation)) * radius, 
-            sprite.pos.y - cosf(glm::radians(topLeftAngle + sprite.rotation)) * radius, 
-            sprite.z};
-        vertexArray[vertexPointer + 1].pos = {
-            sprite.pos.x + sinf(glm::radians(topRightAngle + sprite.rotation)) * radius, 
-            sprite.pos.y - cosf(glm::radians(topRightAngle + sprite.rotation)) * radius,  
-            sprite.z};
-        vertexArray[vertexPointer + 2].pos = {
-            sprite.pos.x + sinf(glm::radians(bottomLeftAngle + sprite.rotation)) * radius, 
-            sprite.pos.y - cosf(glm::radians(bottomLeftAngle + sprite.rotation)) * radius, 
-            sprite.z};
-        vertexArray[vertexPointer + 3].pos = {
-            sprite.pos.x + sinf(glm::radians(bottomRightAngle + sprite.rotation)) * radius, 
-            sprite.pos.y - cosf(glm::radians(bottomRightAngle + sprite.rotation)) * radius,
-            sprite.z};
+            vertexArray[vertexPointer].pos = {
+                sprite.pos.x + sinf(glm::radians(topLeftAngle + sprite.rotation)) * radius, 
+                sprite.pos.y - cosf(glm::radians(topLeftAngle + sprite.rotation)) * radius, 
+                sprite.z};
+            vertexArray[vertexPointer + 1].pos = {
+                sprite.pos.x + sinf(glm::radians(topRightAngle + sprite.rotation)) * radius, 
+                sprite.pos.y - cosf(glm::radians(topRightAngle + sprite.rotation)) * radius,  
+                sprite.z};
+            vertexArray[vertexPointer + 2].pos = {
+                sprite.pos.x + sinf(glm::radians(bottomLeftAngle + sprite.rotation)) * radius, 
+                sprite.pos.y - cosf(glm::radians(bottomLeftAngle + sprite.rotation)) * radius, 
+                sprite.z};
+            vertexArray[vertexPointer + 3].pos = {
+                sprite.pos.x + sinf(glm::radians(bottomRightAngle + sprite.rotation)) * radius, 
+                sprite.pos.y - cosf(glm::radians(bottomRightAngle + sprite.rotation)) * radius,
+                sprite.z};
+        }
+        else {
+            vertexArray[vertexPointer].pos = {
+                sprite.pos.x - (sprite.scale.x * tex->width)/2, 
+                sprite.pos.y - (sprite.scale.y * tex->height)/2, 
+                sprite.z};
+            vertexArray[vertexPointer + 1].pos = {
+                sprite.pos.x + (sprite.scale.x * tex->width)/2, 
+                sprite.pos.y - (sprite.scale.y * tex->height)/2, 
+                sprite.z};
+            vertexArray[vertexPointer + 2].pos = {
+                sprite.pos.x - (sprite.scale.x * tex->width)/2, 
+                sprite.pos.y + (sprite.scale.y * tex->height)/2, 
+                sprite.z};
+            vertexArray[vertexPointer + 3].pos = {
+                sprite.pos.x + (sprite.scale.x * tex->width)/2, 
+                sprite.pos.y + (sprite.scale.y * tex->height)/2, 
+                sprite.z};
+        }
 
+        vertexPointer += 4;
+    }
+
+    void RenderContext::RenderBatch::add(Texture& tex, Vector2 pos, Vector2 scale, float z, float rotation, Color color, Rectangle targetRect) {
+        // First set color
+        vertexArray[vertexPointer].color = color;
+        vertexArray[vertexPointer + 1].color = color;
+        vertexArray[vertexPointer + 2].color = color;
+        vertexArray[vertexPointer + 3].color = color;
+        // Then set tex coords
+        vertexArray[vertexPointer].texCoords = {targetRect.point.x/tex.width, targetRect.point.y/tex.height};
+        vertexArray[vertexPointer + 1].texCoords = {(targetRect.point.x + targetRect.width)/tex.width, targetRect.point.y/tex.height};
+        vertexArray[vertexPointer + 2].texCoords = {targetRect.point.x/tex.width, (targetRect.point.y + targetRect.height)/tex.height};
+        vertexArray[vertexPointer + 3].texCoords = {(targetRect.point.x + targetRect.width)/tex.width, (targetRect.point.y + targetRect.height)/tex.height};
+        // Then finally set positions 
+        if (rotation != 0.0f) {
+            float line_dist = sqrt((tex.width * tex.width *  scale.x *  scale.x) + (tex.height * tex.height * scale.y * scale.y));
+            vertexArray[vertexPointer].pos = {
+                pos.x, 
+                pos.y, 
+                z
+            };
+            vertexArray[vertexPointer + 1].pos = {
+                pos.x + sinf(glm::radians(90.0 + rotation)) * tex.width * scale.x,
+                pos.y - cosf(glm::radians(90.0 + rotation)) * tex.width * scale.x,
+                z
+            };
+            vertexArray[vertexPointer + 2].pos = {
+                pos.x + sinf(glm::radians(180.0 + rotation)) * tex.height * scale.y,
+                pos.y - cosf(glm::radians(180.0 + rotation)) * tex.height * scale.y,
+                z
+            };
+            vertexArray[vertexPointer + 3].pos = {
+                pos.x + sinf(glm::radians(135.0 + rotation)) * line_dist,
+                pos.y - cosf(glm::radians(135.0 + rotation)) * line_dist,
+                z
+            };
+            
+        }
+        else {
+            vertexArray[vertexPointer].pos = {
+                pos.x, 
+                pos.y, 
+                z};
+            vertexArray[vertexPointer + 1].pos = {
+                pos.x + (tex.width * scale.x), 
+                pos.y, 
+                z};
+            vertexArray[vertexPointer + 2].pos = {
+                pos.x, 
+                pos.y + (tex.height * scale.y), 
+                z};
+            vertexArray[vertexPointer + 3].pos = {
+                pos.x + (tex.width * scale.x),  
+                pos.y + (tex.height * scale.y),  
+                z};
+        }
         vertexPointer += 4;
     }
 
@@ -281,6 +355,26 @@ namespace arcana {
             rBatch.vertexPointer = 0; 
             rBatch.add(sprite); 
         } 
+    }
+
+    void RenderContext::draw(Texture& tex, Vector2 pos, Vector2 scale, float z, float rotation, Color color) {
+        draw(tex, Rectangle({0.0, 0.0}, tex.width, tex.height), pos, scale, z, rotation, color);
+    } 
+
+    void RenderContext::draw(Texture& tex, Rectangle targetRect, Vector2 pos, Vector2 scale, float z, float rotation, Color color) {
+        RenderMode rmode = rBatch.vertexArray.getRenderType();
+        if (rmode == Quads && rBatch.vertexArray.checkSpace(rBatch.vertexPointer, 4) && currentTextureID == tex.id) { 
+            rBatch.add(tex, pos, scale, z, rotation, color, targetRect); 
+        } 
+        else { 
+            if (rmode != None) { 
+                draw(rBatch.vertexArray); 
+            } 
+            currentTextureID = tex.id; 
+            rBatch.vertexArray.reset(Quads, MAX_BATCH_SIZE); 
+            rBatch.vertexPointer = 0; 
+            rBatch.add(tex, pos, scale, z, rotation, color, targetRect); 
+        }
     }
 
     void RenderContext::drawBatch() {

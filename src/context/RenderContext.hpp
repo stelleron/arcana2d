@@ -36,6 +36,7 @@
                 void add(const DrawCircle& circle);
 
                 void add(Sprite& sprite);
+                void add(Texture& tex, Vector2 pos, Vector2 scale, float z, float rotation, Color color, Rectangle targetRect);
             };
 
             private:
@@ -83,6 +84,9 @@
 
                 // Used to render textures and sprites
                 void draw(Sprite& sprite);
+
+                void draw(Texture& tex, Vector2 pos = {0.0, 0.0}, Vector2 scale = {1.0, 1.0}, float z = 0.0, float rotation = 0.0, Color color = Color::RGB(255, 255, 255));
+                void draw(Texture& tex, Rectangle targetRect, Vector2 pos = {0.0, 0.0}, Vector2 scale = {1.0, 1.0}, float z = 0.0, float rotation = 0.0, Color color = Color::RGB(255, 255, 255));
 
                 void drawBatch();
         };
