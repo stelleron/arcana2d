@@ -11,6 +11,8 @@
     #include "geom/Geometry.hpp"
     #include "geom/DrawGeometry.hpp"
 
+    #include "res/Font.hpp"
+
     #include "time/Timer.hpp"
     
     #include "camera/Camera.hpp"

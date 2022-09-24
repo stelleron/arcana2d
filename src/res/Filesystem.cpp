@@ -109,5 +109,8 @@ namespace arcana {
             std::ofstream output(fpath, std::ios::out);
             output << data;
         }
+        std::string getFileExtension(const std::string& path) {
+            return path.substr(path.find_last_of(".") + 1);
+        }
     }
 }

@@ -298,6 +298,19 @@ namespace arcana {
 
         // Then ensure that there is enough space for the primitive
         BATCH_SPACE_ASSERT(startIndex, 37);
+
+        // Now time to add all of the vertices to the vertex array
+        vArray[startIndex] = Vertex(circle.center);
+        for (int x = 0; x < NUM_SECTORS; x++) {
+            vArray[startIndex + x + 1] = Vertex(
+            Vector3(
+                circle.center.x + sinf(glm::radians(SECTOR_ANGLE * x)) * circle.radius, 
+                circle.center.y - cosf(glm::radians(SECTOR_ANGLE * x)) * circle.radius,
+                circle.z
+            ),
+            circle.color
+            );
+        }
     }
 
     unsigned int* VertexArray::getIndexArray() {
