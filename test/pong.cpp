@@ -38,6 +38,7 @@ class PongGame : public Application {
     Paddle playerPaddle;
     Paddle enemyPaddle;
     Ball ball;
+    Font font;
 
     void config(AppConfig& config) {
         config.title = "Pong Demo";
@@ -50,6 +51,7 @@ class PongGame : public Application {
         enemyPaddle.pos = {650.0f, 200.0f};
         enemyPaddle.color = RED;
         ball.pos = {400.0f, 300.0f};
+        font.load("cache/ThaleahFat.ttf");
     }
 
     void update(GameContext& ctx) {

@@ -1,8 +1,7 @@
-#define STB_RECT_PACK_IMPLEMENTATION
-#include "stb_rect_pack.h"
 #define STBTT_STATIC
 #define STB_TRUETYPE_IMPLEMENTATION
 #include "stb_truetype.h" 
+
 #include "res/Font.hpp"
 #include "res/Filesystem.hpp"
 #include "utils/Logger.hpp"
@@ -28,7 +27,7 @@ namespace arcana {
         size_t fsize;
         unsigned char* data = filesystem::loadFileData(path, fsize);
         std::string extension = filesystem::getFileExtension(path);
-        if (extension == "otf" && extension == "ttf")
+        if (extension == "otf" || extension == "ttf")
             load(data, fsize, fontsize);
         else 
             LOG("Font: Font type not supported!");
@@ -36,5 +35,12 @@ namespace arcana {
 
     void Font::load(unsigned char* data, size_t size, int fontsize) {
         fontSize = fontsize;
+        stbtt_fontinfo fontInfo = { 0 };
+        if (stbtt_InitFont(&fontInfo, data, 0)) {
+
+        }
+        else {
+            LOG("Font: Could not load font!");
+        }
     }
 }
