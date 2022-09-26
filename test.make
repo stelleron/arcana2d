@@ -81,7 +81,7 @@ all: prebuild prelink $(TARGET)
 endif
 
 OBJECTS := \
-	$(OBJDIR)/pong.o \
+	$(OBJDIR)/main.o \
 
 RESOURCES := \
 
@@ -140,7 +140,7 @@ else
 $(OBJECTS): | $(OBJDIR)
 endif
 
-$(OBJDIR)/pong.o: test/pong.cpp
+$(OBJDIR)/main.o: test/main.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 

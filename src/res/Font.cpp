@@ -141,7 +141,6 @@ namespace arcana {
         }
         
         // Convert from grayscale to gray alpha
-        /* 
         unsigned char *dataGrayAlpha = new unsigned char[fontAtlas.width * fontAtlas.height * 2]; 
 
         for (int i = 0, k = 0; i < fontAtlas.width*fontAtlas.height; i++, k += 2)
@@ -156,9 +155,10 @@ namespace arcana {
 
         // And finally convert it to a texture
         fontTex.load(fontAtlas); 
-        */
+        
 
-       #define DEBUG_NUM 0
+       /*
+       #define DEBUG_NUM 23
 
         unsigned char *dataGrayAlpha = new unsigned char[glyphs[DEBUG_NUM].image.width * glyphs[DEBUG_NUM].image.height * 2]; 
 
@@ -174,6 +174,7 @@ namespace arcana {
         
         // And finally convert it to a texture
         fontTex.load(glyphs[DEBUG_NUM].image);
+        */
         
 
         // Delete glyphs
