@@ -2,6 +2,7 @@
 #include "stb_image.h"
 #include "res/Filesystem.hpp"
 #include "res/Image.hpp"
+#include "utils/Logger.hpp"
 
 namespace arcana {
     Image::Image() {
@@ -28,7 +29,7 @@ namespace arcana {
     }
 
     void Image::load(unsigned char* data, size_t size) {
-        stbi_set_flip_vertically_on_load(1);
+        stbi_set_flip_vertically_on_load(0);
         int colorChannels;
         this->data = stbi_load_from_memory(data, size, &width, &height, &colorChannels, 0);
         switch (colorChannels) {

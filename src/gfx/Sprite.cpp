@@ -1,6 +1,7 @@
 #include "gfx/Sprite.hpp"
 #include "res/Filesystem.hpp"
 #include <glad/glad.h>
+#include "utils/Logger.hpp"
 
 namespace arcana {
     SpriteData::SpriteData() {
@@ -28,10 +29,8 @@ namespace arcana {
         load(image);
     }
     void Texture::load(const char* path) {
-        size_t size;
-        unsigned char* data = filesystem::loadFileData(path, size);
-        load(data, size);
-        filesystem::unloadFileData(data);
+        Image image(path);
+        load(image);
     }
     void Texture::load(unsigned char* data, size_t size) {
         Image image(data, size);
@@ -41,8 +40,8 @@ namespace arcana {
         glGenTextures(1, &id);
         glBindTexture(GL_TEXTURE_2D, id);
         // Default texture params
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);  
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);  
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);    
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE); 
         // Default color swizzling

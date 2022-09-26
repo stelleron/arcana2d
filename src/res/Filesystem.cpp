@@ -5,6 +5,7 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 #include "utils/Logger.hpp"
+#include <stdlib.h>
 
 namespace arcana {
     namespace filesystem {
@@ -77,11 +78,16 @@ namespace arcana {
                 exit(1);
             }
 
-            std::string source = loadFileStr(dir);
-            unsigned char* buffer = new unsigned char[source.size()];
-            fsize = source.size() * sizeof(unsigned char);
-            strcpy((char*)buffer, source.c_str());
-            return buffer;
+            std::string path = currentWorkingDir;
+            path += dir;
+            FILE *file = fopen(path.c_str(), "r");
+            fseek(file, 0, SEEK_END);
+            int size = ftell(file);
+            fseek(file, 0, SEEK_SET);
+            unsigned char* data = new unsigned char[size];
+            unsigned int count = fread(data, 1, size, file);
+            fsize = count;
+            return data;
         }
 
         void unloadFileText(char* data) {
