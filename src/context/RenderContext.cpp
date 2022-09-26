@@ -90,8 +90,8 @@ namespace arcana {
         vertexArray[vertexPointer + 3].texCoords = {(sprite.targetRect.point.x + sprite.targetRect.width)/tex->width, (sprite.targetRect.point.y + sprite.targetRect.height)/tex->height};
         // And finally positions
         if (sprite.rotation != 0.0f) {
-            float radius = sqrt((tex->width * tex->width *  sprite.scale.x *  sprite.scale.x) + (tex->height * tex->height * sprite.scale.y * sprite.scale.y))/2; 
-            float topRightAngle = atan( (tex->height * sprite.scale.y) / (tex->width *  sprite.scale.x) ) * 180/M_PI;
+            float radius = sqrt((sprite.targetRect.width * sprite.targetRect.width *  sprite.scale.x *  sprite.scale.x) + (sprite.targetRect.height * sprite.targetRect.height * sprite.scale.y * sprite.scale.y))/2; 
+            float topRightAngle = atan( (sprite.targetRect.height * sprite.scale.y) / (sprite.targetRect.width *  sprite.scale.x) ) * 180/M_PI;
             float bottomRightAngle = 180 - topRightAngle;
             float bottomLeftAngle = 180 + topRightAngle;
             float topLeftAngle = 180 + bottomRightAngle;
@@ -115,20 +115,20 @@ namespace arcana {
         }
         else {
             vertexArray[vertexPointer].pos = {
-                sprite.pos.x - (sprite.scale.x * tex->width)/2, 
-                sprite.pos.y - (sprite.scale.y * tex->height)/2, 
+                sprite.pos.x - (sprite.scale.x * sprite.targetRect.width)/2, 
+                sprite.pos.y - (sprite.scale.y * sprite.targetRect.height)/2, 
                 sprite.z};
             vertexArray[vertexPointer + 1].pos = {
-                sprite.pos.x + (sprite.scale.x * tex->width)/2, 
-                sprite.pos.y - (sprite.scale.y * tex->height)/2, 
+                sprite.pos.x + (sprite.scale.x * sprite.targetRect.width)/2, 
+                sprite.pos.y - (sprite.scale.y * sprite.targetRect.height)/2, 
                 sprite.z};
             vertexArray[vertexPointer + 2].pos = {
-                sprite.pos.x - (sprite.scale.x * tex->width)/2, 
-                sprite.pos.y + (sprite.scale.y * tex->height)/2, 
+                sprite.pos.x - (sprite.scale.x * sprite.targetRect.width)/2, 
+                sprite.pos.y + (sprite.scale.y * sprite.targetRect.height)/2, 
                 sprite.z};
             vertexArray[vertexPointer + 3].pos = {
-                sprite.pos.x + (sprite.scale.x * tex->width)/2, 
-                sprite.pos.y + (sprite.scale.y * tex->height)/2, 
+                sprite.pos.x + (sprite.scale.x * sprite.targetRect.width)/2, 
+                sprite.pos.y + (sprite.scale.y * sprite.targetRect.height)/2, 
                 sprite.z};
         }
 
@@ -148,20 +148,20 @@ namespace arcana {
         vertexArray[vertexPointer + 3].texCoords = {(targetRect.point.x + targetRect.width)/tex.width, (targetRect.point.y + targetRect.height)/tex.height};
         // Then finally set positions 
         if (rotation != 0.0f) {
-            float line_dist = sqrt((tex.width * tex.width *  scale.x *  scale.x) + (tex.height * tex.height * scale.y * scale.y));
+            float line_dist = sqrt((targetRect.width * targetRect.width *  scale.x *  scale.x) + (targetRect.height * targetRect.height * scale.y * scale.y));
             vertexArray[vertexPointer].pos = {
                 pos.x, 
                 pos.y, 
                 z
             };
             vertexArray[vertexPointer + 1].pos = {
-                pos.x + sinf(glm::radians(90.0 + rotation)) * tex.width * scale.x,
-                pos.y - cosf(glm::radians(90.0 + rotation)) * tex.width * scale.x,
+                pos.x + sinf(glm::radians(90.0 + rotation)) * targetRect.width * scale.x,
+                pos.y - cosf(glm::radians(90.0 + rotation)) * targetRect.width * scale.x,
                 z
             };
             vertexArray[vertexPointer + 2].pos = {
-                pos.x + sinf(glm::radians(180.0 + rotation)) * tex.height * scale.y,
-                pos.y - cosf(glm::radians(180.0 + rotation)) * tex.height * scale.y,
+                pos.x + sinf(glm::radians(180.0 + rotation)) * targetRect.height * scale.y,
+                pos.y - cosf(glm::radians(180.0 + rotation)) * targetRect.height * scale.y,
                 z
             };
             vertexArray[vertexPointer + 3].pos = {
@@ -177,16 +177,16 @@ namespace arcana {
                 pos.y, 
                 z};
             vertexArray[vertexPointer + 1].pos = {
-                pos.x + (tex.width * scale.x), 
+                pos.x + (targetRect.width * scale.x), 
                 pos.y, 
                 z};
             vertexArray[vertexPointer + 2].pos = {
                 pos.x, 
-                pos.y + (tex.height * scale.y), 
+                pos.y + (targetRect.height * scale.y), 
                 z};
             vertexArray[vertexPointer + 3].pos = {
-                pos.x + (tex.width * scale.x),  
-                pos.y + (tex.height * scale.y),  
+                pos.x + (targetRect.width * scale.x),  
+                pos.y + (targetRect.height * scale.y),  
                 z};
         }
         vertexPointer += 4;

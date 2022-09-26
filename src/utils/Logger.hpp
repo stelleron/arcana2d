@@ -40,6 +40,7 @@
 
                 // Logging
                 Logger& operator<<(const std::string& message);
+                Logger& operator<<(const char character);
                 Logger& operator<<(const char* message);
                 Logger& operator<<(const int num);
                 Logger& operator<<(const unsigned int num);

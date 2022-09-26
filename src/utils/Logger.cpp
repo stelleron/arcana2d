@@ -44,6 +44,11 @@ namespace arcana {
         return *this;
     }
 
+    Logger& Logger::operator<<(const char character) {
+        this->message += character;
+        return *this;
+    }
+
     Logger& Logger::operator<<(const char* message) {
         this->message += message;
         return *this;
