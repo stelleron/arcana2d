@@ -13,7 +13,7 @@ class UntitledGame : public Application{
 
     }
     void render(RenderContext& ctx) {
-        ctx.draw(font.fontTex);
+        ctx.print(font, "Hello World!");
     }
     void finish() {
     

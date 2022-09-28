@@ -14,9 +14,10 @@
         struct Font {
             private:
                 int fontSize;
-                Rectangle fontRecs[NUM_CHARS];
             public:
+                Rectangle fontRecs[NUM_CHARS];
                 Texture fontTex;
+
                 // Constructor
                 Font();
                 Font(const char* path, int fontsize = DEFAULT_FONT_SIZE);
@@ -27,7 +28,6 @@
                 void load(const char* path, int fontsize = DEFAULT_FONT_SIZE);
                 void load(unsigned char* data, size_t size, int fontsize = DEFAULT_FONT_SIZE);
                 bool isLoaded(); // Check if the font has been loaded
-
         };
     }
 #endif

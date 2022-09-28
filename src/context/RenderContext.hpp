@@ -1,10 +1,12 @@
 #ifndef ARCANA2D_RENDER_CONTEXT
     #define ARCANA2D_RENDER_CONTEXT
 
+    #include <string>
     #include "camera/Camera.hpp"
     #include "gfx/Shader.hpp"
     #include "gfx/Sprite.hpp"
     #include "gfx/VertexArray.hpp"
+    #include "res/Font.hpp"
 
 
     namespace arcana {
@@ -87,6 +89,9 @@
 
                 void draw(Texture& tex, Vector2 pos = {0.0, 0.0}, Vector2 scale = {1.0, 1.0}, float z = 0.0, float rotation = 0.0, Color color = Color::RGB(255, 255, 255));
                 void draw(Texture& tex, Rectangle targetRect, Vector2 pos = {0.0, 0.0}, Vector2 scale = {1.0, 1.0}, float z = 0.0, float rotation = 0.0, Color color = Color::RGB(255, 255, 255));
+
+                // Used to render text
+                void print(Font& font, std::string message, Vector2 pos = {0.0, 0.0}, float z = 0, Color color = Color::RGB(255, 255, 255), int padding = 5);
 
                 void drawBatch();
         };
