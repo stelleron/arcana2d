@@ -80,13 +80,14 @@ namespace arcana {
 
             std::string path = currentWorkingDir;
             path += dir;
-            FILE *file = fopen(path.c_str(), "r");
+            FILE *file = fopen(path.c_str(), "rb");
             fseek(file, 0, SEEK_END);
             int size = ftell(file);
             fseek(file, 0, SEEK_SET);
             unsigned char* data = new unsigned char[size];
             unsigned int count = fread(data, 1, size, file);
             fsize = count;
+            fclose(file);
             return data;
         }
 

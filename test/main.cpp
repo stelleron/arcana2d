@@ -7,7 +7,7 @@ class UntitledGame : public Application{
 
     }
     void init(GameContext& ctx) {
-        font.load("cache/ThaleahFat.ttf");
+        font.load("cache/Pixel Square 10.ttf");
     }
     void update(GameContext& ctx) {
 
@@ -16,7 +16,7 @@ class UntitledGame : public Application{
         ctx.draw(font.fontTex);
     }
     void finish() {
-
+    
     }
 };
 
