@@ -8,10 +8,6 @@
 #include "res/Filesystem.hpp"
 #include "utils/Logger.hpp"
 
-#define START_CHAR 32
-#define END_CHAR 126
-#define NUM_CHARS END_CHAR - START_CHAR + 1
-
 namespace arcana {
     struct GlyphData {
         int charValue;
@@ -22,7 +18,7 @@ namespace arcana {
     };
 
     Font::Font() {
-        fontRecs = nullptr;
+
     }
 
     Font::Font(const char* path, int fontsize) {
@@ -34,8 +30,7 @@ namespace arcana {
     }
 
     Font::~Font() {
-        if (fontRecs)
-            delete[] fontRecs;
+
     }
 
     void Font::load(const char* path, int fontsize) {
@@ -53,9 +48,9 @@ namespace arcana {
     }
 
     void Font::load(unsigned char* data, size_t size, int fontsize) {
-        Image fontAtlas;
+        GlyphData* glyphs = new GlyphData[NUM_CHARS];
         this->fontSize = fontsize;
-        int xCharDim = 0, yCharDim = 0, xOffset = 0, yOffset = 0;
+        int xCharDim = 0, yCharDim = 0, xOffset = 0, yOffset = 0, imgArea = 0;
 
         // Load the font
         stbtt_fontinfo ftData = {0};
@@ -67,17 +62,62 @@ namespace arcana {
         // Now create the font atlas
         // First fetch font data
         float scale = stbtt_ScaleForPixelHeight(&ftData, 48 * 2);
-        int ascent, descent;
-        stbtt_GetFontVMetrics(&ftData, &ascent, &descent, 0);
-        int baseline = (int)(ascent * scale);
+        int ascent, descent, lineGap;
+        stbtt_GetFontVMetrics(&ftData, &ascent, &descent, &lineGap);
 
-        // Now get data for each character
+        // Now get the data for each glyph
         for (int i = START_CHAR; i < END_CHAR; i++) {
-            int advance, leftSideBearing;
-            stbtt_GetCodepointHMetrics(&ftData, i, &advance, &leftSideBearing);
-            fontAtlas.width += advance * scale;
+            int index = i - START_CHAR;
+            // Loading the glyph data
+            glyphs[index].image.data = 
+            stbtt_GetCodepointBitmap(&ftData, scale, scale, i, 
+                                     &glyphs[index].image.width, 
+                                     &glyphs[index].image.height, 
+                                     &glyphs[index].xOffset, 
+                                     &glyphs[index].yOffset);
+            glyphs[index].image.format = GRAYSCALE;
+            stbtt_GetCodepointHMetrics(&ftData, i, &glyphs[index].advance, NULL);
+            glyphs[index].advance = (int)((float)glyphs[index].advance*scale);
+            imgArea += glyphs[index].image.width * glyphs[index].image.height;
         }
+        
+        // Now generate an atlas
+        // First calculate an image size
+        float guessSize = sqrtf(imgArea)*1.4f;
+        int imageSize = (int)powf(2, ceilf(logf((float)guessSize)/logf(2)));
+        
+        // Set the font atlas
+        Image fontAtlas;
+        fontAtlas.data = new unsigned char[imageSize * imageSize];
+        memset(fontAtlas.data, 0, imageSize * imageSize);
+        fontAtlas.width = imageSize;
+        fontAtlas.height = imageSize;
+        fontAtlas.format = GRAYSCALE;
 
+        // Now copy the data for each glyph
+        int dataPtrX = 0, dataPtrY = 0;
+        for (int i = 0; i < NUM_CHARS; i++) {
+            for (int y = 0; y < glyphs[i].image.height; y++)
+            {
+                for (int x = 0; x < glyphs[i].image.height; x++)
+                {
+                    fontAtlas.data[(y + dataPtrY) * fontAtlas.width + (x + dataPtrX)] = 
+                            glyphs[i].image.data[y*glyphs[i].image.width + x];
+                }
+            }
+            // Set the rectangles
+            fontRecs[i].point = {dataPtrX, dataPtrY};
+            fontRecs[i].width = glyphs[i].image.width;
+            fontRecs[i].height = glyphs[i].image.height;
+
+            dataPtrX += glyphs[i].image.width;
+
+            if (dataPtrX + glyphs[i].image.width >= fontAtlas.width) {
+                dataPtrX = 0;
+                dataPtrY += fontSize;
+                LOG("Moving ptr down!");
+            }
+        }
 
         // Convert GRAYSCALE to GRAY_ALPHA
         unsigned char *dataGrayAlpha = new unsigned char[fontAtlas.width * fontAtlas.height * 2]; 
@@ -94,5 +134,8 @@ namespace arcana {
 
         // And finally convert it to a texture
         fontTex.load(fontAtlas);
+
+        // Also delete glyphs
+        delete[] glyphs;
     }
 }

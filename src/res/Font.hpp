@@ -1,14 +1,20 @@
 #ifndef ARCANA2D_FONT
     #define ARCANA2D_FONT
-    #define DEFAULT_FONT_SIZE 32
     #include "geom/Geometry.hpp"
     #include "gfx/Sprite.hpp"
+
+    #define START_CHAR 32
+    #define END_CHAR 126
+    #define NUM_CHARS END_CHAR - START_CHAR + 1
+    
+    #define DEFAULT_FONT_SIZE 32
+
     namespace arcana {
         // Used to create a font object
         struct Font {
             private:
                 int fontSize;
-                Rectangle* fontRecs;
+                Rectangle fontRecs[NUM_CHARS];
             public:
                 Texture fontTex;
                 // Constructor

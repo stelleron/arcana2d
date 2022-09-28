@@ -4,10 +4,10 @@ using namespace arcana;
 class UntitledGame : public Application{
     Font font;
     void config(AppConfig& config) {
-
+        config.width = 1024;
     }
     void init(GameContext& ctx) {
-        font.load("cache/Pixel Square 10.ttf");
+        font.load("cache/ThaleahFat.ttf");
     }
     void update(GameContext& ctx) {
 
