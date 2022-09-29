@@ -74,6 +74,29 @@ namespace arcana {
         return *this;
     }
 
+    Logger& Logger::operator<<(const Vertex vertex) {
+        this->message += "Position: (";
+            this->message += std::to_string(vertex.pos.x);
+            this->message += ", ";
+            this->message += std::to_string(vertex.pos.y);
+            this->message += ")\n";
+        this->message += "Color: (";
+            this->message += std::to_string(vertex.color.r);
+            this->message += ", ";
+            this->message += std::to_string(vertex.color.g);
+            this->message += ", ";
+            this->message += std::to_string(vertex.color.b);
+            this->message += ", ";
+            this->message += std::to_string(vertex.color.a);
+            this->message += ")\n";
+        this->message += "Tex Coords: (";
+            this->message += std::to_string(vertex.texCoords.x);
+            this->message += ", ";
+            this->message += std::to_string(vertex.texCoords.y);
+            this->message += ")\n";
+        return *this;
+    }
+
     void Logger::operator<<(const EndLog end) {
         if (end.mType == Message)
             logCallback(message.c_str());

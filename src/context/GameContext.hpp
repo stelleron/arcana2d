@@ -36,6 +36,7 @@
                     void minimizeWindow();
                     void maximizeWindow();
                     void updateTitle(const char* title);
+                    void close() {window->close();}
             };
 
             // Time API struct

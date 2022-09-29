@@ -61,23 +61,32 @@ namespace arcana {
 
         // Now create the font atlas
         // First fetch font data
-        float scale = stbtt_ScaleForPixelHeight(&ftData, 48 * 2);
+        float scale = stbtt_ScaleForPixelHeight(&ftData, fontSize);
         int ascent, descent, lineGap;
         stbtt_GetFontVMetrics(&ftData, &ascent, &descent, &lineGap);
 
         // Now get the data for each glyph
-        for (int i = START_CHAR; i < END_CHAR; i++) {
+        for (int i = START_CHAR; i <= END_CHAR; i++) {
             int index = i - START_CHAR;
             // Loading the glyph data
-            glyphs[index].image.data = 
-            stbtt_GetCodepointBitmap(&ftData, scale, scale, i, 
-                                     &glyphs[index].image.width, 
-                                     &glyphs[index].image.height, 
-                                     &glyphs[index].xOffset, 
-                                     &glyphs[index].yOffset);
             glyphs[index].image.format = GRAYSCALE;
             stbtt_GetCodepointHMetrics(&ftData, i, &glyphs[index].advance, NULL);
             glyphs[index].advance = (int)((float)glyphs[index].advance*scale);
+
+            if (i != 32) {
+                glyphs[index].image.data = 
+                stbtt_GetCodepointBitmap(&ftData, scale, scale, i, 
+                                        &glyphs[index].image.width, 
+                                        &glyphs[index].image.height, 
+                                        &glyphs[index].xOffset, 
+                                        &glyphs[index].yOffset);
+            }
+            else {
+                glyphs[index].image.data = new unsigned char[fontSize * glyphs[index].advance];
+                memset(glyphs[index].image.data, 0, glyphs[index].advance * fontSize);
+                glyphs[index].image.width = glyphs[index].advance;
+                glyphs[index].image.height = fontSize;
+            }
             imgArea += glyphs[index].image.width * glyphs[index].image.height;
         }
         
@@ -99,10 +108,10 @@ namespace arcana {
         for (int i = 0; i < NUM_CHARS; i++) {
             for (int y = 0; y < glyphs[i].image.height; y++)
             {
-                for (int x = 0; x < glyphs[i].image.height; x++)
+                for (int x = 0; x < glyphs[i].image.width; x++)
                 {
                     fontAtlas.data[(y + dataPtrY) * fontAtlas.width + (x + dataPtrX)] = 
-                            glyphs[i].image.data[y*glyphs[i].image.width + x];
+                            glyphs[i].image.data[y * glyphs[i].image.width + x];
                 }
             }
             // Set the rectangles
@@ -115,7 +124,6 @@ namespace arcana {
             if (dataPtrX + glyphs[i].image.width >= fontAtlas.width) {
                 dataPtrX = 0;
                 dataPtrY += fontSize;
-                LOG("Moving ptr down!");
             }
         }
 

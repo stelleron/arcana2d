@@ -3,6 +3,7 @@
     // Includes
     #include <functional>
     #include <string>
+    #include "geom/Vertex.hpp"
 
     namespace arcana {
         // Enumerate the types of messages 
@@ -46,6 +47,7 @@
                 Logger& operator<<(const unsigned int num);
                 Logger& operator<<(const float num);
                 Logger& operator<<(const unsigned long num);
+                Logger& operator<<(const Vertex vertex);
                 void operator<<(const EndLog end);
         };
 

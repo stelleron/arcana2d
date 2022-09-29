@@ -378,11 +378,11 @@ namespace arcana {
     }
 
     void RenderContext::print(Font& font, std::string message, Vector2 pos, float z, Color color, int padding) {
-        RenderMode rmode = rBatch.vertexArray.getRenderType();
         int xOffset = 0;
         for (int x = 0; x < message.length(); x++) {
+            RenderMode rmode = rBatch.vertexArray.getRenderType();
             if (rmode == Quads && rBatch.vertexArray.checkSpace(rBatch.vertexPointer, 4) && currentTextureID == font.fontTex.id) { 
-                rBatch.add(font.fontTex, pos, {1.0, 1.0}, z, 0, color, font.fontRecs[(int)message[x] - START_CHAR]); 
+                rBatch.add(font.fontTex, {pos.x + xOffset, pos.y}, {1.0, 1.0}, z, 0, color, font.fontRecs[(int)message[x] - START_CHAR]); 
             } 
             else { 
                 if (rmode != None) { 
@@ -391,7 +391,7 @@ namespace arcana {
                 currentTextureID = font.fontTex.id; 
                 rBatch.vertexArray.reset(Quads, MAX_BATCH_SIZE); 
                 rBatch.vertexPointer = 0; 
-                rBatch.add(font.fontTex, pos, {1.0, 1.0}, z, 0, color, font.fontRecs[(int)message[x] - START_CHAR]);
+                rBatch.add(font.fontTex, {pos.x + xOffset, pos.y}, {1.0, 1.0}, z, 0, color, font.fontRecs[(int)message[x] - START_CHAR]);
             }
             xOffset += font.fontRecs[(int)message[x] - START_CHAR].width + padding;
         }
