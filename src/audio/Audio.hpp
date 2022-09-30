@@ -1,5 +1,7 @@
 #ifndef ARCANA2D_AUDIO
     #define ARCANA2D_AUDIO
+
+    #define MA_NO_WAV
     #include "miniaudio.h"
 
     namespace arcana {
@@ -10,7 +12,7 @@
         // Used to create an audio context that plays sounds and music
         struct AudioContext {
             private:
-                AudioEngine engine;
+
             public:
                 // Constructor
                 AudioContext();

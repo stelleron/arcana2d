@@ -24,13 +24,13 @@ ifeq ($(config),debug)
   TARGET = $(TARGETDIR)/libarcana2d.dylib
   OBJDIR = build/obj/Debug/arcana2d
   DEFINES += -DDEBUG -DENABLE_ARCANA_LOGGER
-  INCLUDES += -Iexternal/include -Isrc -Iexternal/include/freetype2
+  INCLUDES += -Iexternal/include -Isrc
   FORCE_INCLUDE +=
   ALL_CPPFLAGS += $(CPPFLAGS) -MMD -MP $(DEFINES) $(INCLUDES)
   ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -m64 -fPIC -g
   ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -m64 -fPIC -g -std=c++17
   ALL_RESFLAGS += $(RESFLAGS) $(DEFINES) $(INCLUDES)
-  LIBS += -framework GLUT -framework CoreVideo -framework IOKit -framework OpenGL -framework Cocoa -lglfw3 -lglad -lfreetype
+  LIBS += -framework GLUT -framework CoreVideo -framework IOKit -framework OpenGL -framework Cocoa -lglfw3 -lglad
   LDDEPS +=
   ALL_LDFLAGS += $(LDFLAGS) -Lexternal/lib -m64 -dynamiclib -Wl,-install_name,@rpath/libarcana2d.dylib
   LINKCMD = $(CXX) -o "$@" $(OBJECTS) $(RESOURCES) $(ALL_LDFLAGS) $(LIBS)
@@ -59,13 +59,13 @@ ifeq ($(config),release)
   TARGET = $(TARGETDIR)/libarcana2d.dylib
   OBJDIR = build/obj/Release/arcana2d
   DEFINES += -DNDEBUG
-  INCLUDES += -Iexternal/include -Isrc -Iexternal/include/freetype2
+  INCLUDES += -Iexternal/include -Isrc
   FORCE_INCLUDE +=
   ALL_CPPFLAGS += $(CPPFLAGS) -MMD -MP $(DEFINES) $(INCLUDES)
   ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -m64 -O2 -fPIC
   ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -m64 -O2 -fPIC -std=c++17
   ALL_RESFLAGS += $(RESFLAGS) $(DEFINES) $(INCLUDES)
-  LIBS += -framework GLUT -framework CoreVideo -framework IOKit -framework OpenGL -framework Cocoa -lglfw3 -lglad -lfreetype
+  LIBS += -framework GLUT -framework CoreVideo -framework IOKit -framework OpenGL -framework Cocoa -lglfw3 -lglad
   LDDEPS +=
   ALL_LDFLAGS += $(LDFLAGS) -Lexternal/lib -m64 -dynamiclib -Wl,-install_name,@rpath/libarcana2d.dylib
   LINKCMD = $(CXX) -o "$@" $(OBJECTS) $(RESOURCES) $(ALL_LDFLAGS) $(LIBS)
@@ -81,7 +81,6 @@ all: prebuild prelink $(TARGET)
 endif
 
 OBJECTS := \
-	$(OBJDIR)/miniaudio.o \
 	$(OBJDIR)/AppConfig.o \
 	$(OBJDIR)/Application.o \
 	$(OBJDIR)/Audio.o \
@@ -162,9 +161,6 @@ else
 $(OBJECTS): | $(OBJDIR)
 endif
 
-$(OBJDIR)/miniaudio.o: external/lib/miniaudio.c
-	@echo $(notdir $<)
-	$(SILENT) $(CC) $(ALL_CFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 $(OBJDIR)/AppConfig.o: src/app/AppConfig.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"

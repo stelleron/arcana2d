@@ -11,10 +11,10 @@ project "arcana2d"
     targetdir "build/"
     objdir "build/obj/"
 
-    files {"src/**.cpp", "external/lib/miniaudio.c"}
-    includedirs {"external/include/", "src/", "external/include/freetype2/"}
+    files {"src/**.cpp"}
+    includedirs {"external/include/", "src/"}
     libdirs {"external/lib/"}
-    links {"glfw3", "glad", "freetype", "GLUT.framework", "CoreVideo.framework", 
+    links {"glfw3", "glad", "GLUT.framework", "CoreVideo.framework", 
     "IOKit.framework", "OpenGL.framework", "Cocoa.framework"}
 
     filter "configurations:Debug"
