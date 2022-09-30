@@ -16,7 +16,6 @@
                 AudioContext();
                 // Destructor
                 ~AudioContext();
-
                 void update(); // Update the audio device
         };
 
@@ -29,13 +28,13 @@
                 // Constructor
                 Sound();
                 Sound(const char* path);
-                Sound(unsigned char* data, size_t size);
+                Sound(unsigned char* data, size_t size, const char* extension);
                 // Destructor
                 ~Sound();
 
                 // Loading functions
                 void load(const char* path);
-                void load(unsigned char* data, size_t size);
+                void load(unsigned char* data, size_t size, const char* extension);
                 bool isLoaded(); // Check if the sound has been loaded
         };
     }
