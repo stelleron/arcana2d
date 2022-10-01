@@ -14,7 +14,7 @@ project "arcana2d"
     files {"src/**.cpp"}
     includedirs {"external/include/", "src/"}
     libdirs {"external/lib/"}
-    links {"glfw3", "glad", "GLUT.framework", "CoreVideo.framework", 
+    links {"glfw3", "glad", "irrklang", "GLUT.framework", "CoreVideo.framework", 
     "IOKit.framework", "OpenGL.framework", "Cocoa.framework"}
 
     filter "configurations:Debug"

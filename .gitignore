@@ -8,3 +8,6 @@ commit.sh
 run.sh
 buffer.txt
 cache/
+external/include/miniaudio.h
+external/include/dr_mp3.h
+external/include/dr_wav.h
