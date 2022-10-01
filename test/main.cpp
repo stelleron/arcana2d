@@ -8,6 +8,7 @@ class UntitledGame : public Application{
     }
     void init(GameContext& ctx) {
         font.load("cache/ThaleahFat.ttf");
+
     }
     void update(GameContext& ctx) {
 
