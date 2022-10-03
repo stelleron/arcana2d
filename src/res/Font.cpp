@@ -43,7 +43,7 @@ namespace arcana {
         if (extension == "otf" || extension == "ttf")
             load(data, fsize, fontsize);
         else 
-            LOG("Font: Font type not supported!");
+            ERROR("Font: Font type not supported!");
         delete[] data;
     }
 
@@ -55,7 +55,7 @@ namespace arcana {
         // Load the font
         stbtt_fontinfo ftData = {0};
         if (!stbtt_InitFont(&ftData, data, 0)) {
-            LOG("Font: Could not process the font data!");
+            ERROR("Font: Could not process the font data!");
             return;
         }
 

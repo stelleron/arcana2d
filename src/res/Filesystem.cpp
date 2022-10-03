@@ -13,7 +13,7 @@ namespace arcana {
 
         void setDir(const std::string& dir) {
             if (!dirExists(dir)) {
-                LOG("Filesystem: Directory does not exist!");
+                ERROR("Filesystem: Directory does not exist!");
                 exit(1);
             }
 
@@ -47,7 +47,7 @@ namespace arcana {
 
         std::string loadFileStr(const std::string& dir) {
             if (!fileExists(dir)) {
-                LOG("Filesystem: File does not exist!");
+                ERROR("Filesystem: File does not exist!");
                 exit(1);
             }
 
@@ -61,7 +61,7 @@ namespace arcana {
 
         char* loadFileText(const std::string& dir, size_t& fsize) {
             if (!fileExists(dir)) {
-                LOG("Filesystem: File does not exist!");
+                ERROR("Filesystem: File does not exist!");
                 exit(1);
             }
 
@@ -74,7 +74,7 @@ namespace arcana {
 
         unsigned char* loadFileData(const std::string& dir, size_t& fsize) {
             if (!fileExists(dir)) {
-                LOG("Filesystem: File does not exist!");
+                ERROR("Filesystem: File does not exist!");
                 exit(1);
             }
 
