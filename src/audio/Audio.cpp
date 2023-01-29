@@ -19,27 +19,27 @@
 #include "utils/Logger.hpp"
 
 namespace arcana {
+
     // Code for defining and creating an internal audio engine
     struct InternalAudioEngine {
-        ma_result result;
-        ma_engine engine;
+        ma_context context;
     };
 
     InternalAudioEngine aEngine;
 
+    // Callback for logging messages
+    void audioLogCallback(void *pUserData, ma_uint32 level, const char *pMessage) {
+        logger << "Audio(Internal): " << pMessage << endMessage;
+    }
+
 
     // Audio context impl.
     void AudioContext::init() {
-        ma_engine_init(NULL, &aEngine.engine);
-        if (aEngine.result != MA_SUCCESS) {
-            LOG("Audio: Failed to initialise the audio engine!");
-        }
-        else {
-            LOG("Audio: Initialised the audio engine");
-        }
+        ma_context_config ctxConfig = ma_context_config_init();
+        ma_log_callback_init(audioLogCallback, NULL);   
     }
 
     void AudioContext::play() {
-        ma_engine_play_sound(&aEngine.engine, "/Users/donti/Desktop/stelleron/arcana2d/cache/pickupCoin.wav", NULL);
+        
     }
 }

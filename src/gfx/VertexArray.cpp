@@ -99,7 +99,7 @@ namespace arcana {
 
         switch (rMode)
         {
-            case Points: primSize = 2; break;
+            case Points: primSize = 1; break;
             case Lines: primSize = 2; break;
             case Triangles: primSize = 3; break;
             case Quads: primSize = 4; eBuffer = new ElementBuffer(rMode, vertexNum/primSize); break;
@@ -162,11 +162,10 @@ namespace arcana {
         RENDER_TYPE_ASSERT(RenderMode::Points);
 
         // Then ensure that there is enough space for the primitive
-        BATCH_SPACE_ASSERT(startIndex, 2);
+        BATCH_SPACE_ASSERT(startIndex, 1);
 
         // Now time to add all of the vertices to the vertex array
         vArray[startIndex] = Vertex(point.pos);
-        vArray[startIndex + 1] = Vertex(Vector2(point.pos.x + 1, point.pos.y + 1));
     }
 
     void VertexArray::add(const DrawPoint& point, int startIndex) {
@@ -174,11 +173,10 @@ namespace arcana {
         RENDER_TYPE_ASSERT(RenderMode::Points);
 
         // Then ensure that there is enough space for the primitive
-        BATCH_SPACE_ASSERT(startIndex, 2);
+        BATCH_SPACE_ASSERT(startIndex, 1);
 
         // Now time to add all of the vertices to the vertex array
         vArray[startIndex] = Vertex(Vector3(point.pos.x, point.pos.y, point.z), point.color);
-        vArray[startIndex + 1] = Vertex(Vector3(point.pos.x + 1, point.pos.y + 1, point.z), point.color);
     }
 
     void VertexArray::add(const Line& line, int startIndex) {

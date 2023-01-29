@@ -19,7 +19,9 @@ class UntitledGame : public Application{
         }
     }
     void render(RenderContext& ctx) {
-
+        for (int x = 0; x < 100; x++) {
+            ctx.draw(Point(Vector2{random::generateNum(0, 800), random::generateNum(0, 600)}));
+        }
     }
     void finish() {
     

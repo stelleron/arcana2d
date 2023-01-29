@@ -33,12 +33,12 @@ namespace arcana {
 
     void RenderContext::RenderBatch::add(const Point& point) {
         vertexArray.add(point, vertexPointer);
-        vertexPointer += 2;
+        vertexPointer += 1;
     }
 
     void RenderContext::RenderBatch::add(const DrawPoint& point) {
         vertexArray.add(point, vertexPointer);
-        vertexPointer += 2;
+        vertexPointer += 1;
     }
 
     void RenderContext::RenderBatch::add(const Line& line) {
@@ -282,7 +282,7 @@ namespace arcana {
             glBindBuffer(GL_ARRAY_BUFFER, 0);  
             GLenum drawType;
             switch (rMode) {
-                case Points: drawType = GL_LINES; break;
+                case Points: drawType = GL_POINTS; break;
                 case Lines: drawType = GL_LINES; break;
                 case Triangles: drawType = GL_TRIANGLES; break;
                 default: break;
@@ -297,11 +297,11 @@ namespace arcana {
     }
 
     void RenderContext::draw(const Point& point) {
-        DRAW_OBJECT(Points, 2, point);
+        DRAW_OBJECT(Points, 1, point);
     }
 
     void RenderContext::draw(const DrawPoint& point) {
-        DRAW_OBJECT(Points, 2, point);
+        DRAW_OBJECT(Points, 1, point);
     }
 
     void RenderContext::draw(const Line& line) {
