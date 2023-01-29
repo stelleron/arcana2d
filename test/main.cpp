@@ -3,14 +3,20 @@ using namespace arcana;
 
 class UntitledGame : public Application{
 
+    bool a;
+
     void config(AppConfig& config) {
         
     }
     void init(GameContext& ctx) {
         ctx.audio.init();
+        a = false;
     }
     void update(GameContext& ctx) {
-        ctx.audio.play();
+        if (!a) {
+            ctx.audio.play();
+            a = true;
+        }
     }
     void render(RenderContext& ctx) {
 
