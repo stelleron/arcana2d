@@ -15,7 +15,8 @@ project "arcana2d"
     includedirs {"external/include/", "src/"}
     libdirs {"external/lib/"}
     links {"glfw3", "glad", "GLUT.framework", "CoreVideo.framework", 
-    "IOKit.framework", "OpenGL.framework", "Cocoa.framework"}
+           "IOKit.framework", "OpenGL.framework", "Cocoa.framework", 
+           "CoreAudio.framework", "AudioUnit.framework", "CoreFoundation.framework"}
 
     filter "configurations:Debug"
         defines {"DEBUG", "ENABLE_ARCANA_LOGGER"}
