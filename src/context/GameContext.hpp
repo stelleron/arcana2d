@@ -1,6 +1,7 @@
 #ifndef ARCANA2D_GAME_CONTEXT
     #define ARCANA2D_GAME_CONTEXT
 
+    #include "res/Filesystem.hpp"
     #include "audio/Audio.hpp"
     #include "camera/Camera.hpp"
     #include "window/Window.hpp"

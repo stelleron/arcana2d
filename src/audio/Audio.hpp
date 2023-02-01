@@ -6,5 +6,19 @@
             void init();
             void play();
         };
+
+        // Used to implement a sound class
+        class Sound {
+            private:
+
+
+            public:
+                Sound(const char* path);
+                Sound(unsigned char* data, size_t size, const char* ftype);
+                ~Sound();
+
+                void load(const char* path);
+                void load(unsigned char* data, size_t size, const char* ftype);
+        };
     }
 #endif

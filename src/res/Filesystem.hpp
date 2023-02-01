@@ -23,6 +23,7 @@
             void saveFileStr(const std::string& path, const std::string& data);
             void saveFileText(const std::string& path, char* data);
             void saveFileData(const std::string& path, unsigned char* data);
+            
             // Get file extension
             std::string getFileExtension(const std::string& path);
         };
