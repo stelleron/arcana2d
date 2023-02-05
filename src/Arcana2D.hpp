@@ -1,22 +1,29 @@
-#ifndef ARCANA2D_HPP
-    #define ARCANA2D_HPP
-    // To be added to external applications
-    //=== STD HEADERS
-    #include <functional>
-    #include <string>
-    
-    //=== VENDOR HEADERS
+#ifndef ARCANA2D_LIBRARY
+    #define ARCANA2D_LIBRARY
     #include <glad/glad.h>
-    #include <GLFW/glfw3.h>
-    #include <glm/glm.hpp>
 
-    //=== PROJECT HEADERS
+    #include "utils/Logger.hpp"
     #include "utils/Color.hpp"
+    #include "utils/Random.hpp"
+    #include "utils/Vector.hpp"
+
+    #include "geom/Vertex.hpp"
+    #include "geom/Geometry.hpp"
+    #include "geom/DrawGeometry.hpp"
+
+    #include "res/Font.hpp"
+
+    #include "time/Timer.hpp"
+    
+    #include "camera/Camera.hpp"
 
     #include "gfx/Shader.hpp"
+    #include "gfx/Sprite.hpp"
+    #include "gfx/VertexArray.hpp"
 
-    #include "window/Window.hpp"
+    #include "context/GameContext.hpp"
+    #include "context/RenderContext.hpp"
 
-    #include "engine/App.hpp"
-    #include "engine/EngineConfig.hpp"
+    #include "app/AppConfig.hpp"
+    #include "app/Application.hpp"
 #endif

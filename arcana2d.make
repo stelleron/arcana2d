@@ -23,14 +23,14 @@ ifeq ($(config),debug)
   TARGETDIR = build
   TARGET = $(TARGETDIR)/libarcana2d.dylib
   OBJDIR = build/obj/Debug/arcana2d
-  DEFINES += -DDEBUG
+  DEFINES += -DDEBUG -DENABLE_ARCANA_LOGGER
   INCLUDES += -Iexternal/include -Isrc
   FORCE_INCLUDE +=
   ALL_CPPFLAGS += $(CPPFLAGS) -MMD -MP $(DEFINES) $(INCLUDES)
   ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -m64 -fPIC -g
   ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -m64 -fPIC -g -std=c++17
   ALL_RESFLAGS += $(RESFLAGS) $(DEFINES) $(INCLUDES)
-  LIBS += -framework GLUT -framework CoreVideo -framework IOKit -framework OpenGL -framework Cocoa -lglfw3 -lglad
+  LIBS += -framework GLUT -framework CoreVideo -framework IOKit -framework OpenGL -framework Cocoa -framework CoreAudio -framework AudioUnit -framework CoreFoundation -lglfw3 -lglad
   LDDEPS +=
   ALL_LDFLAGS += $(LDFLAGS) -Lexternal/lib -m64 -dynamiclib -Wl,-install_name,@rpath/libarcana2d.dylib
   LINKCMD = $(CXX) -o "$@" $(OBJECTS) $(RESOURCES) $(ALL_LDFLAGS) $(LIBS)
@@ -65,7 +65,7 @@ ifeq ($(config),release)
   ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -m64 -O2 -fPIC
   ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -m64 -O2 -fPIC -std=c++17
   ALL_RESFLAGS += $(RESFLAGS) $(DEFINES) $(INCLUDES)
-  LIBS += -framework GLUT -framework CoreVideo -framework IOKit -framework OpenGL -framework Cocoa -lglfw3 -lglad
+  LIBS += -framework GLUT -framework CoreVideo -framework IOKit -framework OpenGL -framework Cocoa -framework CoreAudio -framework AudioUnit -framework CoreFoundation -lglfw3 -lglad
   LDDEPS +=
   ALL_LDFLAGS += $(LDFLAGS) -Lexternal/lib -m64 -dynamiclib -Wl,-install_name,@rpath/libarcana2d.dylib
   LINKCMD = $(CXX) -o "$@" $(OBJECTS) $(RESOURCES) $(ALL_LDFLAGS) $(LIBS)
@@ -81,10 +81,27 @@ all: prebuild prelink $(TARGET)
 endif
 
 OBJECTS := \
-	$(OBJDIR)/App.o \
-	$(OBJDIR)/EngineConfig.o \
+	$(OBJDIR)/AppConfig.o \
+	$(OBJDIR)/Application.o \
+	$(OBJDIR)/Audio.o \
+	$(OBJDIR)/Camera.o \
+	$(OBJDIR)/GameContext.o \
+	$(OBJDIR)/RenderContext.o \
+	$(OBJDIR)/DrawGeometry.o \
+	$(OBJDIR)/Geometry.o \
+	$(OBJDIR)/Vertex.o \
 	$(OBJDIR)/Shader.o \
+	$(OBJDIR)/Sprite.o \
+	$(OBJDIR)/VertexArray.o \
+	$(OBJDIR)/EventData.o \
+	$(OBJDIR)/Filesystem.o \
+	$(OBJDIR)/Font.o \
+	$(OBJDIR)/Image.o \
+	$(OBJDIR)/Timer.o \
 	$(OBJDIR)/Color.o \
+	$(OBJDIR)/Logger.o \
+	$(OBJDIR)/Random.o \
+	$(OBJDIR)/Callbacks.o \
 	$(OBJDIR)/Window.o \
 
 RESOURCES := \
@@ -144,16 +161,70 @@ else
 $(OBJECTS): | $(OBJDIR)
 endif
 
-$(OBJDIR)/App.o: src/engine/App.cpp
+$(OBJDIR)/AppConfig.o: src/app/AppConfig.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
-$(OBJDIR)/EngineConfig.o: src/engine/EngineConfig.cpp
+$(OBJDIR)/Application.o: src/app/Application.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
+$(OBJDIR)/Audio.o: src/audio/Audio.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
+$(OBJDIR)/Camera.o: src/camera/Camera.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
+$(OBJDIR)/GameContext.o: src/context/GameContext.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
+$(OBJDIR)/RenderContext.o: src/context/RenderContext.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
+$(OBJDIR)/DrawGeometry.o: src/geom/DrawGeometry.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
+$(OBJDIR)/Geometry.o: src/geom/Geometry.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
+$(OBJDIR)/Vertex.o: src/geom/Vertex.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
+$(OBJDIR)/Shader.o: src/gfx/Shader.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
+$(OBJDIR)/Sprite.o: src/gfx/Sprite.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
+$(OBJDIR)/VertexArray.o: src/gfx/VertexArray.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
+$(OBJDIR)/EventData.o: src/input/EventData.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
+$(OBJDIR)/Filesystem.o: src/res/Filesystem.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
+$(OBJDIR)/Font.o: src/res/Font.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
+$(OBJDIR)/Image.o: src/res/Image.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
+$(OBJDIR)/Timer.o: src/time/Timer.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 $(OBJDIR)/Shader.o: src/gfx/Shader.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 $(OBJDIR)/Color.o: src/utils/Color.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
+$(OBJDIR)/Logger.o: src/utils/Logger.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
+$(OBJDIR)/Random.o: src/utils/Random.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
+$(OBJDIR)/Callbacks.o: src/window/Callbacks.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 $(OBJDIR)/Window.o: src/window/Window.cpp

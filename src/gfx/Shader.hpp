@@ -1,7 +1,8 @@
 #ifndef ARCANA2D_SHADER
     #define ARCANA2D_SHADER
 
-    #include <glad/glad.h>
+    #include "utils/Vector.hpp"
+
     namespace arcana {
         // Used to create a shader class 
         class Shader {
@@ -15,11 +16,19 @@
                 Shader(const char* vSource, int exclude);
                 Shader(int exclude, const char* fSource);
                 Shader(const char* vSource, const char* fSource);
+                
+                // Load the shader
+                void load(int exclude1, int exclude2);
+                void load(const char* vSource, const char* fSource);
 
                 // Uniform setting functions
                 void setBool(const char* name, bool value);  
                 void setInt(const char* name, int value);   
                 void setFloat(const char* name, float value);
+                void setVec2(const char* name, Vector2 vec);
+                void setVec3(const char* name, Vector3 vec);
+                void setVec4(const char* name, Vector4 vec);
+                void setMat4(const char* name, Mat4 matrix);
 
                 // Use the shader
                 void use();

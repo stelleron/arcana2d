@@ -1,35 +1,37 @@
-#include <iostream>
 #include "Arcana2D.hpp"
+#include <iostream>
 
-struct GameData {
-    int x = 5;
+using namespace arcana;
+
+class UntitledGame : public Application{
+    // Store window dimensions
+    Vector2 win_dimensions;
+
+
+    void config(AppConfig& config) {
+        config.resizable = true;
+        config.maximized = true;
+    }
+
+    void init(GameContext& ctx) {
+        win_dimensions = ctx.window.getWindowSize();
+        LOG(win_dimensions.x << "," << win_dimensions.y);
+    }
+
+    void update(GameContext& ctx) {
+
+    }
+
+    void render(RenderContext& ctx) {
+
+    }
+
+    void finish() {
+    
+    }
 };
 
-void init(arcana::EngineConfig& config, arcana::UserData user_data) {
-    // Setting the title 
-    config.win_config.title = "Hello World!";
-}
-
-void update(arcana::UserData user_data) {
-    GameData* data = GET_USER_DATA(user_data, GameData);
-}
-
-void render(arcana::UserData user_data) {
-
-}
-
-void finish(arcana::UserData user_data) {
-    std::cout << "Closing application!\n";
-}
-
 int main() {
-    GameData data;
-    arcana::AppConfig config = {
-        .user_data = &data,
-        .init_fn = init,
-        .update_fn = update,
-        .render_fn = render,
-        .finish_fn = finish,
-    };
-    arcana::App().build(config).run();
+    UntitledGame game;
+    build(game);
 }
