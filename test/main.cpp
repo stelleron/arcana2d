@@ -4,26 +4,28 @@
 using namespace arcana;
 
 class UntitledGame : public Application{
+    // Store window dimensions
+    Vector2 win_dimensions;
 
-    bool a;
 
     void config(AppConfig& config) {
+        config.resizable = true;
+        config.maximized = true;
+    }
+
+    void init(GameContext& ctx) {
+        win_dimensions = ctx.window.getWindowSize();
+        LOG(win_dimensions.x << "," << win_dimensions.y);
+    }
+
+    void update(GameContext& ctx) {
 
     }
-    void init(GameContext& ctx) {
-        ctx.audio.init();
-        a = false;
-        Sound sound("cache/pickupCoin.wav");
-    }
-    void update(GameContext& ctx) {
-        if (!a) {
-            ctx.audio.play();
-            a = true;
-        }
-    }
+
     void render(RenderContext& ctx) {
 
     }
+
     void finish() {
     
     }
